@@ -18,6 +18,10 @@ db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = 'users.login'
 
+@app.route('/')
+def index():
+    return redirect(url_for('trips.create'))
+
 
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint
