@@ -1,0 +1,52 @@
+<!--login-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Cursa Acarreo</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!--This is to display flash messages-->
+
+{% for mess in get_flashed_messages() %}
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{ mess }}</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% endfor %}
+
+<div class="jumbotron">
+	<h1>Ingresa tus credenciales para acceder</h1>
+	<form method="POST">
+		{{form.hidden_tag()}}
+		<div>{{ form.username.label}} {{ form.username(required=False) }}   <!--required= False when DataRequired message is custom-->
+	            {% for error in form.username.errors %}
+					<ul>
+						<span class="alert alert-warning" role="alert">*{{ error }}</span>
+					</ul>
+				{% endfor %}
+		</div>
+
+		<div>{{ form.password.label }}{{form.password(required=False) }}
+	            {% for error in form.password.errors %}
+					<ul>
+						<span class="alert alert-warning" role="alert">*{{ error }}</span>
+					</ul>
+				{% endfor %}
+		</div>
+		{{ form.submit }}
+	</form>
+</div>
+
+
+</body>
+</html>

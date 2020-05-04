@@ -1,0 +1,51 @@
+<!--create_home-->
+{% extends 'base_user.html' %}
+
+{% block content %}
+
+<form method="POST">
+	{{form.hidden_tag()}}
+	<div>{{ form.truck.label}} {{ form.truck(required=False) }}   <!--required= False when DataRequired message is custom-->
+            {% for error in form.truck.errors %}
+				<ul>
+					<span class="alert alert-warning" role="alert">*{{ error }}</span>
+				</ul>
+			{% endfor %}
+	</div>
+
+	<div>{{ form.material.label}} {{ form.material(required=False) }}   <!--required= False when DataRequired message is custom-->
+            {% for error in form.material.errors %}
+				<ul>
+					<span class="alert alert-warning" role="alert">*{{ error }}</span>
+				</ul>
+			{% endfor %}
+	</div>
+
+	<div>{{ form.project.label}} {{ form.project(required=False) }}   <!--required= False when DataRequired message is custom-->
+            {% for error in form.project.errors %}
+				<ul>
+					<span class="alert alert-warning" role="alert">*{{ error }}</span>
+				</ul>
+			{% endfor %}
+	</div>
+
+	<div>{{ form.origin.label}} {{ form.origin(required=False) }}   <!--required= False when DataRequired message is custom-->
+            {% for error in form.origin.errors %}
+				<ul>
+					<span class="alert alert-warning" role="alert">*{{ error }}</span>
+				</ul>
+			{% endfor %}
+	</div>
+
+	<div>{{ form.destination.label}} {{ form.destination(required=False) }}   <!--required= False when DataRequired message is custom-->
+            {% for error in form.destination.errors %}
+				<ul>
+					<span class="alert alert-warning" role="alert">*{{ error }}</span>
+				</ul>
+			{% endfor %}
+	</div>
+
+	{{ form.submit }}
+</form>
+
+{% endblock %}

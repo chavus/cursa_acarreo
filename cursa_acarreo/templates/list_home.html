@@ -1,0 +1,89 @@
+<!--list_home-->
+{% extends 'base_user.html' %}
+
+{% block content %}
+
+
+<h2>En proceso</h2>
+<div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th># Viaje</th>
+              <th>Camion</th>
+              <th>Material</th>
+              <th>Cantidad</th>
+              <th>Obra</th>
+	          <th>Banco</th>
+              <th>Destino</th>
+	          <th>Enviado por</th>
+              <th>Fecha/Hora Envio</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for trip in in_progress_trips %}
+           <ul>
+			<tr>
+				<td>{{trip['trip_id']}}</td>
+				<td>{{trip['truck']}}</td>
+				<td>{{trip['material']}}</td>
+				<td>{{trip['amount']}}</td>
+				<td>{{trip['project']}}</td>
+				<td>{{trip['origin']}}</td>
+				<td>{{trip['destination']}}</td>
+				<td>{{trip['sender_user']}}</td>
+				<td>{{trip['sent_datetime']}}</td>
+			</tr>
+           </ul>
+          {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+
+<h2>Finalizados</h2>
+
+<div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+				<th># Viaje</th>
+	            <th>Estatus</th>
+				<th>Camion</th>
+				<th>Material</th>
+				<th>Cantidad</th>
+				<th>Obra</th>
+				<th>Banco</th>
+				<th>Destino</th>
+				<th>Checador Envio</th>
+				<th>Fecha/Hora Envio</th>
+	            <th>Finalizado por</th>
+	        	<th>Fecha/Hora Finalizado</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for trip in finalized_trips %}
+           <ul>
+			<tr>
+				<td>{{trip['trip_id']}}</td>
+				<td>{{trip['status']}}</td>
+				<td>{{trip['truck']}}</td>
+				<td>{{trip['material']}}</td>
+				<td>{{trip['amount']}}</td>
+				<td>{{trip['project']}}</td>
+				<td>{{trip['origin']}}</td>
+				<td>{{trip['destination']}}</td>
+				<td>{{trip['sender_user']}}</td>
+				<td>{{trip['sent_datetime']}}</td>
+				<td>{{trip['finalizer_user']}}</td>
+				<td>{{trip['finalized_datetime']}}</td>
+			</tr>
+           </ul>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+
+
+{% endblock %}
