@@ -7,52 +7,58 @@
 	<form method="POST">
 		{{form.hidden_tag()}}
 
-		<div class="form-group row">
-			{{ form.origin.label(class="col-2 mr-5 col-form-label-lg")}}
-			<div class="col-8">
-				{{ form.origin(required=False, class="form-control-lg btn btn-primary dropdown-toogle") }}   <!--required= False when DataRequired message is custom-->
-		            {% for error in form.origin.errors %}
-						<ul>
-							<span class="alert alert-warning" role="alert">*{{ error }}</span>
-						</ul>
-					{% endfor %}
+		<div class="row">
+			<div class="col-lg">
+				<div class="d-flex flex-row form-group">
+					<div class="col-3 mr-2 pl-0">
+						{{ form.origin.label(class="col-form-label-lg")}}
+					</div>
+					<div>
+						{{ form.origin(required=False, class="form-control-lg") }}
+						{% for error in form.origin.errors %}
+							<ul>
+								<span class="alert alert-warning" role="alert">*{{ error }}</span>
+							</ul>
+						{% endfor %}
+					</div>
+
+				</div>
 			</div>
-		</div>
-
-		<div class="form-group row">
-			{{ form.material.label(class="col-2 mr-5 col-form-label-lg")}}
-			<div class="col-8">
-			{{ form.material(required=False, class="form-control-lg") }}   <!--required= False when DataRequired message is custom-->
-	            {% for error in form.material.errors %}
-					<ul>
-						<span class="alert alert-warning" role="alert">*{{ error }}</span>
-					</ul>
-				{% endfor %}
+			<div class="col-lg">
+				<div class="d-flex flex-row form-group">
+					<div class="col-3 mr-2 pl-0">
+						{{ form.material.label(class="col-form-label-lg")}}
+					</div>
+					<div>
+						{{ form.material(required=False, class="form-control-lg") }}   <!--required= False when DataRequired message is custom-->
+				            {% for error in form.material.errors %}
+								<ul>
+									<span class="alert alert-warning" role="alert">*{{ error }}</span>
+								</ul>
+							{% endfor %}
+					</div>
+				</div>
 			</div>
-		</div>
+			<div class="col-lg">
+				<div class="d-flex flex-row form-group">
+					<div class="col-3 mr-2 pl-0">
+						{{ form.project.label(class="col-form-label-lg")}}
+					</div>
+					<div>
+						{{ form.project(required=False, class="form-control-lg") }}   <!--required= False when DataRequired message is custom-->
+				            {% for error in form.project.errors %}
+								<ul>
+									<span class="alert alert-warning" role="alert">*{{ error }}</span>
+								</ul>
+							{% endfor %}
+					</div>
+				</div>
+			</div>
+			</div>
 
 
-		<div>{{ form.project.label}} {{ form.project(required=False) }}   <!--required= False when DataRequired message is custom-->
-	            {% for error in form.project.errors %}
-					<ul>
-						<span class="alert alert-warning" role="alert">*{{ error }}</span>
-					</ul>
-				{% endfor %}
-		</div>
 
-
-
-		<!--<div>{{ form.destination.label}} {{ form.destination(required=False) }}   &lt;!&ndash;required= False when DataRequired message is custom&ndash;&gt;-->
-	            <!--{% for error in form.destination.errors %}-->
-					<!--<ul>-->
-						<!--<span class="alert alert-warning" role="alert">*{{ error }}</span>-->
-					<!--</ul>-->
-				<!--{% endfor %}-->
-		<!--</div>-->
-
-		<!--{{ form.submit }}-->
-
-		<div class="form-check">
+		<div class="form-check float-right">
 			<input class="form-check-input" type="checkbox" id="disabledFieldsetCheck">
 			<label class="form-check-label" for="disabledFieldsetCheck">
 			Mantener seleccion
