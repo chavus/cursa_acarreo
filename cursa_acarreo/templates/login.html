@@ -10,8 +10,10 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<link href="signin.css" rel="stylesheet">
 </head>
-<body>
+
+<body class="text-center" data-gr-c-s-loaded="true">
 
 <!--This is to display flash messages-->
 
@@ -26,29 +28,61 @@
 
 {% endfor %}
 
-<div class="jumbotron">
-	<h1>Ingresa tus credenciales para acceder</h1>
-	<form method="POST">
-		{{form.hidden_tag()}}
-		<div>{{ form.username.label}} {{ form.username(required=False) }}   <!--required= False when DataRequired message is custom-->
-	            {% for error in form.username.errors %}
-					<ul>
-						<span class="alert alert-warning" role="alert">*{{ error }}</span>
-					</ul>
-				{% endfor %}
-		</div>
+<!--<div class="jumbotron">-->
+	<!--<h1>Ingresa tus credenciales para acceder</h1>-->
+	<!--<form method="POST">-->
+		<!--{{form.hidden_tag()}}-->
+		<!--<div>{{ form.username.label}} {{ form.username(required=False) }}   &lt;!&ndash;required= False when DataRequired message is custom&ndash;&gt;-->
+	            <!--{% for error in form.username.errors %}-->
+					<!--<ul>-->
+						<!--<span class="alert alert-warning" role="alert">*{{ error }}</span>-->
+					<!--</ul>-->
+				<!--{% endfor %}-->
+		<!--</div>-->
 
-		<div>{{ form.password.label }}{{form.password(required=False) }}
-	            {% for error in form.password.errors %}
-					<ul>
-						<span class="alert alert-warning" role="alert">*{{ error }}</span>
-					</ul>
-				{% endfor %}
-		</div>
-		{{ form.submit }}
-	</form>
+		<!--<div>{{ form.password.label }}{{form.password(required=False) }}-->
+	            <!--{% for error in form.password.errors %}-->
+					<!--<ul>-->
+						<!--<span class="alert alert-warning" role="alert">*{{ error }}</span>-->
+					<!--</ul>-->
+				<!--{% endfor %}-->
+		<!--</div>-->
+		<!--{{ form.submit }}-->
+	<!--</form>-->
+<!--</div>-->
+
+
+<div class="jumbotron d-flex align-items-center min-vh-100">
+	<div class="container">
+		<form class="form-signin" method="POST">
+			{{form.hidden_tag()}}
+			<img class="mb-4" src={{url_for('static', filename='app_images/cursa_logo.jpg')}} alt="" width="96" height="96">
+			<h1 class="h3 mb-3 font-weight-normal">Inresa tu credenciales</h1>
+
+			<!--<label for="username" class="sr-only">Usuario</label>-->
+			<!--{{ form.username.label(class="sr-only")}}-->
+			<!--<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">-->
+			{{ form.username(required=False, class="form-control", placeholder="Usuario")}}
+				<!--{% for error in form.username.errors %}-->
+				<!--<ul>-->
+				<!--<span class="alert alert-warning" role="alert">*{{ error }}</span>-->
+				<!--</ul>-->
+				<!--{% endfor %}-->
+			<!--<label for="inputPassword" class="sr-only">Password</label>-->
+			<!--<input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">-->
+			{{form.password(required=False, class="form-control", placeholder="Contraseña") }}
+			<div class="checkbox my-3">
+			<label>
+			  <input type="checkbox" value="remember-me"> Recordarme
+			</label>
+
+			</div>
+
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+			<p class="mt-5 mb-3 text-muted">Cursa-acarreo v1.1</p>
+
+		</form>
+	</div>
 </div>
-
-
 </body>
 </html>
