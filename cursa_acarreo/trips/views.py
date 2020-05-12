@@ -12,7 +12,7 @@ trips_blueprint = Blueprint('trips', __name__)
 def create():
     reload(f)
     form = f.CreateTripForm()
-    available_trucks= f.get_available_trucks()
+    available_trucks = f.get_available_trucks()
     if form.validate_on_submit():
         trip_dict = {
             'truck_id': form.truck.data,

@@ -86,9 +86,14 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="form-group col-lg align-self-center">
-					{{ form.submit(type="submit", class="btn btn-primary btn-lg btn-block") }}
+				{% if available_trucks == [] %}
+					{{ form.submit(type="submit", class="btn btn-primary btn-lg btn-block", disabled=True )}}
+				{% else %}
+					{{ form.submit(type="submit", class="btn btn-primary btn-lg btn-block")}}
+
+				{% endif %}
+
 			</div>
 		</div>
 	</div>

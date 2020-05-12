@@ -11,6 +11,8 @@ def get_available_trucks():
 
 class CreateTripForm(FlaskForm):
     truck = SelectField('Camión', choices=[(i, i) for i in get_available_trucks()])
+    # truck = SelectField('Camión', choices=[])
+
     material = SelectField('Material', choices=[(i, i) for i in g.Material.get_list_by('name')])
     project = SelectField('Obra', choices=[(i, i) for i in g.Project.get_list_by('name')])
     origin = SelectField('Banco', choices=[(i, i) for i in g.Origin.get_list_by('name')])
