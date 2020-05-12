@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 from flask_login import login_required, current_user
-from cursa_acarreo.trips.forms import CreateTripForm
+import cursa_acarreo.trips.forms as f
 from cursa_acarreo.models.trip import Trip
+from importlib import reload
 
 trips_blueprint = Blueprint('trips', __name__)
 
@@ -9,21 +10,21 @@ trips_blueprint = Blueprint('trips', __name__)
 @trips_blueprint.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    form = CreateTripForm()
+    reload(f)
+    form = f.CreateTripForm()
+    available_trucks= f.get_available_trucks()
     if form.validate_on_submit():
         trip_dict = {
             'truck_id': form.truck.data,
             'material_name': form.material.data,
             'project_name': form.project.data,
             'origin_name': form.origin.data,
-            'destination_name': form.destination.data,
             'sender_username': current_user.username
         }
         trip = Trip.create(**trip_dict)
         flash('Viaje #{} creado!'.format(trip.trip_id))
-        return render_template('create_home.html', form=form)
-
-    return render_template('create_home.html', form=form)
+        return redirect(url_for('trips.create'))
+    return render_template('create_home.html', form=form, available_trucks=available_trucks)
 
 
 @trips_blueprint.route('/receive_dashboard')

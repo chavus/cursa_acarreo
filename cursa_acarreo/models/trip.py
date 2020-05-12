@@ -1,5 +1,5 @@
 from cursa_acarreo import db
-from cursa_acarreo.models.general import Driver, Truck, Project, Material, Origin, Destination
+from cursa_acarreo.models.general import Driver, Truck, Project, Material, Origin
 from cursa_acarreo.models.user import User
 import datetime
 
@@ -16,7 +16,7 @@ class Trip(db.Document):
     amount = db.IntField(min_value=0, required=True)
     project = db.ReferenceField(Project, required=True)
     origin = db.ReferenceField(Origin, required=True)
-    destination = db.ReferenceField(Destination, required=True)
+    # destination = db.ReferenceField(Destination, required=True)
     sender_user = db.ReferenceField(User, required=True)
     sent_datetime = db.DateTimeField(required=True, default=datetime.datetime.now())
     finalizer_user = db.ReferenceField(User)
@@ -30,7 +30,7 @@ class Trip(db.Document):
                 trip_dict[i] = self[i].id_code
             elif i in ['sender_user', 'finalizer_user'] and self[i]:
                 trip_dict[i] = self[i].username
-            elif i in ['material', 'project', 'origin', 'destination']:
+            elif i in ['material', 'project', 'origin']:
                 trip_dict[i] = self[i].name
             else:
                 trip_dict[i] = self[i]
@@ -62,13 +62,12 @@ class Trip(db.Document):
         self.save_to_db()
 
     @classmethod
-    def create(cls, truck_id, material_name, project_name, origin_name, destination_name, sender_username, amount=None):
+    def create(cls, truck_id, material_name, project_name, origin_name, sender_username, amount=None):
         params = {
             'truck': Truck.find_by_idcode(truck_id),
             'material': Material.find_by_name(material_name),
             'project': Project.find_by_name(project_name),
             'origin': Origin.find_by_name(origin_name),
-            'destination': Destination.find_by_name(destination_name),
             'sender_user': User.find_by_username(sender_username),
             'amount': amount if amount else Truck.find_by_idcode(truck_id).capacity,
             'status': 'in_progress'
@@ -85,4 +84,8 @@ class Trip(db.Document):
     @classmethod
     def get_all(cls):
         return [trip.json() for trip in cls.objects]
+
+    # @classmethod
+    # def get_trucks_inprogress(cls):
+    #     return []
 

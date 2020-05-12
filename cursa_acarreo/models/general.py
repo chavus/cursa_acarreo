@@ -163,27 +163,27 @@ class Origin(db.Document):
     def get_list_by(cls, param):
         return [t[param] for t in cls.objects]
 
-class Destination(db.Document):
-    """
-    Destination class
-    """
-    meta = {'collection': 'destinations'}
-    name = db.StringField(required=True, unique=True, max_length=50)
-    location = db.StringField(unique=True, sparse=True, max_length=150)
-    description = db.StringField(max_length=150)
-    date_added = db.DateTimeField(required=True, default=datetime.datetime.now())
-
-    @classmethod
-    def add(cls, name, location=None, description=None):
-        return cls(name=name, location=location, description=description).save()
-
-    @classmethod
-    def find_by_name(cls, name, raise_if_none=True):
-        destination = cls.objects(name=name).first()
-        if not destination and raise_if_none:
-            raise NameError('Destino "{}" no encontrado.'.format(name))
-        return destination
-
-    @classmethod
-    def get_list_by(cls, param):
-        return [t[param] for t in cls.objects]
+# class Destination(db.Document):
+#     """
+#     Destination class
+#     """
+#     meta = {'collection': 'destinations'}
+#     name = db.StringField(required=True, unique=True, max_length=50)
+#     location = db.StringField(unique=True, sparse=True, max_length=150)
+#     description = db.StringField(max_length=150)
+#     date_added = db.DateTimeField(required=True, default=datetime.datetime.now())
+#
+#     @classmethod
+#     def add(cls, name, location=None, description=None):
+#         return cls(name=name, location=location, description=description).save()
+#
+#     @classmethod
+#     def find_by_name(cls, name, raise_if_none=True):
+#         destination = cls.objects(name=name).first()
+#         if not destination and raise_if_none:
+#             raise NameError('Destino "{}" no encontrado.'.format(name))
+#         return destination
+#
+#     @classmethod
+#     def get_list_by(cls, param):
+#         return [t[param] for t in cls.objects]
