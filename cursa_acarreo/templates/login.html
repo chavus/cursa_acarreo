@@ -53,11 +53,11 @@
 
 
 <div class="jumbotron d-flex align-items-center min-vh-100">
-	<div class="container">
-		<form class="form-signin" method="POST">
+	<!--<div class="container">-->
+		<form method="POST" style="width: 100%; max-width: 330px; padding: 15px; margin: auto;">
 			{{form.hidden_tag()}}
-			<img class="mb-4" src={{url_for('static', filename='app_images/cursa_logo.jpg')}} alt="" width="96" height="96">
-			<h1 class="h3 mb-3 font-weight-normal">Inresa tu credenciales</h1>
+			<img class="mb-4 rounded" src={{url_for('static', filename='app_images/cursa_logo.jpg')}} alt="" width="96" height="96">
+			<h1 class="h3 mb-3 font-weight-normal">Ingresa tu credenciales</h1>
 
 			<!--<label for="username" class="sr-only">Usuario</label>-->
 			<!--{{ form.username.label(class="sr-only")}}-->
@@ -82,7 +82,7 @@
 			<p class="mt-5 mb-3 text-muted">Cursa-acarreo v1.1</p>
 
 		</form>
-	</div>
+	<!--</div>-->
 </div>
 </body>
 </html>

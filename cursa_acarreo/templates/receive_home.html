@@ -3,44 +3,80 @@
 
 {% block content %}
 
-<h2>En proceso</h2>
-<div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th># Viaje</th>
-	          <th>Recibir</th>
-              <th>Camion</th>
-              <th>Material</th>
-              <th>Cantidad</th>
-              <th>Obra</th>
-	          <th>Banco</th>
-	          <th>Enviado por</th>
-              <th>Fecha/Hora Envio</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for trip in in_progress_trips %}
-           <ul>
-			<tr>
-				<td>{{trip['trip_id']}}</td>
-				<td><a href="{{url_for('trips.receive', trip_id=trip['trip_id'])}}" class="btn btn-primary">Recibir</a></td>
-				<td>{{trip['truck']}}</td>
-				<td>{{trip['material']}}</td>
-				<td>{{trip['amount']}}</td>
-				<td>{{trip['project']}}</td>
-				<td>{{trip['origin']}}</td>
-				<td>{{trip['sender_user']}}</td>
-				<td>{{trip['sent_datetime']}}</td>
+<script>
+	$(function () {
+	  $('[data-toggle="popover"]').popover()
+	})
+
+	$('.popover-dismiss').popover({
+	  trigger: 'focus'
+	})
+</script>
+
+<div class="jumbotron pt-2">
+<h4 class="text-center">En proceso <span class="badge badge-pill badge-primary"> {{ in_progress_trips|length }} viajes</span>
+</h4>
 
 
-			</tr>
-           </ul>
-          {% endfor %}
+<div class="table-responsive table-hover">
+	<table class="table table-sm">
+		<thead>
+			<th class="text-center">Camion</th>
+			<th class="text-center">Obra</th>
+			<th class="text-center">Recibir</th>
 
-          </tbody>
-        </table>
-      </div>
+		</thead>
+
+		<tbody class="accordion" id="accordiontable">
+			{% for trip in in_progress_trips %}
+				<ul>
+					<tr class="clickable" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}" style="background-color: #dfe2e5">
+
+						<td class="align-middle text-center">{{trip['truck']}}</td>
+						<td class="align-middle text-center">{{trip['project']}}</td>
+						<td class="align-middle text-center"> <a href="{{url_for('trips.receive', trip_id=trip['trip_id'])}}" class="btn btn-primary">
+							Recibir vaje #{{trip['trip_id']}}</a></td>
+
+					</tr>
+					<tr>
+						<td colspan="3">
+							<div id="accordion{{trip['trip_id']}}" class="collapse  " data-parent="#accordiontable">
+								<table class="table table-borderless" style="width: 90%; margin: 0px auto;">
+
+									<tr>
+										<th class="font-weight-bold">Material</th>
+										<td>{{trip['material']}}</td>
+									</tr>
+									<tr>
+										<th class="font-weight-bold">Cantidad:</th>
+										<td>{{trip['amount']}} mts3</td>
+									</tr>
+									<tr>
+										<th class="font-weight-bold">Banco:</th>
+										<td>{{trip['origin']}}</td>
+									</tr>
+									<tr>
+										<th class="font-weight-bold">Enviado por:</th>
+										<td>{{trip['sender_user']}}</td>
+									</tr>
+									<tr>
+										<th class="text-nowrap font-weight-bold">Hora de Envío:</th>
+										<td>{{trip['sent_datetime']}}</td>
+									</tr>
+
+								</table>
+							</div>
+						</td>
+
+					</tr>
+				</ul>
+
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+
 
 <!-- Modal for confirmation -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

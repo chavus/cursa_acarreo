@@ -85,7 +85,4 @@ class Trip(db.Document):
     def get_all(cls):
         return [trip.json() for trip in cls.objects]
 
-    # @classmethod
-    # def get_trucks_inprogress(cls):
-    #     return []
 
