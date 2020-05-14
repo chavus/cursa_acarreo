@@ -25,8 +25,8 @@ def index():
 
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint
-
+from cursa_acarreo.error_pages.handlers import error_pages
 
 app.register_blueprint(users_blueprint)
 app.register_blueprint(trips_blueprint)
-
+app.register_blueprint(error_pages)

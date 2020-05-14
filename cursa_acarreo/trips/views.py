@@ -4,6 +4,7 @@ import cursa_acarreo.trips.forms as f
 from cursa_acarreo.models.trip import Trip
 from importlib import reload
 import datetime
+from cursa_acarreo.security import mustbe_admin
 
 trips_blueprint = Blueprint('trips', __name__)
 
@@ -47,10 +48,13 @@ def receive(trip_id):
 
 
 @trips_blueprint.route('/list')
+@mustbe_admin
 @login_required
 def list():
-    trips = Trip.get_all()
-    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
-    finalized_trips = [i for i in trips if i['status'] in ['complete', 'canceled']]
+    # trips = Trip.get_all()
+    # in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    # finalized_trips = [i for i in trips if i['status'] in ['complete', 'canceled']]
+    in_progress_trips = [{'trip_id': 3, 'truck': 'T003', 'material': 'Arena', 'amount': 15, 'project': 'Carretera a Colima', 'origin': 'Rio', 'destination': 'Carretera', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': None, 'finalized_datetime': None, 'status': 'in_progress'}, {'trip_id': 5, 'truck': 'T005', 'material': 'Arena', 'amount': 15, 'project': 'Libramiento Tecoman', 'origin': 'Mina', 'destination': 'Carretera', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': None, 'finalized_datetime': None, 'status': 'in_progress'}]
+    finalized_trips = [{'trip_id': 2, 'truck': 'T001', 'material': 'Grava', 'amount': 14, 'project': 'Libramiento Tecoman', 'origin': 'Mina', 'destination': 'Libramiento', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': 'sjimenez', 'finalized_datetime': datetime.datetime(2020, 5, 4, 0, 32, 50, 769000), 'status': 'complete'}, {'trip_id': 4, 'truck': 'T004', 'material': 'Asfalto', 'amount': 17, 'project': 'Calle X', 'origin': 'Planta Asfalto', 'destination': 'Calle Manzanillo', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': 'sjimenez', 'finalized_datetime': datetime.datetime(2020, 5, 4, 0, 33, 41, 821000), 'status': 'complete'}, {'trip_id': 6, 'truck': 'T004', 'material': 'Arena', 'amount': 17, 'project': 'Calle X', 'origin': 'Rio', 'destination': 'Libramiento', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': 'dsoto', 'finalized_datetime': datetime.datetime(2020, 5, 4, 0, 34, 28, 883000), 'status': 'canceled'}]
     return render_template('list_home.html', in_progress_trips=in_progress_trips, finalized_trips=finalized_trips)
 

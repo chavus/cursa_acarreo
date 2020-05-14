@@ -27,7 +27,7 @@
 
 	<div class="collapse navbar-collapse justify-content-sm-end" id="navbarNavAltMarkup">
 		<div class="navbar-nav ">
-			<a class="nav-item nav-link active" href=#>Usuario</a>
+			<a class="nav-item nav-link active" href=#>Usuario: {{ current_user.username }}</a>
 			<a class="nav-item nav-link active" href="{{url_for('users.logout')}}">Salir</a>
 		</div>
 	</div>
@@ -35,9 +35,11 @@
 
 <div class="container">
 <div class=" row my-2 justify-content-center">
-	<a class="col ml-3 p-1 py-3 btn btn-warning btn-lg" href="{{url_for('trips.create')}}"><span class="fas fa-plus"></span>     Crear</a>
-	<a class="col mx-3 p-1 py-3 btn btn-warning btn-lg text-nowrap" href="{{url_for('trips.receive_dashboard')}}"><span class="fas fa-check"></span>     Recibir</a>
-	<a class="col mr-3 p-1 py-3 btn btn-warning btn-lg" href="{{url_for('trips.list')}}"><span class="far fa-list-alt"></span>     Lista</a>
+	<a class="col ml-3 p-1 py-3 btn btn-warning btn-lg" href="{{url_for('trips.create')}}"><span class="fas fa-plus"></span>      Crear</a>
+	<a class="col mx-3 p-1 py-3 btn btn-warning btn-lg text-nowrap" href="{{url_for('trips.receive_dashboard')}}"><span class="fas fa-check"></span>      Recibir</a>
+	{% if current_user.is_admin%}
+		<a class="col mr-3 p-1 py-3 btn btn-warning btn-lg" href="{{url_for('trips.list')}}"><span class="far fa-list-alt"></span>      Lista</a>
+	{% endif %}
 </div>
 </div>
 

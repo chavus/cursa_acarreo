@@ -17,7 +17,6 @@
 <h4 class="text-center">En proceso <span class="badge badge-pill badge-primary"> {{ in_progress_trips|length }} viajes</span>
 </h4>
 
-
 <div class="table-responsive table-hover">
 	<table class="table table-sm">
 		<thead>
@@ -43,6 +42,10 @@
 							<div id="accordion{{trip['trip_id']}}" class="collapse  " data-parent="#accordiontable">
 								<table class="table table-borderless" style="width: 90%; margin: 0px auto;">
 
+									<tr>
+										<th class="font-weight-bold"># Viaje</th>
+										<td>{{trip['trip_id']}}</td>
+									</tr>
 									<tr>
 										<th class="font-weight-bold">Material</th>
 										<td>{{trip['material']}}</td>
@@ -75,30 +78,6 @@
 		</tbody>
 	</table>
 </div>
-
-
-
-<!-- Modal for confirmation -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Recibir viaje</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Desea recibir viaje #XXX
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <!--<button type="button" class="btn btn-danger">Delete</button>-->
-      </div>
-    </div>
-  </div>
-</div>
-
 
 
 {% endblock %}
