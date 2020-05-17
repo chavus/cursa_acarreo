@@ -13,9 +13,9 @@ trips_blueprint = Blueprint('trips', __name__)
 @login_required
 def create():
     form = f.CreateTripForm()
-    # available_trucks = f.get_available_trucks()
-    # form.truck.choices = [(i, i) for i in available_trucks]
-    form.truck.choices = [('T002', 'T002'), ('T003', 'T003'), ('T004', 'T004'), ('T005', 'T005')]
+    available_trucks = f.get_available_trucks()
+    form.truck.choices = [(i, i) for i in available_trucks]
+    # form.truck.choices = [('T002', 'T002'), ('T003', 'T003'), ('T004', 'T004'), ('T005', 'T005')]
     # form.truck.choices.insert(0, ('default', 'Seleccionar...'))
     # form.truck.default = 'default'
     # form.process()

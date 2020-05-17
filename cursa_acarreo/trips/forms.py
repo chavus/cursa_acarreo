@@ -69,11 +69,7 @@ class CustomSelect(object):
 
 
 class CreateTripForm(FlaskForm):
-    # truck = SelectField('Camión', choices=[(i, i) for i in get_available_trucks()])   Current option
     truck = SelectField('Camión', widget=CustomSelect())
-
-    # truck = SelectField('Camión', choices=[(0, 'T002'), (1, 'T003'), (2, 'T004'), (3, 'T005')], default=3)
-
     material = SelectField('Material', choices=[(i, i) for i in g.Material.get_list_by('name')], widget=CustomSelect())
     project = SelectField('Obra', choices=[(i, i) for i in g.Project.get_list_by('name')], widget=CustomSelect())
     origin = SelectField('Banco', choices=[(i, i) for i in g.Origin.get_list_by('name')], widget=CustomSelect())
