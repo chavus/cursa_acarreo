@@ -12,9 +12,14 @@ trips_blueprint = Blueprint('trips', __name__)
 @trips_blueprint.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    reload(f)
     form = f.CreateTripForm()
-    available_trucks = f.get_available_trucks()
+    # available_trucks = f.get_available_trucks()
+    # form.truck.choices = [(i, i) for i in available_trucks]
+    form.truck.choices = [('T002', 'T002'), ('T003', 'T003'), ('T004', 'T004'), ('T005', 'T005')]
+    # form.truck.choices.insert(0, ('default', 'Seleccionar...'))
+    # form.truck.default = 'default'
+    # form.process()
+    print([i for i in form.truck.iter_choices()])
     if form.validate_on_submit():
         trip_dict = {
             'truck_id': form.truck.data,
@@ -26,7 +31,7 @@ def create():
         trip = Trip.create(**trip_dict)
         flash('Viaje #{} creado!'.format(trip.trip_id))
         return redirect(url_for('trips.create'))
-    return render_template('create_home.html', form=form, available_trucks=available_trucks)
+    return render_template('create_home.html', form=form)
 
 
 @trips_blueprint.route('/receive_dashboard')

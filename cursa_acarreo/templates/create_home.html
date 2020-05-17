@@ -39,6 +39,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="col-lg">
 				<div class="d-flex flex-row form-group">
 					<div class="col-3 mr-2 pl-0">
@@ -75,7 +76,7 @@
 						{% if available_trucks == [] %}
 							<h4><span class="text-wrap badge badge-secondary" style="width:10rem">No hay camiones disponibles</span></h4>
 						{% else %}
-							{{ form.truck(required=False, class="form-control-lg") }}
+							{{ form.truck(option_attr={"division-0": {"disabled": "True"}}, required=False, class="form-control-lg") }}
 								{% for error in form.truck.errors %}
 									<ul>
 										<span class="alert alert-warning" role="alert">*{{ error }}</span>
@@ -86,16 +87,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group col-lg align-self-center">
-				{% if available_trucks == [] %}
-					{{ form.submit(type="submit", class="btn btn-primary btn-lg btn-block", disabled=True )}}
-				{% else %}
-					{{ form.submit(type="submit", class="btn btn-primary btn-lg btn-block")}}
 
-				{% endif %}
-
-			</div>
+		<div class="form-group col-lg align-self-center">
+			<input class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit"
+			       value="{{ form.submit.label.text }}" {% if form.truck.choices  == [] %}disabled{% endif %}>
 		</div>
+	</div>
+
 	</div>
 
 
