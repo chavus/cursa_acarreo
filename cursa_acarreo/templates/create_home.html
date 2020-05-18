@@ -2,6 +2,26 @@
 {% extends 'base_user.html' %}
 
 {% block content %}
+<script>
+
+	$(function() {
+	    $('#submit').click(function() {
+	        localStorage.setItem('origin_selection', $("#origin").val() );
+	    });
+	        if(localStorage.getItem('origin_selection')){
+        $('#origin').val(localStorage.getItem('origin_selection'));
+    }
+
+	});
+
+
+</script>
+
+<style>
+  .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20rem; }
+  .toggle.ios .toggle-handle { border-radius: 20rem; }
+</style>
+
 <form method="POST">
 	<div class="jumbotron mb-2 py-3 pb-5">
 		<div class="mb-3">
@@ -57,12 +77,13 @@
 			</div>
 			</div>
 
-		<div class="row form-check float-right pr-2">
-			<input class="form-check-input" type="checkbox" id="disabledFieldsetCheck">
-			<label class="form-check-label" for="disabledFieldsetCheck">
-			Mantener seleccion
-			</label>
+		<!-- Default switch -->
+		<div class="form-check pl-2  row float-right pr-4 mr-3>
+			<label for="stackedCheck1" class="form-check-label">Mantener selección</label>
+		  <input id="stackedCheck1" class="form-check-input" type="checkbox" data-toggle="toggle"
+		         data-on="Si" data-off="No" data-style="ios" >
 		</div>
+
 	</div>
 
 	<div class="jumbotron py-3">

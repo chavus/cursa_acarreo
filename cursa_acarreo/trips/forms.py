@@ -57,16 +57,6 @@ class CustomSelect(object):
             options['disabled'] = True
         return Markup('<option %s>%s</option>' % (html_params(**options), escape(label)))
 
-# def custom_option(value, label, selected, **kwargs):
-#     if value is True:
-#         # Handle the special case of a 'True' value.
-#         value = text_type(value)
-#
-#     options = dict(kwargs, value=value)
-#     if selected:
-#         options['selected'] = True
-#     return Markup('<option %s>%s</option>' % (html_params(**options), escape(label)))
-
 
 class CreateTripForm(FlaskForm):
     truck = SelectField('Camión', widget=CustomSelect())
