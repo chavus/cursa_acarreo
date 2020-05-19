@@ -36,9 +36,7 @@ class CustomSelect(object):
             kwargs['required'] = True
         html = ['<select %s>' % html_params(name=field.name, **kwargs)]
         choices = [('default', 'Seleccionar...', True)]
-        print('iter', [(val, label, selected) for val, label, selected in field.iter_choices()])
         choices.extend([(val, label, selected) for val, label, selected in field.iter_choices()])
-        print(choices)
         for val, label, selected in choices:
             html.append(self.render_option(val, label, selected))
         html.append('</select>')

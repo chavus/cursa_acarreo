@@ -19,7 +19,6 @@ def create():
     # form.truck.choices.insert(0, ('default', 'Seleccionar...'))
     # form.truck.default = 'default'
     # form.process()
-    print([i for i in form.truck.iter_choices()])
     if form.validate_on_submit():
         trip_dict = {
             'truck_id': form.truck.data,

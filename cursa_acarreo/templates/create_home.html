@@ -2,25 +2,7 @@
 {% extends 'base_user.html' %}
 
 {% block content %}
-<script>
 
-	$(function() {
-	    $('#submit').click(function() {
-	        localStorage.setItem('origin_selection', $("#origin").val() );
-	    });
-	        if(localStorage.getItem('origin_selection')){
-        $('#origin').val(localStorage.getItem('origin_selection'));
-    }
-
-	});
-
-
-</script>
-
-<style>
-  .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20rem; }
-  .toggle.ios .toggle-handle { border-radius: 20rem; }
-</style>
 
 <form method="POST">
 	<div class="jumbotron mb-2 py-3 pb-5">
@@ -78,14 +60,13 @@
 			</div>
 
 		<!-- Default switch -->
-		<div class="form-check pl-2  row float-right pr-4 mr-3>
-			<label for="stackedCheck1" class="form-check-label">Mantener selección</label>
-		  <input id="stackedCheck1" class="form-check-input" type="checkbox" data-toggle="toggle"
-		         data-on="Si" data-off="No" data-style="ios" >
+		<div class="form-check row float-right" style="margin-right: 8px;">
+			<label for="keepselection" class="form-check-label">Mantener selección</label>
+		    <input id="keepselection" checked class="form-check-input" type="checkbox" data-toggle="toggle"
+		         data-on="Si" data-off="No" data-style="ios">
 		</div>
 
 	</div>
-
 	<div class="jumbotron py-3">
 		<div class="row">
 			<div class="col-lg">
@@ -94,7 +75,7 @@
 						{{ form.truck.label(class="col-form-label-lg float-right")}}
 					</div>
 					<div class="col-auto p-2">
-						{% if available_trucks == [] %}
+						{% if form.truck.choices == [] %}
 							<h4><span class="text-wrap badge badge-secondary" style="width:10rem">No hay camiones disponibles</span></h4>
 						{% else %}
 							{{ form.truck(option_attr={"division-0": {"disabled": "True"}}, required=False, class="form-control-lg") }}
@@ -120,5 +101,60 @@
 
 
 </form>
+
+<script>
+
+<!--Load preselected values on select when page is loaded-->
+	if(localStorage.getItem('keep_selection_value') == 'true' ){
+		$('#keepselection').bootstrapToggle('on');
+		$('#origin').val(localStorage.getItem('origin_selection'));
+		$('#material').val(localStorage.getItem('material_selection'));
+		$('#project').val(localStorage.getItem('project_selection'));
+		$('#origin, #material, #project').prop('disabled','true');
+
+	}else{
+		$('#keepselection').bootstrapToggle('off');
+	}
+
+<!--Save values of selectt fields to local storage and disable fields when toogle button is turned on-->
+	$('#keepselection').change(function() {
+		localStorage.setItem('keep_selection_value', $('#keepselection').prop('checked'));
+
+		if($('#keepselection').prop('checked')){
+			if($('#origin').val()==null  || $('#material').val()==null || $('#project').val()==null) {
+				$('#keepselection').bootstrapToggle('off');
+				swal('Debes seleccionar todos los campos','','warning')
+				}else{
+
+				localStorage.setItem('origin_selection', $('#origin').val());
+				localStorage.setItem('material_selection', $('#material').val());
+				localStorage.setItem('project_selection', $('#project').val());
+				$('#origin, #material, #project').prop('disabled','true');
+				}
+		}else{
+			$('#origin, #material, #project').removeAttr('disabled');
+		}
+	});
+
+	$('form').bind('submit', function () {
+		$('#origin, #material, #project').removeAttr('disabled');
+	});
+
+
+</script>
+
+<style>
+  .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20rem; }
+  .toggle.ios .toggle-handle { border-radius: 20rem; }
+  .swal-button {
+    padding: 7px 19px;
+    border-radius: 6px;
+    background-color: #007bff;
+    font-size: 12px;
+    border: 1px solid #3e549a;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+  }
+</style>
+
 
 {% endblock %}
