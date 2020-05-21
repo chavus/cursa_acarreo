@@ -19,42 +19,19 @@
 
 {% for mess in get_flashed_messages() %}
 
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>{{ mess }}</strong>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+	<div class="alert alert-primary alert-dismissible fade show mb-0" role="alert">
+	  <strong>{{ mess }}</strong>
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
 
 {% endfor %}
-
-<!--<div class="jumbotron">-->
-	<!--<h1>Ingresa tus credenciales para acceder</h1>-->
-	<!--<form method="POST">-->
-		<!--{{form.hidden_tag()}}-->
-		<!--<div>{{ form.username.label}} {{ form.username(required=False) }}   &lt;!&ndash;required= False when DataRequired message is custom&ndash;&gt;-->
-	            <!--{% for error in form.username.errors %}-->
-					<!--<ul>-->
-						<!--<span class="alert alert-warning" role="alert">*{{ error }}</span>-->
-					<!--</ul>-->
-				<!--{% endfor %}-->
-		<!--</div>-->
-
-		<!--<div>{{ form.password.label }}{{form.password(required=False) }}-->
-	            <!--{% for error in form.password.errors %}-->
-					<!--<ul>-->
-						<!--<span class="alert alert-warning" role="alert">*{{ error }}</span>-->
-					<!--</ul>-->
-				<!--{% endfor %}-->
-		<!--</div>-->
-		<!--{{ form.submit }}-->
-	<!--</form>-->
-<!--</div>-->
 
 
 <div class="jumbotron d-flex align-items-center min-vh-100">
 	<!--<div class="container">-->
-		<form method="POST" style="width: 100%; max-width: 330px; padding: 15px; margin: auto;">
+		<form class="needs-validation" novalidate method="POST" style="width: 100%; max-width: 330px; padding: 15px; margin: auto;">
 			{{form.hidden_tag()}}
 			<img class="mb-4 rounded" src={{url_for('static', filename='app_images/cursa_logo.jpg')}} alt="" width="96" height="96">
 			<h1 class="h3 mb-3 font-weight-normal">Ingresa tu credenciales</h1>
@@ -85,4 +62,26 @@
 	<!--</div>-->
 </div>
 </body>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+
 </html>

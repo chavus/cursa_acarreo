@@ -13,7 +13,7 @@ def login():
         user = User.find_by_username(form.username.data)
         if user.check_password(form.password.data):
             login_user(user)
-            flash('Bienvenido!')
+            flash('Bienvenido {}!'.format(current_user.username), ('primary',))
             next = request.args.get('next')
 
             if not next:
@@ -28,5 +28,5 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('Usuario ha salido!')
+    flash('Hasta pronto!')
     return redirect(url_for('users.login'))
