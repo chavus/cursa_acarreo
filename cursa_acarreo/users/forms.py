@@ -13,3 +13,4 @@ class LoginForm(FlaskForm):
     def validate_username(self, username):
         if not User.find_by_username(username.data, False):
             raise ValidationError('Usuario "{}" no encontrado'.format(username.data))
+

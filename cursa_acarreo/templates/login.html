@@ -10,7 +10,7 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	<link href="signin.css" rel="stylesheet">
+	<!--<link href="signin.css" rel="stylesheet">-->
 </head>
 
 <body class="text-center" data-gr-c-s-loaded="true">
@@ -30,58 +30,49 @@
 
 
 <div class="jumbotron d-flex align-items-center min-vh-100">
-	<!--<div class="container">-->
-		<form class="needs-validation" novalidate method="POST" style="width: 100%; max-width: 330px; padding: 15px; margin: auto;">
+		<form novalidate method="POST" style="width: 100%; max-width: 330px; padding: 15px; margin: auto;">
 			{{form.hidden_tag()}}
 			<img class="mb-4 rounded" src={{url_for('static', filename='app_images/cursa_logo.jpg')}} alt="" width="96" height="96">
 			<h1 class="h3 mb-3 font-weight-normal">Ingresa tu credenciales</h1>
 
-			<!--<label for="username" class="sr-only">Usuario</label>-->
-			<!--{{ form.username.label(class="sr-only")}}-->
-			<!--<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">-->
-			{{ form.username(required=False, class="form-control", placeholder="Usuario")}}
-				<!--{% for error in form.username.errors %}-->
-				<!--<ul>-->
-				<!--<span class="alert alert-warning" role="alert">*{{ error }}</span>-->
-				<!--</ul>-->
-				<!--{% endfor %}-->
-			<!--<label for="inputPassword" class="sr-only">Password</label>-->
-			<!--<input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">-->
-			{{form.password(required=False, class="form-control", placeholder="Contraseña") }}
-			<div class="checkbox my-3">
-			<label>
-			  <input type="checkbox" value="remember-me"> Recordarme
-			</label>
+			{{ form.username(required=True, class="form-control", placeholder="Usuario")}}
+				{% for error in form.username.errors %}
+					<script>
+						$('#username').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback text-left">{{ error }}</div>
 
-			</div>
+				{% endfor %}
+			{{form.password(required=True, class="form-control", placeholder="Contraseña") }}
+				{% for error in form.password.errors %}
+					<script>
+						$('#password').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback text-left">{{ error }}</div>
 
+				{% endfor %}
+
+			<!--<div class="checkbox my-3">-->
+			<!--<label>-->
+			  <!--<input type="checkbox" value="remember-me"> Recordarme-->
+			<!--</label>-->
+			<!--</div>-->
+			<br>
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
 			<p class="mt-5 mb-3 text-muted">Cursa-acarreo v1.1</p>
 
 		</form>
-	<!--</div>-->
-</div>
-</body>
 
-<script>
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function() {
-  'use strict';
-  window.addEventListener('load', function() {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  }, false);
-})();
-</script>
+	<script>
+	$(function(){
+		$('.form-control').click(function(){
+			$(this).removeClass('is-invalid');
+		});
+	});
+	</script>
+
+</div>
+
+</body>
 
 </html>

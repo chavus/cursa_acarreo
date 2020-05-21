@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, flash, request, url_for, redirect
 from cursa_acarreo.users.forms import LoginForm
 from cursa_acarreo.models.user import User
 from flask_login import login_user, current_user, login_required, logout_user
+from wtforms import ValidationError
 
 users_blueprint = Blueprint('users', __name__)
 
@@ -20,7 +21,8 @@ def login():
                 next = url_for('trips.create')
             return redirect(next)
         else:
-            flash('Contraseña incorrecta')
+            form.password.errors.append('Contraseña incorrecta')
+            # flash('Contraseña incorrecta')
     return render_template('login.html', form=form)
 
 
