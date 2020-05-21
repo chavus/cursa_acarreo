@@ -17,7 +17,7 @@
 						{{ form.origin.label(class="col-form-label-lg")}}
 					</div>
 					<div>
-						{{ form.origin(required=False, class="form-control form-control-lg") }}
+						{{ form.origin(required=False, class="form-control-lg") }}
 						{% for error in form.origin.errors %}
 							<script>
 								$('#origin').addClass('is-invalid')
