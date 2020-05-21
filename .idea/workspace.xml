@@ -4,6 +4,7 @@
     <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/login.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,8 +65,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="429">
-              <caret line="39" selection-start-line="39" selection-end-line="42" selection-end-column="77" />
+            <state relative-caret-position="342">
+              <caret line="37" column="81" selection-start-line="37" selection-start-column="81" selection-end-line="37" selection-end-column="81" />
               <folding>
                 <element signature="n#style#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -76,8 +77,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/create_home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="55" column="84" selection-start-line="55" selection-start-column="84" selection-end-line="55" selection-end-column="84" />
+            <state relative-caret-position="549">
+              <caret line="88" column="104" selection-start-line="88" selection-start-column="104" selection-end-line="88" selection-end-column="104" />
               <folding>
                 <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#h4#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#form#0;n#!!top" expanded="true" />
@@ -127,11 +128,11 @@
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/list_home.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/error_pages/404.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" />
-        <option value="$PROJECT_DIR$/cursa_acarreo/templates/login.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/users/forms.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/users/views.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/views.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/forms.py" />
+        <option value="$PROJECT_DIR$/cursa_acarreo/templates/login.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" />
       </list>
     </option>
@@ -396,7 +397,21 @@
       <option name="project" value="LOCAL" />
       <updated>1590046951081</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="&quot;modified to custom inavalid&quot;">
+      <created>1590047927321</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1590047927321</updated>
+    </task>
+    <task id="LOCAL-00025" summary="&quot;modified to custom inavalid&quot;">
+      <created>1590048523238</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1590048523238</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView">
@@ -687,8 +702,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="39" selection-start-line="39" selection-end-line="42" selection-end-column="77" />
+        <state relative-caret-position="342">
+          <caret line="37" column="81" selection-start-line="37" selection-start-column="81" selection-end-line="37" selection-end-column="81" />
           <folding>
             <element signature="n#style#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
@@ -697,8 +712,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/create_home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="55" column="84" selection-start-line="55" selection-start-column="84" selection-end-line="55" selection-end-column="84" />
+        <state relative-caret-position="549">
+          <caret line="88" column="104" selection-start-line="88" selection-start-column="104" selection-end-line="88" selection-end-column="104" />
           <folding>
             <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#h4#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#form#0;n#!!top" expanded="true" />
