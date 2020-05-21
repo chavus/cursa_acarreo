@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, widgets
+from wtforms import SelectField, SubmitField, ValidationError
 import cursa_acarreo.models.general as g
 import cursa_acarreo.models.trip as t
 
@@ -56,12 +56,21 @@ class CustomSelect(object):
         return Markup('<option %s>%s</option>' % (html_params(**options), escape(label)))
 
 
+def selection_required(form, field):
+    if field.data == None:
+        raise ValidationError('Favor de seleccionar una opción')
+
+
 class CreateTripForm(FlaskForm):
-    truck = SelectField('Camión', widget=CustomSelect())
-    material = SelectField('Material', choices=[(i, i) for i in g.Material.get_list_by('name')], widget=CustomSelect())
-    project = SelectField('Obra', choices=[(i, i) for i in g.Project.get_list_by('name')], widget=CustomSelect())
-    origin = SelectField('Banco', choices=[(i, i) for i in g.Origin.get_list_by('name')], widget=CustomSelect())
+    truck = SelectField('Camión', widget=CustomSelect(), validators=[selection_required], validate_choice=False)
+    material = SelectField('Material', choices=[(i, i) for i in g.Material.get_list_by('name')], widget=CustomSelect(),
+                             validators=[selection_required], validate_choice=False)
+    project = SelectField('Obra', choices=[(i, i) for i in g.Project.get_list_by('name')], widget=CustomSelect(),
+                             validators=[selection_required], validate_choice=False)
+    origin = SelectField('Banco', choices=[(i, i) for i in g.Origin.get_list_by('name')], widget=CustomSelect(),
+                         validators=[selection_required], validate_choice=False)
     submit = SubmitField('Confirmar Viaje')
+
 
 
 

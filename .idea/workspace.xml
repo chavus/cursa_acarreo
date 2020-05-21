@@ -3,11 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cursa_acarreo/trips/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/trips/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cursa_acarreo/trips/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/trips/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/users/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,23 +16,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/receive_home.html">
+        <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="41" selection-start-line="31" selection-start-column="24" selection-end-line="31" selection-end-column="41" />
-              <folding>
-                <element signature="n#style#0;n#tr#0;n#ul#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#table#0;n#div#0;n#td#0;n#tr#1;n#ul#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cursa_acarreo/users/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="315">
+              <caret line="21" column="46" lean-forward="true" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
               <folding>
                 <element signature="e#0#79#0" expanded="true" />
               </folding>
@@ -42,14 +27,37 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/create_home.html">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cursa_acarreo/models/trip.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1485">
-              <caret line="99" column="4" selection-start-line="99" selection-start-column="4" selection-end-line="99" selection-end-column="4" />
+            <state relative-caret-position="281">
+              <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
               <folding>
-                <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#h4#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#form#0;n#!!top" expanded="true" />
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="367">
+              <caret line="60" column="64" lean-forward="true" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cursa_acarreo/users/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="50" selection-start-line="8" selection-start-column="38" selection-end-line="8" selection-end-column="50" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -58,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="311">
+              <caret line="39" selection-start-line="39" selection-end-line="42" selection-end-column="77" />
               <folding>
                 <element signature="n#style#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -67,34 +75,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/views.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/create_home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="37">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="238">
+              <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
               <folding>
-                <element signature="e#0#79#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/base_user.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="652">
-              <caret line="83" selection-start-line="83" selection-end-line="83" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/forms.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-195">
-              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#h4#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#form#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -114,6 +102,8 @@
     <findStrings>
       <find>destination</find>
       <find>print</find>
+      <find>invalid</find>
+      <find>signin</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -124,7 +114,6 @@
       <list>
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/froms.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/models/user.py" />
-        <option value="$PROJECT_DIR$/cursa_acarreo/users/forms.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/trash.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/create_home2.html" />
         <option value="$PROJECT_DIR$/app_cursa_acarreo.py" />
@@ -139,11 +128,12 @@
         <option value="$PROJECT_DIR$/cursa_acarreo/__init__.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/list_home.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/error_pages/404.html" />
-        <option value="$PROJECT_DIR$/cursa_acarreo/trips/forms.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/login.html" />
+        <option value="$PROJECT_DIR$/cursa_acarreo/users/forms.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/users/views.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/views.py" />
+        <option value="$PROJECT_DIR$/cursa_acarreo/trips/forms.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" />
       </list>
     </option>
@@ -151,7 +141,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="1442" />
     <option name="y" value="-157" />
-    <option name="width" value="1056" />
+    <option name="width" value="1210" />
     <option name="height" value="1055" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -359,7 +349,21 @@
       <option name="project" value="LOCAL" />
       <updated>1589864782280</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="&quot;Enhanced popups when trip is created and received&quot;">
+      <created>1590021652673</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1590021652673</updated>
+    </task>
+    <task id="LOCAL-00018" summary="&quot;Enhanced validation errors of login&quot;">
+      <created>1590036236710</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1590036236710</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView">
@@ -372,17 +376,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1442" y="-157" width="1056" height="1055" extended-state="0" />
+    <frame x="1442" y="-157" width="1210" height="1055" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2531401" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.22035323" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.60923076" visible="true" weight="0.26168224" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.39076924" side_tool="true" weight="0.26168224" />
       <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.72596157" weight="0.4278297" />
       <window_info anchor="bottom" id="Message" order="3" />
-      <window_info anchor="bottom" id="Find" order="4" sideWeight="0.76093024" weight="0.32924107" />
+      <window_info anchor="bottom" id="Find" order="4" sideWeight="0.76093024" weight="0.32917964" />
       <window_info anchor="bottom" id="Version Control" order="5" sideWeight="0.4976744" weight="0.32917964" />
       <window_info anchor="bottom" id="Run" order="6" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
@@ -434,7 +438,9 @@
     <MESSAGE value="&quot;Disable testing list&quot;" />
     <MESSAGE value="&quot;Enhanced select fields&quot;" />
     <MESSAGE value="&quot;Added Keep selection toogle button&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Added Keep selection toogle button&quot;" />
+    <MESSAGE value="&quot;Enhanced popups when trip is created and received&quot;" />
+    <MESSAGE value="&quot;Enhanced validation errors of login&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Enhanced validation errors of login&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/flask/app.py">
@@ -498,16 +504,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/users/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/error_pages/handlers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -563,16 +559,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/list_home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
-          <folding>
-            <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/receive_home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
@@ -580,26 +566,6 @@
           <folding>
             <element signature="n#style#0;n#tr#0;n#ul#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#table#0;n#div#0;n#td#0;n#tr#1;n#ul#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/users/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#0#79#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/models/trip.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1290">
-          <caret line="86" selection-start-line="86" selection-end-line="86" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -614,10 +580,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/users/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="13" lean-forward="true" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#79#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/list_home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
+          <folding>
+            <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/base_user.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="60" column="37" lean-forward="true" selection-start-line="60" selection-start-column="37" selection-end-line="60" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="46" lean-forward="true" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#79#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/models/trip.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-195">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="367">
+          <caret line="60" column="64" lean-forward="true" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -626,35 +639,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="311">
+          <caret line="39" selection-start-line="39" selection-end-line="42" selection-end-column="77" />
           <folding>
             <element signature="n#style#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/views.py">
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/users/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="120">
+          <caret line="8" column="50" selection-start-line="8" selection-start-column="38" selection-end-line="8" selection-end-column="50" />
           <folding>
-            <element signature="e#0#79#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/base_user.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="83" selection-start-line="83" selection-end-line="83" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/create_home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1485">
-          <caret line="99" column="4" selection-start-line="99" selection-start-column="4" selection-end-line="99" selection-end-column="4" />
+        <state relative-caret-position="238">
+          <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
           <folding>
             <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#h4#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#form#0;n#!!top" expanded="true" />

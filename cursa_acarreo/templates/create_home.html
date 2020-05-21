@@ -17,11 +17,12 @@
 						{{ form.origin.label(class="col-form-label-lg")}}
 					</div>
 					<div>
-						{{ form.origin(required=False, class="form-control-lg") }}
+						{{ form.origin(required=False, class="form-control form-control-lg") }}
 						{% for error in form.origin.errors %}
-							<ul>
-								<span class="alert alert-warning" role="alert">*{{ error }}</span>
-							</ul>
+							<script>
+								$('#origin').addClass('is-invalid')
+							</script>
+							<div class="invalid-feedback text-left">{{ error }}</div>
 						{% endfor %}
 					</div>
 				</div>
@@ -32,11 +33,12 @@
 						{{ form.material.label(class="col-form-label-lg")}}
 					</div>
 					<div>
-						{{ form.material(required=False, class="form-control-lg") }}   <!--required= False when DataRequired message is custom-->
+						{{ form.material(required=False, class="form-control form-control-lg") }}   <!--required= False when DataRequired message is custom-->
 				            {% for error in form.material.errors %}
-								<ul>
-									<span class="alert alert-warning" role="alert">*{{ error }}</span>
-								</ul>
+								<script>
+									$('#material').addClass('is-invalid')
+								</script>
+								<div class="invalid-feedback text-left">{{ error }}</div>
 							{% endfor %}
 					</div>
 				</div>
@@ -48,11 +50,12 @@
 						{{ form.project.label(class="col-form-label-lg")}}
 					</div>
 					<div>
-						{{ form.project(required=False, class="form-control-lg") }}   <!--required= False when DataRequired message is custom-->
+						{{ form.project(required=False, class="form-control form-control-lg") }}   <!--required= False when DataRequired message is custom-->
 				            {% for error in form.project.errors %}
-								<ul>
-									<span class="alert alert-warning" role="alert">*{{ error }}</span>
-								</ul>
+								<script>
+									$('#project').addClass('is-invalid')
+								</script>
+								<div class="invalid-feedback text-left">{{ error }}</div>
 							{% endfor %}
 					</div>
 				</div>
@@ -78,11 +81,12 @@
 						{% if form.truck.choices == [] %}
 							<h4><span class="text-wrap badge badge-secondary" style="width:10rem">No hay camiones disponibles</span></h4>
 						{% else %}
-							{{ form.truck(option_attr={"division-0": {"disabled": "True"}}, required=False, class="form-control-lg") }}
+							{{ form.truck(required=False, class="form-control form-control-lg") }}
 								{% for error in form.truck.errors %}
-									<ul>
-										<span class="alert alert-warning" role="alert">*{{ error }}</span>
-									</ul>
+									<script>
+										$('#truck').addClass('is-invalid')
+									</script>
+									<div class="invalid-feedback text-left">{{ error }}</div>
 								{% endfor %}
 						{% endif %}
 
@@ -120,7 +124,7 @@
 
 		if($('#keepselection').prop('checked')){
 			if($('#origin').val()==null  || $('#material').val()==null || $('#project').val()==null) {
-				$('#keepselection').bootstrapToggle('off');
+				$('#keepselection').bootstrapToggle('off')
 				swal('Debes seleccionar todos los campos','','warning');
 				}else{
 
@@ -138,6 +142,11 @@
 		$('#origin, #material, #project').removeAttr('disabled');
 	});
 
+	$(function(){
+		$('.form-control').click(function(){
+			$(this).removeClass('is-invalid');
+		});
+	});
 </script>
 
 
