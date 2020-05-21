@@ -76,8 +76,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/create_home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="449">
-              <caret line="115" column="41" lean-forward="true" selection-start-line="115" selection-start-column="41" selection-end-line="115" selection-end-column="41" />
+            <state relative-caret-position="54">
+              <caret line="55" column="84" selection-start-line="55" selection-start-column="84" selection-end-line="55" selection-end-column="84" />
               <folding>
                 <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#h4#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#form#0;n#!!top" expanded="true" />
@@ -389,7 +389,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590045129775</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="&quot;modified to custom inavalid&quot;">
+      <created>1590046951081</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1590046951081</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TodoView">
@@ -470,7 +477,8 @@
     <MESSAGE value="&quot;Dummy to test form-control vs form-control-lg&quot;" />
     <MESSAGE value="&quot;Moving back to selectors with form-control-lg&quot;" />
     <MESSAGE value="&quot;modified to custom style lg-selector&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;modified to custom style lg-selector&quot;" />
+    <MESSAGE value="&quot;modified to custom inavalid&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;modified to custom inavalid&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/flask/app.py">
@@ -689,8 +697,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/create_home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="115" column="41" lean-forward="true" selection-start-line="115" selection-start-column="41" selection-end-line="115" selection-end-column="41" />
+        <state relative-caret-position="54">
+          <caret line="55" column="84" selection-start-line="55" selection-start-column="84" selection-end-line="55" selection-end-column="84" />
           <folding>
             <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#h4#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#form#0;n#!!top" expanded="true" />
