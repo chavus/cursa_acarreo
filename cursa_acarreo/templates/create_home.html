@@ -33,7 +33,7 @@
 						{{ form.material.label(class="col-form-label-lg")}}
 					</div>
 					<div>
-						{{ form.material(required=False, class="form-control form-control-lg") }}   <!--required= False when DataRequired message is custom-->
+						{{ form.material(required=False, class="form-control-lg") }}   <!--required= False when DataRequired message is custom-->
 				            {% for error in form.material.errors %}
 								<script>
 									$('#material').addClass('is-invalid')
@@ -50,7 +50,7 @@
 						{{ form.project.label(class="col-form-label-lg")}}
 					</div>
 					<div>
-						{{ form.project(required=False, class="form-control form-control-lg") }}   <!--required= False when DataRequired message is custom-->
+						{{ form.project(required=False, class="form-control-lg") }}   <!--required= False when DataRequired message is custom-->
 				            {% for error in form.project.errors %}
 								<script>
 									$('#project').addClass('is-invalid')
@@ -81,7 +81,7 @@
 						{% if form.truck.choices == [] %}
 							<h4><span class="text-wrap badge badge-secondary" style="width:10rem">No hay camiones disponibles</span></h4>
 						{% else %}
-							{{ form.truck(required=False, class="form-control form-control-lg") }}
+							{{ form.truck(required=False, class="form-control-lg") }}
 								{% for error in form.truck.errors %}
 									<script>
 										$('#truck').addClass('is-invalid')
@@ -143,7 +143,7 @@
 	});
 
 	$(function(){
-		$('.form-control').click(function(){
+		$('.form-control-lg').click(function(){
 			$(this).removeClass('is-invalid');
 		});
 	});
