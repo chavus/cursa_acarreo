@@ -7,8 +7,10 @@ import pytz
 login_manager = LoginManager()
 app = Flask(__name__)
 
-locale.setlocale(locale.LC_ALL, 'es_ES')
-
+# Local
+# locale.setlocale(locale.LC_ALL, 'es_ES')
+# Heroku
+locale.setlocale(locale.LC_ALL, 'es_MX.utf8')
 
 # Database setup
 app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority'}

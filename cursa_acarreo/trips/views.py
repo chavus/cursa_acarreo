@@ -26,8 +26,6 @@ def create():
         flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck.id_code),
               ('success', 'popup'))
         return redirect(url_for('trips.create'))
-    else:
-        print(form.origin.errors)
     return render_template('create_home.html', form=form)
 
 
