@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/trips/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/trips/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cursa_acarreo/.locales" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/list_home.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="619">
-              <caret line="97" column="20" lean-forward="true" selection-start-line="97" selection-start-column="20" selection-end-line="97" selection-end-column="20" />
+              <caret line="97" column="20" selection-start-line="97" selection-start-column="20" selection-end-line="97" selection-end-column="20" />
               <folding>
                 <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
               </folding>
@@ -54,7 +53,7 @@
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/models/trip.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="528">
-              <caret line="81" column="38" lean-forward="true" selection-start-line="81" selection-start-column="38" selection-end-line="81" selection-end-column="38" />
+              <caret line="81" column="38" selection-start-line="81" selection-start-column="38" selection-end-line="81" selection-end-column="38" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -66,7 +65,7 @@
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/forms.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="553">
-              <caret line="60" column="64" lean-forward="true" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
+              <caret line="60" column="64" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -74,16 +73,21 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="45" lean-forward="true" selection-start-line="9" selection-start-column="45" selection-end-line="9" selection-end-column="45" />
+            <state relative-caret-position="150">
+              <caret line="10" column="41" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="41" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cursa_acarreo/.locales">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -170,6 +174,7 @@
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/receive_home.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/views.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/__init__.py" />
+        <option value="$PROJECT_DIR$/cursa_acarreo/.locales" />
       </list>
     </option>
   </component>
@@ -197,19 +202,6 @@
               <item name="cursa-acarreo" type="b2602c69:ProjectViewProjectNode" />
               <item name="cursa-acarreo" type="462c0819:PsiDirectoryNode" />
               <item name="cursa_acarreo" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cursa-acarreo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cursa-acarreo" type="462c0819:PsiDirectoryNode" />
-              <item name="cursa_acarreo" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cursa-acarreo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cursa-acarreo" type="462c0819:PsiDirectoryNode" />
-              <item name="cursa_acarreo" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="error_pages" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cursa-acarreo" type="b2602c69:ProjectViewProjectNode" />
@@ -455,7 +447,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590110080374</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="&quot;Set locale setting for mx with heroku support&quot;">
+      <created>1590110837232</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1590110837232</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TodoView">
@@ -472,9 +471,9 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.26575342" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.26575342" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.60923076" visible="true" weight="0.26168224" />
+      <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.60923076" visible="true" weight="0.26168224" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.39076924" side_tool="true" weight="0.26168224" />
       <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.72596157" weight="0.4278297" />
       <window_info anchor="bottom" id="Message" order="3" />
@@ -539,7 +538,8 @@
     <MESSAGE value="&quot;modified to custom inavalid&quot;" />
     <MESSAGE value="&quot;Fixed size width of selectors&quot;" />
     <MESSAGE value="&quot;Format date to mx format and TZ&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Format date to mx format and TZ&quot;" />
+    <MESSAGE value="&quot;Set locale setting for mx with heroku support&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Set locale setting for mx with heroku support&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/flask/app.py">
@@ -702,7 +702,7 @@
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/models/trip.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
-          <caret line="81" column="38" lean-forward="true" selection-start-line="81" selection-start-column="38" selection-end-line="81" selection-end-column="38" />
+          <caret line="81" column="38" selection-start-line="81" selection-start-column="38" selection-end-line="81" selection-end-column="38" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
@@ -722,7 +722,7 @@
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="553">
-          <caret line="60" column="64" lean-forward="true" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
+          <caret line="60" column="64" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -743,7 +743,7 @@
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/list_home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="619">
-          <caret line="97" column="20" lean-forward="true" selection-start-line="97" selection-start-column="20" selection-end-line="97" selection-end-column="20" />
+          <caret line="97" column="20" selection-start-line="97" selection-start-column="20" selection-end-line="97" selection-end-column="20" />
           <folding>
             <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
           </folding>
@@ -762,13 +762,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="45" lean-forward="true" selection-start-line="9" selection-start-column="45" selection-end-line="9" selection-end-column="45" />
+        <state relative-caret-position="150">
+          <caret line="10" column="41" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="41" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/.locales">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
