@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, flash, request, redirect, url_for
 from flask_login import login_required, current_user
 import cursa_acarreo.trips.forms as f
 from cursa_acarreo.models.trip import Trip
-import datetime
 from cursa_acarreo.security import mustbe_admin
 
 trips_blueprint = Blueprint('trips', __name__)

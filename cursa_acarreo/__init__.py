@@ -1,14 +1,25 @@
 from flask import Flask, redirect, url_for
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
+import locale
+import pytz
 
 login_manager = LoginManager()
 app = Flask(__name__)
+
+locale.setlocale(locale.LC_ALL, 'es_ES')
 
 
 # Database setup
 app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority'}
 app.config['SECRET_KEY'] = 'secretkey'
+
+
+@app.template_filter()
+def formatdate_mx(datetime_val):
+    timezone = pytz.timezone('America/Mexico_City')
+    mx_time = timezone.fromutc(datetime_val)
+    return mx_time.strftime("%d-%b-%Y %H:%M")
 
 
 db = MongoEngine()

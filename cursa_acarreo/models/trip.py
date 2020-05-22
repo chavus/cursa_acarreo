@@ -18,7 +18,7 @@ class Trip(db.Document):
     origin = db.ReferenceField(Origin, required=True)
     # destination = db.ReferenceField(Destination, required=True)
     sender_user = db.ReferenceField(User, required=True)
-    sent_datetime = db.DateTimeField(required=True, default=datetime.datetime.now())
+    sent_datetime = db.DateTimeField(required=True)
     finalizer_user = db.ReferenceField(User)
     finalized_datetime = db.DateTimeField()
     status = db.StringField(required=True, choices=STATUS_LIST)
@@ -58,17 +58,19 @@ class Trip(db.Document):
         """
         self.status = status
         self.finalizer_user = User.find_by_username(username)
-        self.finalized_datetime = datetime.datetime.now()
+        self.finalized_datetime = datetime.datetime.utcnow()
         self.save_to_db()
 
     @classmethod
-    def create(cls, truck_id, material_name, project_name, origin_name, sender_username, amount=None):
+    def create(cls, truck_id, material_name, project_name, origin_name, sender_username, amount=None,
+               sent_datetime=datetime.datetime.utcnow()):
         params = {
             'truck': Truck.find_by_idcode(truck_id),
             'material': Material.find_by_name(material_name),
             'project': Project.find_by_name(project_name),
             'origin': Origin.find_by_name(origin_name),
             'sender_user': User.find_by_username(sender_username),
+            'sent_datetime': sent_datetime,
             'amount': amount if amount else Truck.find_by_idcode(truck_id).capacity,
             'status': 'in_progress'
         }

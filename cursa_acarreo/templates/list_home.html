@@ -45,7 +45,7 @@
 				<td class="align-middle">{{trip['project']}}</td>
 				<td class="align-middle">{{trip['origin']}}</td>
 				<td class="align-middle">{{trip['sender_user']}}</td>
-				<td class="align-middle">{{trip['sent_datetime']}}</td>
+				<td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
 			</tr>
 	       </ul>
 	      {% endfor %}
@@ -88,9 +88,9 @@
 					<td class="align-middle">{{trip['project']}}</td>
 					<td class="align-middle">{{trip['origin']}}</td>
 					<td class="align-middle">{{trip['sender_user']}}</td>
-					<td class="align-middle">{{trip['sent_datetime']}}</td>
+					<td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
 					<td class="align-middle">{{trip['finalizer_user']}}</td>
-					<td class="align-middle">{{trip['finalized_datetime']}}</td>
+					<td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
 				</tr>
 		       </ul>
 		      {% endfor %}
