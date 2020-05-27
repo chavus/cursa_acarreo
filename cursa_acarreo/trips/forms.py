@@ -9,8 +9,7 @@ from wtforms.compat import text_type
 
 
 def get_available_trucks():
-    return [truck.id_code for truck in g.Truck.objects
-            if truck not in [trip.truck for trip in t.Trip.objects(status="in_progress")]]
+    return [truck_ for truck_ in g.Truck.get_list_by('id_code') if truck_ not in t.Trip.get_trucks_in_trip()]
 
 
 class CustomSelect(object):
@@ -63,12 +62,18 @@ def selection_required(form, field):
 
 class CreateTripForm(FlaskForm):
     truck = SelectField('Camión', widget=CustomSelect(), validators=[selection_required], validate_choice=False)
-    material = SelectField('Material', choices=[(i, i) for i in g.Material.get_list_by('name')], widget=CustomSelect(),
-                             validators=[selection_required], validate_choice=False)
-    project = SelectField('Obra', choices=[(i, i) for i in g.Project.get_list_by('name')], widget=CustomSelect(),
-                             validators=[selection_required], validate_choice=False)
-    origin = SelectField('Banco', choices=[(i, i) for i in g.Origin.get_list_by('name')], widget=CustomSelect(),
+    origin = SelectField('Origen',
+                         choices=[(i, i) for i in (g.MaterialBank.get_list_by('name') + g.Project.get_list_by('name'))],
+                         widget=CustomSelect(),
                          validators=[selection_required], validate_choice=False)
+    material = SelectField('Material',
+                           choices=[(i, i) for i in g.Material.get_list_by('name')], widget=CustomSelect(),
+                           validators=[selection_required], validate_choice=False)
+    destination = SelectField('Destino',
+                              choices=[(i, i) for i in (g.MaterialBank.get_list_by('name') + g.Project.get_list_by('name'))],
+                              widget=CustomSelect(),
+                              validators=[selection_required], validate_choice=False)
+
     submit = SubmitField('Confirmar Viaje')
 
 

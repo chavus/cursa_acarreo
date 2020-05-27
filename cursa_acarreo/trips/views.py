@@ -18,12 +18,12 @@ def create():
         trip_dict = {
             'truck_id': form.truck.data,
             'material_name': form.material.data,
-            'project_name': form.project.data,
             'origin_name': form.origin.data,
+            'destination_name': form.destination.data,
             'sender_username': current_user.username
         }
         trip = Trip.create(**trip_dict)
-        flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck.id_code),
+        flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck),
               ('success', 'popup'))
         return redirect(url_for('trips.create'))
     return render_template('create_home.html', form=form)
@@ -43,7 +43,7 @@ def receive_dashboard():
 def receive(trip_id):
     trip = Trip.find_by_tripid(trip_id)
     trip.finalize(current_user.username, 'complete')
-    flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck.id_code),
+    flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck),
           ('success', 'popup'))
     return redirect(url_for('trips.receive_dashboard'))
 
