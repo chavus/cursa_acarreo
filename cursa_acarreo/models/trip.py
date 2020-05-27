@@ -100,5 +100,5 @@ class Trip(db.Document):
 
     @classmethod
     def get_trucks_in_trip(cls):
-        return list(dict.fromkeys([t.truck for t in cls.objects]))
+        return list(dict.fromkeys([t.truck for t in cls.objects(status='in_progress')]))
 
