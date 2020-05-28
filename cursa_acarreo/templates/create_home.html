@@ -50,14 +50,14 @@
 			<div class="col-xl">
 				<div class="d-flex flex-row form-group">
 					<div class="col-3 mr-2 pl-0">
-						{{ form.project.label(class="col-form-label-lg")}}
+						{{ form.destination.label(class="col-form-label-lg")}}
 					</div>
 					<div>
-						{{ form.project(required=False, class="form-control-lg pr-1", style="width: 14rem;") }}   <!--required= False when DataRequired message is custom-->
-				            {% for error in form.project.errors %}
+						{{ form.destination(required=False, class="form-control-lg pr-1", style="width: 14rem;") }}   <!--required= False when DataRequired message is custom-->
+				            {% for error in form.destination.errors %}
 								<script>
-									$('#project').addClass('is-invalid')
-									$('#project').addClass('is-invalid_custom')
+									$('#destination').addClass('is-invalid')
+									$('#destination').addClass('is-invalid_custom')
 
 								</script>
 								<div class="invalid-feedback text-left">{{ error }}</div>
@@ -141,43 +141,102 @@
 		$('#keepselection').bootstrapToggle('on');
 		$('#origin').val(localStorage.getItem('origin_selection'));
 		$('#material').val(localStorage.getItem('material_selection'));
-		$('#project').val(localStorage.getItem('project_selection'));
-		$('#origin, #material, #project').prop('disabled','true');
+		$('#destination').val(localStorage.getItem('destination_selection'));
+		$('#origin, #material, #destination').prop('disabled','true');
 
 	}else{
 		$('#keepselection').bootstrapToggle('off');
 	}
 
-<!--Save values of selectt fields to local storage and disable fields when toogle button is turned on-->
+<!--Save values of select fields to local storage and disable fields when toogle button is turned on-->
 	$('#keepselection').change(function() {
 		localStorage.setItem('keep_selection_value', $('#keepselection').prop('checked'));
 
 		if($('#keepselection').prop('checked')){
-			if($('#origin').val()==null  || $('#material').val()==null || $('#project').val()==null) {
+			if($('#origin').val()==null  || $('#material').val()==null || $('#destination').val()==null) {
 				$('#keepselection').bootstrapToggle('off')
 				swal('Debes seleccionar todos los campos','','warning');
 				}else{
-
 				localStorage.setItem('origin_selection', $('#origin').val());
 				localStorage.setItem('material_selection', $('#material').val());
-				localStorage.setItem('project_selection', $('#project').val());
-				$('#origin, #material, #project').prop('disabled','true');
+				localStorage.setItem('destination_selection', $('#destination').val());
+				$('#origin, #material, #destination').prop('disabled','true');
 				}
 		}else{
-			$('#origin, #material, #project').removeAttr('disabled');
+			$('#origin, #material, #destination').removeAttr('disabled');
+			if($('#origin').val() == null) {
+				console.log('in if')
+		        $('#material').prop('disabled','true');
+		        $('#destination').prop('disabled','true');
+
+	        }
 		}
 	});
 
+<!--Remove disable when submiting -->
 	$('form').bind('submit', function () {
-		$('#origin, #material, #project').removeAttr('disabled');
+		$('#origin, #material, #destination').removeAttr('disabled');
 	});
 
 	$(function(){
+
+	<!--Remove invalid class when selector is clicked-->
 		$('.form-control-lg').click(function(){
 			$(this).removeClass('is-invalid');
 			$(this).removeClass('is-invalid_custom');
 		});
+
+	<!--Update materials list based on origin selection-->
+
+	    // jQuery selection for the 2 select boxes
+        var dropdown = {
+	        origin: $('#origin'),
+	        material: $('#material'),
+	        destination: $('#destination')
+        };
+
+	    // call to update on load
+	    if ($('#origin option[disabled]:selected').val() == 'default'){
+	        dropdown.material.val('default');
+	        dropdown.material.attr('disabled', 'disabled');
+	        dropdown.destination.attr('disabled', 'disabled');
+
+	    }
+
+	    // function to call XHR and update material dropdown
+	    function updateMaterials() {
+	        var send = {
+	            origin: dropdown.origin.val()
+	        };
+	        $.get("{{ url_for('trips._get_materials') }}", send, function(data) {
+	        	dropdown.material.empty();
+	        	dropdown.material.append('<option disabled="" selected="" value="default">Seleccionar...</option>')
+	            data.forEach(function(item) {
+	                dropdown.material.append(
+	                    $('<option>', {
+	                        value: item[0],
+	                        text: item[1]
+	                    })
+	                );
+	            });
+	            dropdown.material.removeAttr('disabled');
+	        });
+	    }
+
+		function disableOriginInDestination() {
+			var selectedOrigin = $('#origin :selected').val();
+			$('#destination option[value!="default"][value!="section_label"]').removeAttr('disabled')
+			$('#destination [value="' + selectedOrigin + '"]').prop('disabled','true');
+			$('#destination').removeAttr('disabled')
+		}
+
+	    // event listener to origin dropdown change
+	    $('#origin').change(function() {
+	        updateMaterials();
+	        disableOriginInDestination();
+	    });
 	});
+
 </script>
 
 

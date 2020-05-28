@@ -20,7 +20,7 @@ class User(db.Document, UserMixin):
     last_name = db.StringField(max_length=50)
     email = db.EmailField(unique=True, sparse=True, max_length=100)
     is_admin = db.BooleanField(required=True, default=False)
-    date_added = db.DateTimeField(required=True, default=datetime.datetime.now())
+    date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow())
 
     def json(self):
         skip_items = ['id', 'hashed_pwd']
@@ -39,12 +39,12 @@ class User(db.Document, UserMixin):
 
     @classmethod
     def add(cls, username, password, email=None, name=None, last_name=None, is_admin=False):
-        return cls(username=username, hashed_pwd=generate_password_hash(password), name=name, last_name=last_name,
-                   email=email, is_admin=is_admin).save()
+        return cls(username=username, hashed_pwd=generate_password_hash(password), name=name.upper(),
+                   last_name=last_name.upper(), email=email, is_admin=is_admin).save()
 
     @classmethod
     def find_by_username(cls, username, raise_if_none=True):
-        user = cls.objects(username=username).first()
+        user = cls.objects(username__iexact=username).first()
         if not user and raise_if_none:
             raise NameError('Usuario "{}" no encontrado.'.format(username))
         return user
@@ -56,3 +56,7 @@ class User(db.Document, UserMixin):
     @classmethod
     def get_all(cls):
         return [u.json() for u in cls.objects]
+
+    @classmethod
+    def get_list_by(cls, param):
+        return [t[param] for t in cls.objects]

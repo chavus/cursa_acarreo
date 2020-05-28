@@ -8,11 +8,6 @@ from wtforms.widgets.core import html_params
 from wtforms.compat import text_type
 
 
-def get_available_trucks():
-    return [truck.id_code for truck in g.Truck.objects
-            if truck not in [trip.truck for trip in t.Trip.objects(status="in_progress")]]
-
-
 class CustomSelect(object):
     """
     ADDED TO DEFINE SELECT PLACE HOLDER AND DISABLE PLACEHOLDER
@@ -53,24 +48,50 @@ class CustomSelect(object):
             options['selected'] = True
         if value == 'default':
             options['disabled'] = True
+        if value == 'section_label':
+            options['disabled'] = True
         return Markup('<option %s>%s</option>' % (html_params(**options), escape(label)))
 
 
 def selection_required(form, field):
-    if field.data == None:
+    if field.data is None:
         raise ValidationError('Favor de seleccionar una opción')
+
+
+def _available_trucks():
+    return [truck_ for truck_ in g.Truck.get_active() if truck_ not in t.Trip.get_trucks_in_trip()]
+
+
+# Returns active and available trucks
+def truck_choices():
+    return [(i, i) for i in _available_trucks()]
+
+
+def bank_choices():
+    return [(i, i) for i in g.MaterialBank.get_active()]
+
+
+def project_choices():
+    return [(i, i) for i in g.Project.get_active()]
+
+
+def material_choices():
+    return [(i, i) for i in g.Material.get_list_by('name')]
 
 
 class CreateTripForm(FlaskForm):
     truck = SelectField('Camión', widget=CustomSelect(), validators=[selection_required], validate_choice=False)
-    material = SelectField('Material', choices=[(i, i) for i in g.Material.get_list_by('name')], widget=CustomSelect(),
-                             validators=[selection_required], validate_choice=False)
-    project = SelectField('Obra', choices=[(i, i) for i in g.Project.get_list_by('name')], widget=CustomSelect(),
-                             validators=[selection_required], validate_choice=False)
-    origin = SelectField('Banco', choices=[(i, i) for i in g.Origin.get_list_by('name')], widget=CustomSelect(),
+    origin = SelectField('Origen',
+                         widget=CustomSelect(),
                          validators=[selection_required], validate_choice=False)
-    submit = SubmitField('Confirmar Viaje')
+    material = SelectField('Material',
+                           widget=CustomSelect(),
+                           validators=[selection_required], validate_choice=False)
+    destination = SelectField('Destino',
+                              widget=CustomSelect(),
+                              validators=[selection_required], validate_choice=False)
 
+    submit = SubmitField('Confirmar Viaje')
 
 
 

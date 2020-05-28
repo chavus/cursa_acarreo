@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for
+from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 import cursa_acarreo.trips.forms as f
 from cursa_acarreo.models.trip import Trip
+from cursa_acarreo.models.general import MaterialBank, Project
 from cursa_acarreo.security import mustbe_admin
+from cursa_acarreo import app
 
 trips_blueprint = Blueprint('trips', __name__)
 
@@ -11,22 +13,41 @@ trips_blueprint = Blueprint('trips', __name__)
 @login_required
 def create():
     form = f.CreateTripForm()
-    available_trucks = f.get_available_trucks()
-    form.truck.choices = [(i, i) for i in available_trucks]
-    # form.truck.choices = [('T002', 'T002'), ('T003', 'T003'), ('T004', 'T004'), ('T005', 'T005')]
+    form.truck.choices = f.truck_choices()
+    form.origin.choices = [('section_label', '-------Bancos-------')] + f.bank_choices() + \
+                          [('section_label', '-------Obras--------')] + f.project_choices()
+    form.material.choices = f.material_choices()
+    form.destination.choices = [('section_label', '-------Obras--------')] + f.project_choices() + \
+                            [('section_label', '-------Bancos-------')] + f.bank_choices()
     if form.validate_on_submit():
         trip_dict = {
             'truck_id': form.truck.data,
             'material_name': form.material.data,
-            'project_name': form.project.data,
             'origin_name': form.origin.data,
+            'destination_name': form.destination.data,
             'sender_username': current_user.username
         }
         trip = Trip.create(**trip_dict)
-        flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck.id_code),
+        flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck),
               ('success', 'popup'))
         return redirect(url_for('trips.create'))
     return render_template('create_home.html', form=form)
+
+
+@trips_blueprint.route('/_get_materials/')
+def _get_materials():
+    location = request.args.get('origin', '01', type=str)
+
+    bank = MaterialBank.find_by_name(location, False)
+    project = Project.find_by_name(location, False)
+    if bank:
+        materials = bank.get_list_of_materials()
+    elif project:
+        materials = project.get_list_of_materials()
+    else:
+        materials = []
+    material_choices = [(m, m) for m in materials]
+    return jsonify(material_choices)
 
 
 @trips_blueprint.route('/receive_dashboard')
@@ -43,7 +64,7 @@ def receive_dashboard():
 def receive(trip_id):
     trip = Trip.find_by_tripid(trip_id)
     trip.finalize(current_user.username, 'complete')
-    flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck.id_code),
+    flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck),
           ('success', 'popup'))
     return redirect(url_for('trips.receive_dashboard'))
 
@@ -54,7 +75,8 @@ def receive(trip_id):
 def list():
     trips = Trip.get_all()
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
-    finalized_trips = [i for i in trips if i['status'] in ['complete', 'canceled']]
+    finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
+                             key=lambda i: i['trip_id'], reverse=True)
     # in_progress_trips = [{'trip_id': 3, 'truck': 'T003', 'material': 'Arena', 'amount': 15, 'project': 'Carretera a Colima', 'origin': 'Rio', 'destination': 'Carretera', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': None, 'finalized_datetime': None, 'status': 'in_progress'}, {'trip_id': 5, 'truck': 'T005', 'material': 'Arena', 'amount': 15, 'project': 'Libramiento Tecoman', 'origin': 'Mina', 'destination': 'Carretera', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': None, 'finalized_datetime': None, 'status': 'in_progress'}]
     # finalized_trips = [{'trip_id': 2, 'truck': 'T001', 'material': 'Grava', 'amount': 14, 'project': 'Libramiento Tecoman', 'origin': 'Mina', 'destination': 'Libramiento', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': 'sjimenez', 'finalized_datetime': datetime.datetime(2020, 5, 4, 0, 32, 50, 769000), 'status': 'complete'}, {'trip_id': 4, 'truck': 'T004', 'material': 'Asfalto', 'amount': 17, 'project': 'Calle X', 'origin': 'Planta Asfalto', 'destination': 'Calle Manzanillo', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': 'sjimenez', 'finalized_datetime': datetime.datetime(2020, 5, 4, 0, 33, 41, 821000), 'status': 'complete'}, {'trip_id': 6, 'truck': 'T004', 'material': 'Arena', 'amount': 17, 'project': 'Calle X', 'origin': 'Rio', 'destination': 'Libramiento', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 4, 0, 8, 22, 822000), 'finalizer_user': 'dsoto', 'finalized_datetime': datetime.datetime(2020, 5, 4, 0, 34, 28, 883000), 'status': 'canceled'}]
     return render_template('list_home.html', in_progress_trips=in_progress_trips, finalized_trips=finalized_trips)

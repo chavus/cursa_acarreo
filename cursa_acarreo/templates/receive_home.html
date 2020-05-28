@@ -20,8 +20,8 @@
 <div class="table-responsive table-hover">
 	<table class="table table-sm">
 		<thead>
-			<th class="text-center">Camion</th>
-			<th class="text-center">Obra</th>
+			<th class="text-center">Camión</th>
+			<th class="text-center">Destino</th>
 			<th class="text-center">Recibir</th>
 
 		</thead>
@@ -32,7 +32,7 @@
 					<tr class="clickable" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}" style="background-color: #dfe2e5">
 
 						<td class="align-middle text-center">{{trip['truck']}}</td>
-						<td class="align-middle text-center">{{trip['project']}}</td>
+						<td class="align-middle text-center">{{trip['destination']}}</td>
 						<td class="align-middle text-center"> <a href="{{url_for('trips.receive', trip_id=trip['trip_id'])}}" class="btn btn-primary">
 							Recibir vaje #{{trip['trip_id']}}</a></td>
 
@@ -47,16 +47,16 @@
 										<td>{{trip['trip_id']}}</td>
 									</tr>
 									<tr>
+										<th class="font-weight-bold">Origen:</th>
+										<td>{{trip['origin']}}</td>
+									</tr>
+									<tr>
 										<th class="font-weight-bold">Material</th>
 										<td>{{trip['material']}}</td>
 									</tr>
 									<tr>
 										<th class="font-weight-bold">Cantidad:</th>
 										<td>{{trip['amount']}} mts3</td>
-									</tr>
-									<tr>
-										<th class="font-weight-bold">Banco:</th>
-										<td>{{trip['origin']}}</td>
 									</tr>
 									<tr>
 										<th class="font-weight-bold">Enviado por:</th>
