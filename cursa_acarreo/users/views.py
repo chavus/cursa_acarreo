@@ -22,7 +22,6 @@ def login():
             return redirect(next)
         else:
             form.password.errors.append('Contraseña incorrecta')
-            # flash('Contraseña incorrecta')
     return render_template('login.html', form=form)
 
 
