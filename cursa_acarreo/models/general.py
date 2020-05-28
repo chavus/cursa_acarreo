@@ -147,13 +147,6 @@ class Truck(db.Document):
             self.reload()
             raise e
 
-    # def _get_driver(self, name, last_name):
-    #     driver = Driver.find_by_full_name(name, last_name)
-    #     if not driver:
-    #         raise db.ValidationError('El chofer "{}", que intenta agregar no esta dado de alta en el '
-    #                                  'sistema'.format(name + " " + last_name))
-    #     return driver
-
     def set_driver(self, name, last_name):
         driver = Driver.find_by_full_name(name, last_name)
         self.driver = driver
@@ -216,6 +209,11 @@ class Truck(db.Document):
     @classmethod
     def get_list_by(cls, param):
         return [t[param] for t in cls.objects]
+
+    @classmethod
+    def get_active(cls):
+        return [t.id_code for t in cls.objects if t.is_active]
+
 
 
 class Material(db.Document):
@@ -338,6 +336,11 @@ class Project(db.Document):
     def get_list_by(cls, param):
         return [t[param] for t in cls.objects]
 
+    @classmethod
+    def get_active(cls):
+        return [p.name for p in cls.objects if p.is_active]
+
+
 
 class MaterialBank(db.Document):
     """
@@ -412,7 +415,7 @@ class MaterialBank(db.Document):
             'description': description.upper() if description else description,
             'owner': owner,
             'royalty': royalty,
-            'is_active':is_active
+            'is_active': is_active
         }
         return cls(**params).save()
 
@@ -426,3 +429,7 @@ class MaterialBank(db.Document):
     @classmethod
     def get_list_by(cls, param):
         return [t[param] for t in cls.objects]
+
+    @classmethod
+    def get_active(cls):
+        return [b.name for b in cls.objects if b.is_active]

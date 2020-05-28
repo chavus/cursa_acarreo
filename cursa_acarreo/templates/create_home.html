@@ -136,7 +136,6 @@
 
 <script>
 
-
 <!--Load preselected values on select when page is loaded-->
 	if(localStorage.getItem('keep_selection_value') == 'true' ){
 		$('#keepselection').bootstrapToggle('on');
@@ -165,18 +164,77 @@
 				}
 		}else{
 			$('#origin, #material, #destination').removeAttr('disabled');
+			if($('#origin').val() == null) {
+				console.log('in if')
+		        $('#material').prop('disabled','true');
+		        $('#destination').prop('disabled','true');
+
+	        }
 		}
 	});
 
+<!--Remove disable when submiting -->
 	$('form').bind('submit', function () {
 		$('#origin, #material, #destination').removeAttr('disabled');
 	});
 
 	$(function(){
+
+	<!--Remove invalid class when selector is clicked-->
 		$('.form-control-lg').click(function(){
 			$(this).removeClass('is-invalid');
 			$(this).removeClass('is-invalid_custom');
 		});
+
+	<!--Update materials list based on origin selection-->
+
+	    // jQuery selection for the 2 select boxes
+        var dropdown = {
+	        origin: $('#origin'),
+	        material: $('#material'),
+	        destination: $('#destination')
+        };
+
+	    // call to update on load
+	    if ($('#origin option[disabled]:selected').val() == 'default'){
+	        dropdown.material.val('default');
+	        dropdown.material.attr('disabled', 'disabled');
+	        dropdown.destination.attr('disabled', 'disabled');
+
+	    }
+
+	    // function to call XHR and update material dropdown
+	    function updateMaterials() {
+	        var send = {
+	            origin: dropdown.origin.val()
+	        };
+	        $.get("{{ url_for('trips._get_materials') }}", send, function(data) {
+	        	dropdown.material.empty();
+	        	dropdown.material.append('<option disabled="" selected="" value="default">Seleccionar...</option>')
+	            data.forEach(function(item) {
+	                dropdown.material.append(
+	                    $('<option>', {
+	                        value: item[0],
+	                        text: item[1]
+	                    })
+	                );
+	            });
+	            dropdown.material.removeAttr('disabled');
+	        });
+	    }
+
+		function disableOriginInDestination() {
+			var selectedOrigin = $('#origin :selected').val();
+			$('#destination option[value!="default"][value!="section_label"]').removeAttr('disabled')
+			$('#destination [value="' + selectedOrigin + '"]').prop('disabled','true');
+			$('#destination').removeAttr('disabled')
+		}
+
+	    // event listener to origin dropdown change
+	    $('#origin').change(function() {
+	        updateMaterials();
+	        disableOriginInDestination();
+	    });
 	});
 
 </script>

@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for
+from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 import cursa_acarreo.trips.forms as f
 from cursa_acarreo.models.trip import Trip
+from cursa_acarreo.models.general import MaterialBank, Project
 from cursa_acarreo.security import mustbe_admin
+from cursa_acarreo import app
 
 trips_blueprint = Blueprint('trips', __name__)
 
@@ -11,9 +13,12 @@ trips_blueprint = Blueprint('trips', __name__)
 @login_required
 def create():
     form = f.CreateTripForm()
-    available_trucks = f.get_available_trucks()
-    form.truck.choices = [(i, i) for i in available_trucks]
-    # form.truck.choices = [('T002', 'T002'), ('T003', 'T003'), ('T004', 'T004'), ('T005', 'T005')]
+    form.truck.choices = f.truck_choices()
+    form.origin.choices = [('section_label', '-------Bancos-------')] + f.bank_choices() + \
+                          [('section_label', '-------Obras--------')] + f.project_choices()
+    form.material.choices = f.material_choices()
+    form.destination.choices = [('section_label', '-------Obras--------')] + f.project_choices() + \
+                            [('section_label', '-------Bancos-------')] + f.bank_choices()
     if form.validate_on_submit():
         trip_dict = {
             'truck_id': form.truck.data,
@@ -27,6 +32,22 @@ def create():
               ('success', 'popup'))
         return redirect(url_for('trips.create'))
     return render_template('create_home.html', form=form)
+
+
+@trips_blueprint.route('/_get_materials/')
+def _get_materials():
+    location = request.args.get('origin', '01', type=str)
+
+    bank = MaterialBank.find_by_name(location, False)
+    project = Project.find_by_name(location, False)
+    if bank:
+        materials = bank.get_list_of_materials()
+    elif project:
+        materials = project.get_list_of_materials()
+    else:
+        materials = []
+    material_choices = [(m, m) for m in materials]
+    return jsonify(material_choices)
 
 
 @trips_blueprint.route('/receive_dashboard')
