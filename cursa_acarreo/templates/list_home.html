@@ -26,10 +26,10 @@
 	        <tr class="text-center">
 	          <th class="align-middle">#</th>
 	          <th class="align-middle">Camion</th>
+		      <th class="align-middle">Origen</th>
 	          <th class="align-middle">Material</th>
 	          <th class="align-middle">mts<sup>3</sup></th>
-	          <th class="align-middle">Obra</th>
-	          <th class="align-middle">Banco</th>
+	          <th class="align-middle">Destino</th>
 	          <th class="align-middle">Enviado por</th>
 	          <th class="align-middle">Fecha/Hora Envio</th>
 	        </tr>
@@ -40,10 +40,10 @@
 			<tr class="text-center">
 				<td class="align-middle">{{trip['trip_id']}}</td>
 				<td class="align-middle">{{trip['truck']}}</td>
+				<td class="align-middle">{{trip['origin']}}</td>
 				<td class="align-middle">{{trip['material']}}</td>
 				<td class="align-middle">{{trip['amount']}}</td>
-				<td class="align-middle">{{trip['project']}}</td>
-				<td class="align-middle">{{trip['origin']}}</td>
+				<td class="align-middle">{{trip['destination']}}</td>
 				<td class="align-middle">{{trip['sender_user']}}</td>
 				<td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
 			</tr>
@@ -64,11 +64,11 @@
 					<th class="align-middle">Camion</th>
 					<th class="align-middle">Material</th>
 					<th class="align-middle">mts<sup>3</sup></th>
-					<th class="align-middle">Obra</th>
-					<th class="align-middle">Banco</th>
-					<th class="align-middle">Checador Envio</th>
-					<th class="align-middle">Fecha/Hora Envio</th>
-		            <th class="align-middle">Finalizado por</th>
+			        <th class="align-middle">Origen</th>
+					<th class="align-middle">Destino</th>
+					<th class="align-middle">Envió</th>
+					<th class="align-middle">Fecha/Hora Envío</th>
+		            <th class="align-middle">Finalizó</th>
 		            <th class="align-middle">Fecha/Hora Finalizado</th>
 		        </tr>
 		      </thead>
@@ -85,8 +85,8 @@
 					<td class="align-middle">{{trip['truck']}}</td>
 					<td class="align-middle">{{trip['material']}}</td>
 					<td class="align-middle">{{trip['amount']}}</td>
-					<td class="align-middle">{{trip['project']}}</td>
 					<td class="align-middle">{{trip['origin']}}</td>
+					<td class="align-middle">{{trip['destination']}}</td>
 					<td class="align-middle">{{trip['sender_user']}}</td>
 					<td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
 					<td class="align-middle">{{trip['finalizer_user']}}</td>
