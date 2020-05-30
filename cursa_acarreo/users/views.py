@@ -14,7 +14,7 @@ def login():
         user = User.find_by_username(form.username.data)
         if user.check_password(form.password.data):
             login_user(user)
-            flash('Bienvenido {}!'.format(current_user.username), ('primary',))
+            flash('Bienvenido {}!'.format(current_user.name.title()), ('primary',))
             next = request.args.get('next')
 
             if not next:
