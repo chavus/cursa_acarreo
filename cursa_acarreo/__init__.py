@@ -3,6 +3,8 @@ from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 import locale
 import pytz
+import os
+import git
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -10,10 +12,28 @@ app = Flask(__name__)
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 
-
 # Database setup
-app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
-                                  'connect': False}
+environment = os.environ.get('ENVIRONMENT')
+if not environment:
+    print('No heroku environment found, trying if git repository.')
+    try:
+        current_dir = os.getcwd()
+        branch = git.Repo(current_dir).active_branch.name
+        environment = branch
+    except git.exc.InvalidGitRepositoryError as e:
+        print('Directory not a git repositoy... running with development configuration.')
+
+
+if environment == 'master' or environment == 'production':
+    app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
+                                      'connect': False}
+    print('Configuring as master/production environment')
+else:
+    app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cursaacarreocluster-dev-gjrrh.mongodb.net/general?retryWrites=true&w=majority',
+                                      'connect': False}
+    print('Configuring as development environment')
+
+
 app.config['SECRET_KEY'] = 'secretkey'
 
 
