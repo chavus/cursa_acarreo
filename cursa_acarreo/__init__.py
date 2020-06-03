@@ -3,6 +3,8 @@ from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 import locale
 import pytz
+import os
+from git import Repo
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -12,8 +14,18 @@ locale.setlocale(locale.LC_ALL, 'es_ES')
 
 
 # Database setup
-app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
+current_dir = os.getcwd()
+branch = Repo(current_dir).active_branch.name
+if branch == 'master':
+    app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
+                                      'connect': False}
+    print('Configuring master environment')
+else:
+    app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cursaacarreocluster-dev-gjrrh.mongodb.net/general?retryWrites=true&w=majority',
                                   'connect': False}
+    print('Configuring development environment')
+
+
 app.config['SECRET_KEY'] = 'secretkey'
 
 
