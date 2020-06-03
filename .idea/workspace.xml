@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,14 +28,32 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="250">
+              <caret line="22" column="5" lean-forward="true" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="16" column="15" lean-forward="true" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app_cursa_acarreo.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -46,30 +65,6 @@
               <caret line="285" column="7" selection-start-line="285" selection-start-column="7" selection-end-line="285" selection-end-column="7" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/login.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
-              <folding>
-                <element signature="n#style#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/list_home.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1320">
-              <caret line="88" column="64" selection-start-line="88" selection-start-column="64" selection-end-line="88" selection-end-column="64" />
-              <folding>
-                <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -173,6 +168,19 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="v1.1" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -197,10 +205,10 @@
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/list_home.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/views.py" />
-        <option value="$PROJECT_DIR$/cursa_acarreo/__init__.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/users/views.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/login.html" />
+        <option value="$PROJECT_DIR$/cursa_acarreo/__init__.py" />
       </list>
     </option>
   </component>
@@ -549,7 +557,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590801584511</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="&quot;Add development database and configuration&quot;">
+      <created>1591148271875</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1591148271875</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TodoView">
@@ -563,16 +578,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1456" y="-157" width="1595" height="1019" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" sideWeight="0.5009346" side_tool="true" weight="0.103212215" />
       <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49906543" visible="true" weight="0.15946633" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.6074007" visible="true" weight="0.26105717" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.6074007" visible="true" weight="0.39805827" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.39259928" side_tool="true" weight="0.26105717" />
-      <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.6488673" weight="0.6418554" />
+      <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.6488673" weight="0.43042073" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" sideWeight="0.76093024" weight="0.32917964" />
-      <window_info anchor="bottom" id="Version Control" order="5" sideWeight="0.4976744" weight="0.3279396" />
+      <window_info anchor="bottom" id="Version Control" order="5" sideWeight="0.4976744" weight="0.49190938" />
       <window_info anchor="bottom" id="Run" order="6" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
@@ -619,6 +635,7 @@
           <value>
             <State>
               <option name="SHOW_DETAILS_IN_CHANGES" value="false" />
+              <option name="BEK_SORT_TYPE" value="1" />
               <option name="RECENTLY_FILTERED_USER_GROUPS">
                 <collection />
               </option>
@@ -630,7 +647,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="v1.0" />
+                        <option value="origin/development" />
                       </list>
                     </value>
                   </entry>
@@ -656,7 +673,17 @@
             <list>
               <RecentGroup>
                 <option name="FILTER_VALUES">
+                  <option value="origin/development" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
                   <option value="v1.0" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
                 </option>
               </RecentGroup>
             </list>
@@ -688,7 +715,8 @@
     <MESSAGE value="&quot;Set locale setting for mx with heroku support&quot;" />
     <MESSAGE value="&quot;fix get_trucks_in_trip&quot;" />
     <MESSAGE value="&quot;set connect:false to mongodb settings&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;set connect:false to mongodb settings&quot;" />
+    <MESSAGE value="&quot;Add development database and configuration&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Add development database and configuration&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/flask/app.py">
@@ -723,24 +751,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app_cursa_acarreo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uwsgi.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="20" lean-forward="true" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
         </state>
       </provider>
     </entry>
@@ -782,9 +796,6 @@
           <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/models/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.locales">
       <provider selected="true" editor-type-id="text-editor">
@@ -967,13 +978,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/models/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_cursa_acarreo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="250">
+          <caret line="22" column="5" lean-forward="true" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="15" lean-forward="true" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
         </state>
       </provider>
     </entry>
