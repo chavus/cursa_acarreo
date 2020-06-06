@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, ValidationError
+from wtforms import SelectField, SubmitField, ValidationError, TextAreaField, validators
 import cursa_acarreo.models.general as g
 import cursa_acarreo.models.trip as t
 
@@ -57,7 +57,6 @@ def selection_required(form, field):
     if field.data is None:
         raise ValidationError('Favor de seleccionar una opción')
 
-
 def _available_trucks():
     return [truck_ for truck_ in g.Truck.get_active() if truck_ not in t.Trip.get_trucks_in_trip()]
 
@@ -90,8 +89,9 @@ class CreateTripForm(FlaskForm):
     destination = SelectField('Destino',
                               widget=CustomSelect(),
                               validators=[selection_required], validate_choice=False)
+    sender_comment = TextAreaField('Agregar comentario:', validators=[validators.Length(max=t.Trip.sender_comment.max_length, message="Máximo 150 caracteres!")])
 
-    submit = SubmitField('Confirmar Viaje')
+    submit = SubmitField('Crear Viaje')
 
 
 

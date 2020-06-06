@@ -25,7 +25,8 @@ def create():
             'material_name': form.material.data,
             'origin_name': form.origin.data,
             'destination_name': form.destination.data,
-            'sender_username': current_user.username
+            'sender_username': current_user.username,
+            'sender_comment': form.sender_comment.data
         }
         trip = Trip.create(**trip_dict)
         flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck),
@@ -37,7 +38,6 @@ def create():
 @trips_blueprint.route('/_get_materials/')
 def _get_materials():
     location = request.args.get('origin', '01', type=str)
-
     bank = MaterialBank.find_by_name(location, False)
     project = Project.find_by_name(location, False)
     if bank:
