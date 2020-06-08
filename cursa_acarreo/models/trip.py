@@ -62,15 +62,18 @@ class Trip(db.Document):
             self.reload()
             raise e
 
-    def finalize(self, username, status):
+    def finalize(self, username, status, finalizer_comment=None):
         """
         Move trip to complete or canceled.
         :param username: username of user doing the operation
         :param status: "complete" or "canceled"
+        :param finalizer_comment: optional comment
+
         :return:
         """
         self.status = status
         self.finalizer_user = username
+        self.finalizer_comment = finalizer_comment
         self.finalized_datetime = datetime.datetime.utcnow()
         self.save_to_db()
 

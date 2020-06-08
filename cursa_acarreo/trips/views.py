@@ -4,7 +4,6 @@ import cursa_acarreo.trips.forms as f
 from cursa_acarreo.models.trip import Trip
 from cursa_acarreo.models.general import MaterialBank, Project
 from cursa_acarreo.security import mustbe_admin
-from cursa_acarreo import app
 
 trips_blueprint = Blueprint('trips', __name__)
 
@@ -35,7 +34,7 @@ def create():
     return render_template('create_home.html', form=form)
 
 
-@trips_blueprint.route('/_get_materials/')
+@trips_blueprint.route('/_get_materials')
 def _get_materials():
     location = request.args.get('origin', '01', type=str)
     bank = MaterialBank.find_by_name(location, False)
@@ -59,14 +58,21 @@ def receive_dashboard():
     return render_template('receive_home.html', in_progress_trips=in_progress_trips)
 
 
-@trips_blueprint.route('/receive/<int:trip_id>')
+@trips_blueprint.route('/receive', methods=['POST'])
 @login_required
-def receive(trip_id):
-    trip = Trip.find_by_tripid(trip_id)
-    trip.finalize(current_user.username, 'complete')
-    flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck),
-          ('success', 'popup'))
-    return redirect(url_for('trips.receive_dashboard'))
+def receive():
+    try:
+        trip_id = request.form.get('trip_id')
+        status = request.form.get('status')
+        finalizer_comment = request.form.get('finalizer_comment')
+        print(trip_id, status, finalizer_comment)
+        trip = Trip.find_by_tripid(trip_id)
+        trip.finalize(current_user.username, status, finalizer_comment)
+        flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck),
+              ('success', 'popup'))
+        return jsonify('success')
+    except Exception as e:
+        return jsonify(e.args[0])
 
 
 @trips_blueprint.route('/list')

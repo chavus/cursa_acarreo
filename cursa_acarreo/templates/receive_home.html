@@ -3,15 +3,7 @@
 
 {% block content %}
 
-<script>
-	$(function () {
-	  $('[data-toggle="popover"]').popover()
-	})
 
-	$('.popover-dismiss').popover({
-	  trigger: 'focus'
-	})
-</script>
 
 <div class="jumbotron pt-2">
 <h4 class="text-center">En proceso <span class="badge badge-pill badge-primary"> {{ in_progress_trips|length }} viajes</span>
@@ -33,13 +25,17 @@
 
 						<td class="align-middle text-center">{{trip['truck']}}</td>
 						<td class="align-middle text-center">{{trip['destination']}}</td>
-						<td class="align-middle text-center"> <a href="{{url_for('trips.receive', trip_id=trip['trip_id'])}}" class="btn btn-primary">
-							Recibir vaje #{{trip['trip_id']}}</a></td>
+						<td class="align-middle text-center">
+							<button type="button" class="btn btn-primary confirmation_button"
+							        value="{'trip_id': '{{trip['trip_id']}}','truck': '{{trip['truck']}}',
+							        'origin': '{{trip['origin']}}','material': '{{trip['material']}}',
+							        'destination': '{{trip['destination']}}' }">
+								Recibir vaje #{{trip['trip_id']}}</button></td>
 
 					</tr>
 					<tr>
 						<td colspan="3">
-							<div id="accordion{{trip['trip_id']}}" class="collapse  " data-parent="#accordiontable">
+							<div id="accordion{{trip['trip_id']}}" class="collapse" data-parent="#accordiontable">
 								<table class="table table-borderless" style="width: 90%; margin: 0px auto;">
 
 									<tr>
@@ -79,5 +75,89 @@
 	</table>
 </div>
 
+<!-- CONFIRMATION Modal -->
+<div class="modal fade" id="receiveConfirmationModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-top:10px; padding-bottom:10px; background-color: lightgrey;">
+        <h4 class="modal-title" id="modalHeader"></h4>
+        <button type="button" id="close_button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="font-size: 2rem;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="font-size:1.2rem">
+		<table class="table table-borderless" style="width: 90%; margin: 0px auto; padding: .3rem;">
+			<tr>
+				<th class="font-weight-bold" style="padding-right:0 ;">Camión:</th>
+				<td id="truck_row" style="padding-left: .3rem;"></td>
+			</tr>
+			<tr>
+				<th class="font-weight-bold" style="padding-right:0 ;">Origen: </th>
+				<td id="origin_row" style="padding-left: .3rem;"></td>
+			</tr>
+			<tr>
+				<th class="font-weight-bold" style="padding-right:0 ;">Material: </th>
+				<td id="material_row" style="padding-left: .3rem;"></td>
+			</tr>
+			<tr>
+				<th class="font-weight-bold" style="padding-right:0 ;">Destino:</th>
+				<td id="destination_row" style="padding-left: .3rem;"></td>
+			</tr>
+
+		</table>
+	      <div class="form-group mt-2 mb-0">
+		      <label class="font-weight-bold" for="receiver_comment" style="font-size:1rem">Agregar comentario:</label>
+		      <textarea id="receiver_comment" maxlength="150" name="receiver_comment" placeholder="Máximo 150 caracteres" style="font-size:1rem; width: 306px; height: 72px; "></textarea>
+	      		      </div>
+		</div>
+
+      <div class="modal-footer">
+	      <input class="btn btn-primary btn-lg btn-block py-3" id="complete_trip_button"
+	             value="Recibir viaje">
+	      <!--<a id="receiveButton" href="{{ url_for('trips.receive', receive_params=['TRIP_ID', 'COMMENT_DEFAULT']) }}" class="btn btn-primary">Recibir vaje</a>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	$(function () {
+
+		var trip_dict
+		$('.confirmation_button').click(function(){
+			trip_dict = JSON.parse($(this).val().replace(/'/g,"\""));
+			console.log(trip_dict.truck);
+			$('#modalHeader').text("Recibir viaje: #" + trip_dict.trip_id);
+			$('#origin_row').text(trip_dict.origin);
+			$('#material_row').text(trip_dict.material);
+			$('#destination_row').text(trip_dict.destination);
+			$('#truck_row').text(trip_dict.truck);
+			$('#receiveConfirmationModal').modal('show');
+		});
+
+		function finalizeTrip(trip_id,status, comment) {
+		    var return_of_func
+			var send = {trip_id: trip_id,
+						status: status,
+			            finalizer_comment: comment};
+			console.log(send)
+			$.post("{{ url_for('trips.receive') }}", send, function(return_val){
+				if(return_val == 'success'){
+					location.reload()
+				}else{
+					swal(return_val,'','error');
+				}
+
+			});
+		}
+
+		$('#complete_trip_button').click(function(){
+			finalizeTrip(trip_dict.trip_id,'complete', $('#receiver_comment').val());
+			$('#complete_trip_button').attr('disabled','true');
+		});
+
+	});
+</script>
 
 {% endblock %}

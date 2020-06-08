@@ -131,6 +131,10 @@
 	      <div class="modal-body" style="font-size:1.2rem">
 			<table class="table table-borderless" style="width: 90%; margin: 0px auto; padding: .3rem;">
 				<tr>
+					<th class="font-weight-bold" style="padding-right:0 ;">Camión:</th>
+					<td id="truck_row" style="padding-left: .3rem;"></td>
+				</tr>
+				<tr>
 					<th class="font-weight-bold" style="padding-right:0 ;">Origen: </th>
 					<td id="origin_row" style="padding-left: .3rem;"></td>
 				</tr>
@@ -141,10 +145,6 @@
 				<tr>
 					<th class="font-weight-bold" style="padding-right:0 ;">Destino:</th>
 					<td id="destination_row" style="padding-left: .3rem;"></td>
-				</tr>
-				<tr>
-					<th class="font-weight-bold" style="padding-right:0 ;">Camion:</th>
-					<td id="truck_row" style="padding-left: .3rem;"></td>
 				</tr>
 			</table>
 		      <div class="form-group mt-2 mb-0">
@@ -339,18 +339,11 @@
 
 	    	});
 
-		var maxLength = 15;
-		$('#sender_coment').keyup(function() {
-		  var textlen = maxLength - $(this).val().length;
-		  <!--$('#rchars').text(textlen);-->
-		});
-
 		 $('#create_form').submit(function(){
 		    $('#submit').attr('disabled','true');
 		    $('#close_button').attr('disabled','true');
 		    return true;
 		 });
-
 
 	});
 
