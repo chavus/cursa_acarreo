@@ -89,7 +89,7 @@ class CreateTripForm(FlaskForm):
     destination = SelectField('Destino',
                               widget=CustomSelect(),
                               validators=[selection_required], validate_choice=False)
-    sender_comment = TextAreaField('Agregar comentario:', validators=[validators.Length(max=t.Trip.sender_comment.max_length, message="Máximo 150 caracteres!")])
+    sender_comment = TextAreaField('Agregar comentario:', validators=[validators.Length(max=t.Trip.sender_comment.max_length, message="Máximo 100 caracteres!")])
 
     submit = SubmitField('Crear Viaje')
 

@@ -106,7 +106,6 @@
 					</div>
 				</div>
 			</div>
-
 		<div class="form-group col-lg align-self-center">
 			<button type="button" class="btn btn-primary btn-lg btn-block" id="confirmation_button"
 			        value="Confirmar modal" {% if form.truck.choices  == [] %}disabled{% endif %}>
@@ -147,12 +146,15 @@
 					<td id="destination_row" style="padding-left: .3rem;"></td>
 				</tr>
 			</table>
+		      {% if current_user.is_admin%}
 		      <div class="form-group mt-2 mb-0">
 				{{ form.sender_comment.label(class="font-weight-bold", style="font-size:1rem")}}
 		        {{ form.sender_comment(maxlength=form.sender_comment.validators[0].max|string,
 			                           placeholder= "Máximo " + form.sender_comment.validators[0].max|string + " caracteres",
 			                            style="font-size:1rem; width: 306px; height: 72px; ") }}
 		      </div>
+		      {% endif %}
+
 			</div>
 
 	      <div class="modal-footer">

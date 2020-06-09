@@ -64,12 +64,17 @@ def receive():
     try:
         trip_id = request.form.get('trip_id')
         status = request.form.get('status')
+        print(status)
+
         finalizer_comment = request.form.get('finalizer_comment')
-        print(trip_id, status, finalizer_comment)
         trip = Trip.find_by_tripid(trip_id)
         trip.finalize(current_user.username, status, finalizer_comment)
-        flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck),
-              ('success', 'popup'))
+        if status == 'complete':
+            flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck),
+                  ('success', 'popup'))
+        elif status == 'canceled':
+            flash('Viaje #{} con camión {} ha sido cancelado!'.format(trip_id, trip.truck),
+                  ('success', 'popup'))
         return jsonify('success')
     except Exception as e:
         return jsonify(e.args[0])

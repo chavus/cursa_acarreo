@@ -28,10 +28,12 @@ if environment == 'master' or environment == 'production':
     app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
                                       'connect': False}
     print('Configuring as master/production environment')
+    app_env = 'PROD'
 else:
     app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cursaacarreocluster-dev-gjrrh.mongodb.net/general?retryWrites=true&w=majority',
                                       'connect': False}
     print('Configuring as development environment')
+    app_env = 'DEV'
 
 
 app.config['SECRET_KEY'] = 'secretkey'
