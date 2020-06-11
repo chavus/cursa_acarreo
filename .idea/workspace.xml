@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/list_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/list_home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/trips/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/trips/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,7 +16,7 @@
     <favorites_list name="cursa-acarreo" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.3591005">
+    <splitter split-orientation="horizontal" split-proportion="0.1">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
@@ -92,8 +92,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/base_user.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="245">
-                  <caret line="83" column="89" selection-start-line="83" selection-start-column="62" selection-end-line="83" selection-end-column="89" />
+                <state relative-caret-position="414">
+                  <caret line="31" selection-start-line="31" selection-end-line="31" />
                 </state>
               </provider>
             </entry>
@@ -106,8 +106,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/list_home.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="246">
-                  <caret line="100" column="59" lean-forward="true" selection-start-line="100" selection-start-column="59" selection-end-line="100" selection-end-column="59" />
+                <state relative-caret-position="822">
+                  <caret line="105" column="21" lean-forward="true" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
                   <folding>
                     <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#table#0;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -248,17 +248,17 @@
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/forms.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/receive_home.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/AF.html" />
-        <option value="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/test_template.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/__init__.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/views.py" />
+        <option value="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/list_home.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1441" />
-    <option name="y" value="-156" />
+    <option name="y" value="-157" />
     <option name="width" value="1802" />
     <option name="height" value="1054" />
   </component>
@@ -644,7 +644,14 @@
       <option name="project" value="LOCAL" />
       <updated>1591841212256</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="&quot;Fixed None in comments for operators&quot;">
+      <created>1591845084882</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1591845084882</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TodoView">
@@ -657,10 +664,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1441" y="-156" width="1802" height="1054" extended-state="0" />
+    <frame x="1441" y="-157" width="1802" height="1054" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" sideWeight="0.5009346" side_tool="true" weight="0.103212215" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49906543" visible="true" weight="0.20101067" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49906543" weight="0.20101067" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.6074007" visible="true" weight="0.18295218" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.39259928" side_tool="true" weight="0.26105717" />
@@ -776,7 +784,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;create trip ui enhancements&quot;" />
     <MESSAGE value="&quot;Enable/disable submit button&quot;" />
     <MESSAGE value="&quot;Enhanced login&quot;" />
     <MESSAGE value="&quot;Disable testing list&quot;" />
@@ -801,7 +808,8 @@
     <MESSAGE value="&quot;Added confirmation dialog and comments to receive view&quot;" />
     <MESSAGE value="&quot;Adde receive comment, cancel option for admin and table sorting&quot;" />
     <MESSAGE value="&quot;Fixed duplicated materials with quotation&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Fixed duplicated materials with quotation&quot;" />
+    <MESSAGE value="&quot;Fixed None in comments for operators&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Fixed None in comments for operators&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1067,13 +1075,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/base_user.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="83" column="89" selection-start-line="83" selection-start-column="62" selection-end-line="83" selection-end-column="89" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/test_template.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1158,10 +1159,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/base_user.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/list_home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="100" column="59" lean-forward="true" selection-start-line="100" selection-start-column="59" selection-end-line="100" selection-end-column="59" />
+        <state relative-caret-position="822">
+          <caret line="105" column="21" lean-forward="true" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
           <folding>
             <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#table#0;n#div#1;n#div#0;n#!!top" expanded="true" />
