@@ -28,6 +28,7 @@ def create():
             'sender_username': current_user.username,
             'sender_comment': form.sender_comment.data
         }
+        print('sender_comment: ', trip_dict['sender_comment'])
         trip = Trip.create(**trip_dict)
         flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck),
               ('success', 'popup'))
@@ -36,6 +37,7 @@ def create():
 
 
 @trips_blueprint.route('/_get_materials')
+@login_required
 def _get_materials():
     location = request.args.get('origin', '01', type=str)
     bank = MaterialBank.find_by_name(location, False)
@@ -54,9 +56,7 @@ def _get_materials():
 def _get_materials_on_trip():
     trips = Trip.get_all()
     materials_in_progress_l = set([i['material'] for i in trips])
-    dict_of_materials = {}
-    for m in materials_in_progress_l:
-        dict_of_materials[m] = m
+    dict_of_materials = {m: m for m in materials_in_progress_l}
     return json.dumps(dict_of_materials)
 
 @trips_blueprint.route('/receive_dashboard')
@@ -64,7 +64,6 @@ def _get_materials_on_trip():
 def receive_dashboard():
     trips = Trip.get_all()
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
-    # in_progress_trips = [{'trip_id': 23, 'truck': 'T005', 'material': 'Asfalto', 'amount': 15, 'project': 'Calle X', 'origin': 'Mina', 'sender_user': 'sjimenez', 'sent_datetime': datetime.datetime(2020, 5, 12, 18, 35, 1, 422000), 'finalizer_user': None, 'finalized_datetime': None, 'status': 'in_progress'}, {'trip_id': 24, 'truck': 'T002', 'material': 'Grava', 'amount': 13, 'project': 'Libramiento Tecoman', 'origin': 'Mina', 'sender_user': 'sjimenez', 'sent_datetime': datetime.datetime(2020, 5, 12, 18, 35, 1, 422000), 'finalizer_user': None, 'finalized_datetime': None, 'status': 'in_progress'}, {'trip_id': 25, 'truck': 'T001', 'material': 'Grava', 'amount': 14, 'project': 'Libramiento Tecoman', 'origin': 'Mina', 'sender_user': 'sjimenez', 'sent_datetime': datetime.datetime(2020, 5, 12, 18, 35, 1, 422000), 'finalizer_user': None, 'finalized_datetime': None, 'status': 'in_progress'}, {'trip_id': 26, 'truck': 'T003', 'material': 'Grava', 'amount': 15, 'project': 'Libramiento Tecoman', 'origin': 'Mina', 'sender_user': 'user1', 'sent_datetime': datetime.datetime(2020, 5, 12, 1, 12, 4, 212000), 'finalizer_user': None, 'finalized_datetime': None, 'status': 'in_progress'}]
     return render_template('receive_home.html', in_progress_trips=in_progress_trips)
 
 
@@ -74,9 +73,10 @@ def receive():
     try:
         trip_id = request.form.get('trip_id')
         status = request.form.get('status')
-        print(status)
-
         finalizer_comment = request.form.get('finalizer_comment')
+        if finalizer_comment is None:
+            finalizer_comment = ""
+        print('finalizer_comment: ', finalizer_comment)
         trip = Trip.find_by_tripid(trip_id)
         trip.finalize(current_user.username, status, finalizer_comment)
         if status == 'complete':

@@ -101,7 +101,8 @@ bottom: .5em;
 			       data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
 			       data-show-export="true"
 			       data-filter-control="true"
-			       data-pagination="true" style="font-size:.8rem">
+			       data-pagination="true"  data-page-size=25 data-page-list="[25, 50, 100, 200, All]"
+			       style="font-size:.8rem">
 		      <thead>
 		        <tr class="text-center align-middle">
 					<th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
@@ -148,12 +149,6 @@ bottom: .5em;
 		    </table>
 	</div>
 </div>
-
-<!--$('#finalized_table').bootstrapTable('destroy').bootstrapTable({-->
-    <!--exportDataType: 'all',-->
-	<!--exportTypes: ['csv', 'txt', 'excel'],-->
-	<!--iconSize: 'sm'-->
-	<!--})-->
 
 <script>
   $(function() {
