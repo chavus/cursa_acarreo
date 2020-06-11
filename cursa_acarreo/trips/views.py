@@ -4,6 +4,7 @@ import cursa_acarreo.trips.forms as f
 from cursa_acarreo.models.trip import Trip
 from cursa_acarreo.models.general import MaterialBank, Project
 from cursa_acarreo.security import mustbe_admin
+import json
 
 trips_blueprint = Blueprint('trips', __name__)
 
@@ -48,6 +49,15 @@ def _get_materials():
     material_choices = [(m, m) for m in materials]
     return jsonify(material_choices)
 
+@trips_blueprint.route('/_get_materials_on_trip')
+@login_required
+def _get_materials_on_trip():
+    trips = Trip.get_all()
+    materials_in_progress_l = set([i['material'] for i in trips])
+    dict_of_materials = {}
+    for m in materials_in_progress_l:
+        dict_of_materials[m] = m
+    return json.dumps(dict_of_materials)
 
 @trips_blueprint.route('/receive_dashboard')
 @login_required

@@ -1,10 +1,11 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, render_template
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 import locale
 import pytz
 import os
 import git
+import json
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -58,6 +59,10 @@ login_manager.login_message = 'Ingresa tus credenciales para acceder!'
 def index():
     return redirect(url_for('trips.create'))
 
+
+@app.route('/test')
+def test():
+    return json.dumps({'GRAVA 1.5"': 'GRAVA 1.5"', 'val2': 'val2'})
 
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint

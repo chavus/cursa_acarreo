@@ -93,17 +93,24 @@ bottom: .5em;
 
 	<!--Finalized table-->
 	<div class="tab-pane fade" id="finalized-pill" role="tabpanel" aria-labelledby="pills-finalized-tab">
-			<table class="table-responsive table table-striped table-sm"  id="finalized_table" data-toggle="table"
-			       data-show-export="true" data-toolbar=".toolbar" data-search="true" data-search-align="right"
-			       data-show-search-clear-button="true" data-show-columns="true" data-show-columns-search="true"
-			       data-show-columns-toggle-all="true" data-buttons-align="right" data-sortable="true"
-			       data-filter-control="true" data-pagination="true" style="font-size:.8rem">
+			<table class="table-responsive table table-striped table-sm"  id="finalized_table"
+			       data-toggle="table"
+			       data-sortable="true"
+			       data-buttons-align="right"
+			       data-search="true" data-search-align="right" data-show-search-clear-button="true"
+			       data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
+			       data-show-export="true"
+			       data-filter-control="true"
+			       data-pagination="true" style="font-size:.8rem">
 		      <thead>
 		        <tr class="text-center align-middle">
 					<th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
 					<th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
 					<th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
-					<th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select">Material</th>
+					<th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select"
+					    data-filter-data=url:{{url_for('trips._get_materials_on_trip')}}
+
+					     id="material_column">Material</th>
 					<th class="align-middle" data-field="amount" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
 					<th class="align-middle" data-field="origin" data-sortable="true" data-filter-control="select">Origen</th>
 					<th class="align-middle" data-field="destination" data-sortable="true" data-filter-control="select">Destino</th>
@@ -117,7 +124,6 @@ bottom: .5em;
 		      </thead>
 		      <tbody>
 		      {% for trip in finalized_trips %}
-		       <ul>
 				<tr class="text-center">
 					<td class="align-middle">{{trip['trip_id']}}</td>
 					{% if trip['status'] == "complete" %}
@@ -136,24 +142,28 @@ bottom: .5em;
 					<td class="align-middle">{{trip['finalizer_user']}}</td>
 					<td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
 					<td class="align-middle"><div class="trunc">{{trip['finalizer_comment']}}</div></td>
-
 				</tr>
-		       </ul>
 		      {% endfor %}
 		      </tbody>
 		    </table>
 	</div>
 </div>
 
+<!--$('#finalized_table').bootstrapTable('destroy').bootstrapTable({-->
+    <!--exportDataType: 'all',-->
+	<!--exportTypes: ['csv', 'txt', 'excel'],-->
+	<!--iconSize: 'sm'-->
+	<!--})-->
+
 <script>
   $(function() {
-	$('#finalized_table').bootstrapTable('destroy').bootstrapTable({
+	$('#finalized_table').bootstrapTable('refreshOptions', {
 	    exportDataType: 'all',
 		exportTypes: ['csv', 'txt', 'excel'],
 		iconSize: 'sm'
 		})
-    })
 
+	})
 </script>
 
 {% endblock %}
