@@ -47,7 +47,10 @@ class Trip(db.Document):
     def json(self):
         trip_dict = dict()
         for i in self:
-            trip_dict[i] = self[i]
+            if (i == 'sender_comment' or i == 'finalizer_comment') and (self[i] is None):
+                trip_dict[i] = ''
+            else:
+                trip_dict[i] = self[i]
         return trip_dict
 
     def save_to_db(self):
