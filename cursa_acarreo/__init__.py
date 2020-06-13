@@ -1,10 +1,11 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, render_template
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 import locale
 import pytz
 import os
 import git
+import json
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -28,10 +29,12 @@ if environment == 'master' or environment == 'production':
     app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
                                       'connect': False}
     print('Configuring as master/production environment')
+    app_env = 'PROD'
 else:
     app.config['MONGODB_SETTINGS'] = {'host': 'mongodb+srv://dbuser:sa170687@cursaacarreocluster-dev-gjrrh.mongodb.net/general?retryWrites=true&w=majority',
                                       'connect': False}
     print('Configuring as development environment')
+    app_env = 'DEV'
 
 
 app.config['SECRET_KEY'] = 'secretkey'
@@ -56,6 +59,10 @@ login_manager.login_message = 'Ingresa tus credenciales para acceder!'
 def index():
     return redirect(url_for('trips.create'))
 
+
+@app.route('/test')
+def test():
+    return json.dumps({'GRAVA 1.5"': 'GRAVA 1.5"', 'val2': 'val2'})
 
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint
