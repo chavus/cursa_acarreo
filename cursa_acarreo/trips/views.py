@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify, send_from_directory
 from flask_login import login_required, current_user
 import cursa_acarreo.trips.forms as f
 from cursa_acarreo.models.trip import Trip
@@ -100,3 +100,6 @@ def list():
                              key=lambda i: i['trip_id'], reverse=True)
     return render_template('list_home.html', in_progress_trips=in_progress_trips, finalized_trips=finalized_trips)
 
+@trips_blueprint.route('/test.pdf')
+def test_print():
+    return send_from_directory('temp', 'test.pdf')
