@@ -106,4 +106,6 @@ def test_print():
 
 @trips_blueprint.route('/printbt') 
 def test_printbt():
-    return json.dumps( {'type': 0, 'content': "Printing!", 'bold': 1, 'align': 2, 'format': 0} )  
+    j = json.dumps( [{"type": 0, 'content': "Printing!", 'bold': 1, 'align': 2, 'format': 0}] )  
+    print(j)
+    return j
