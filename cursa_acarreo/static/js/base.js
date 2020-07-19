@@ -1,3 +1,3 @@
 export const elements = {
-    alertButton: document.querySelector('#alert_btn')
+    alertButton: document.querySelector('#print_raw')
 }
