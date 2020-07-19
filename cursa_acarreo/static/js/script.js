@@ -5,7 +5,7 @@ console.log('Hello from script5.js')
 //alert('Loading script.js')
 
 function sendUrlToPrint(){
-    var url = 'http://127.0.0.1:5000/test.pdf'
+    var url = 'https://cursa-acarreo-dev.herokuapp.com/test.pdf'
     var  beforeUrl = 'intent:';
     var  afterUrl = '#Intent;';
     // Intent call with component

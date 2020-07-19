@@ -103,3 +103,7 @@ def list():
 @trips_blueprint.route('/test.pdf')
 def test_print():
     return send_from_directory('temp', 'test.pdf')
+
+@trips_blueprint.route('/printbt') 
+def test_printbt():
+    return json.dumps( {'type': 0, 'content': "Printing!", 'bold': 1, 'align': 2, 'format': 0} )  
