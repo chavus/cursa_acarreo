@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 import locale
@@ -64,6 +64,7 @@ def index():
 @app.route('/test')
 def test():
     return json.dumps({'GRAVA 1.5"': 'GRAVA 1.5"', 'val2': 'val2'})
+
 
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint

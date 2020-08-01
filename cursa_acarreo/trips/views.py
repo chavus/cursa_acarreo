@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify, send_from_directory
+from flask import Blueprint, render_template, flash, request, jsonify
 from flask_login import login_required, current_user
 import cursa_acarreo.trips.forms as f
 from cursa_acarreo.trips.ticket import Ticket
@@ -13,7 +13,7 @@ trips_blueprint = Blueprint('trips', __name__)
 
 @trips_blueprint.route('/create_home') #, methods=['GET', 'POST']
 @login_required
-def create():
+def create_home():
     form = f.CreateTripForm()
     form.truck.choices = f.truck_choices()
     form.origin.choices = [('section_label', '-------Bancos-------')] + f.bank_choices() + \
@@ -21,20 +21,6 @@ def create():
     form.material.choices = f.material_choices()
     form.destination.choices = [('section_label', '-------Obras--------')] + f.project_choices() + \
                                [('section_label', '-------Bancos-------')] + f.bank_choices()
-    # if form.validate_on_submit():
-    #     trip_dict = {
-    #         'truck_id': form.truck.data,
-    #         'material_name': form.material.data,
-    #         'origin_name': form.origin.data,
-    #         'destination_name': form.destination.data,
-    #         'sender_username': current_user.username,
-    #         'sender_comment': form.sender_comment.data
-    #     }
-    #     print('sender_comment: ', trip_dict['sender_comment'])
-    #     trip = Trip.create(**trip_dict)
-    #     flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck),
-    #           ('success', 'popup'))
-    #     return redirect(url_for('trips.create'))
     return render_template('create_home.html', form=form)
 
 
@@ -68,6 +54,7 @@ def get_trip_ticket():
         return jsonify(ticket_b64=ticket_b64.decode()), 200
     except Exception as e:
         return jsonify(error=e.args[0]), 400
+
 
 @trips_blueprint.route('/_get_materials')
 @login_required

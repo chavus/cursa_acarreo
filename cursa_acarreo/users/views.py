@@ -18,7 +18,7 @@ def login():
             next = request.args.get('next')
 
             if not next:
-                next = url_for('trips.create')
+                next = url_for('trips.create_home')
             return redirect(next)
         else:
             form.password.errors.append('Contraseña incorrecta')
