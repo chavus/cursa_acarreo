@@ -10,6 +10,7 @@ import json
 login_manager = LoginManager()
 app = Flask(__name__)
 
+project_dir = os.getcwd()
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 
@@ -57,7 +58,7 @@ login_manager.login_message = 'Ingresa tus credenciales para acceder!'
 
 @app.route('/')
 def index():
-    return redirect(url_for('trips.create'))
+    return redirect(url_for('trips.create_home'))
 
 
 @app.route('/test')

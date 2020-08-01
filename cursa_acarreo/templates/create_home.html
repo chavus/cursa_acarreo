@@ -3,15 +3,7 @@
 
 {% block content %}
 
-
-<button id="print_raw">Print with Raw</button>
-
-<a href="my.bluetoothprint.scheme://https://cursa-acarreo-dev.herokuapp.com/printbt">Print with BT printer</a>
-
-
-
-
-<form class="needs-validation" novalidate method="POST" id="create_form">
+<form class="needs-validation" novalidate id="create_form">
 	{{form.hidden_tag()}}
 	{{ form.csrf_token() }}
 
@@ -165,17 +157,12 @@
 			</div>
 
 	      <div class="modal-footer">
-	        <!--<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" id="modify_button">Modifcar</button>-->
-		      <input class="btn btn-primary btn-lg btn-block py-3" id="submit" name="submit" type="submit"
-		             value="{{ form.submit.label.text }}" {% if form.truck.choices  == [] %}disabled{% endif %}>
+		      <button class="btn btn-primary btn-lg btn-block py-3" id="createTrip" name="createTrip" type="button">{{ form.submit.label.text }}</button>
 	      </div>
 	    </div>
 	  </div>
 	</div>
-
 </form>
-
-<script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 
 <style>
@@ -202,21 +189,21 @@
 
 </style>
 
+<script src="{{ url_for('static', filename='js/tripScripts.js') }}"></script> 
 <script>
 
-<!--Load preselected values on select when page is loaded-->
+// <!--Load preselected values on select when page is loaded-->
 	if(localStorage.getItem('keep_selection_value') == 'true' ){
 		$('#keepselection').bootstrapToggle('on');
 		$('#origin').val(localStorage.getItem('origin_selection'));
 		$('#material').val(localStorage.getItem('material_selection'));
 		$('#destination').val(localStorage.getItem('destination_selection'));
 		$('#origin, #material, #destination').prop('disabled','true');
-
 	}else{
 		$('#keepselection').bootstrapToggle('off');
 	}
 
-<!--Save values of select fields to local storage and disable fields when toogle button is turned on-->
+// <!--Save values of select fields to local storage and disable fields when toogle button is turned on-->
 	$('#keepselection').change(function() {
 		localStorage.setItem('keep_selection_value', $('#keepselection').prop('checked'));
 
@@ -241,20 +228,20 @@
 		}
 	});
 
-<!--Remove disable when submiting -->
+// <!--Remove disable when submiting -->
 	$('form').bind('submit', function () {
 		$('#origin, #material, #destination').removeAttr('disabled');
 	});
 
 	$(function(){
 
-	<!--Remove invalid class when selector is clicked-->
+	// <!--Remove invalid class when selector is clicked-->
 		$('.form-control-lg').click(function(){
 			$(this).removeClass('is-invalid');
 			$(this).removeClass('is-invalid_custom');
 		});
 
-	<!--Update materials list based on origin selection-->
+	// <!--Update materials list based on origin selection-->
 
 	    // jQuery selection for the 2 select boxes
         var dropdown = {
@@ -304,7 +291,7 @@
 	        disableOriginInDestination();
 	    });
 
-	    <!--Update confirmation modal with selections-->
+	    // <!--Update confirmation modal with selections-->
 
 		function validateForm(){
 			var validated = true;
@@ -345,16 +332,66 @@
 	            $('#truck_row').text($('#truck').val());
 				$('#confirmationModal').modal('show');
 			}
-
-
 	    	});
 
-		 $('#create_form').submit(function(){
-		    $('#submit').attr('disabled','true');
-		    $('#close_button').attr('disabled','true');
-		    return true;
-		 });
+		//  $('#create_form').submit(function(){
+		//     $('#submit').attr('disabled','true');
+		//     $('#close_button').attr('disabled','true');
+		//     return true;
+		//  });
 
+		 function confirmationModal(tripID, truckID, ticketB64){
+			swal(`Viaje #${tripID} con camión ${truckID} creado!`,'','success',{
+				closeOnClickOutside: false,
+				buttons: {
+					reprint: {
+						text: "Reimprimir",
+						value: "reprint",
+						closeModal: false
+					},
+					confirm: "OK"
+				}
+			}).then((ret) => {
+				// If OK button is clicked without clicking Reprint button
+				if (ret === 'reprint'){
+					printImage(ticketB64);
+				} else {
+					location.reload()
+				}  
+				// If Reprint button is clicked... Listeners handle behavior
+				swal.stopLoading()
+				$('.swal-button--reprint').click(()=>{
+					$('.swal-button--reprint').removeClass('swal-button--loading')
+					printImage(ticketB64);
+				});
+				$('.swal-button--confirm').click(()=>{
+					location.reload();
+				});
+			})
+		 }
+
+
+		 $('#createTrip').click(async () =>  {
+			displayInnerLoader($('#createTrip')[0], 'Creando viaje...', 'lg');
+		    $('#createTrip').attr('disabled','true');
+		    $('#close_button').attr('disabled','true');
+			trip_info = {
+				truck_id: $('#truck').val(),
+				material_name: $('#material').val(),
+				origin_name: $('#origin').val(),
+				destination_name: $('#destination').val(),
+				sender_comment: $('#sender_comment').val()
+			};
+			try{
+				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", 											trip_info)
+				const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripRes.trip_id})
+				printImage(ticketRes.ticket_b64);
+				confirmationModal(tripRes.trip_id, trip_info.truck_id, ticketRes.ticket_b64)
+				$('#confirmationModal').modal('hide');
+			}catch(error){
+				alert(`ERROR: No se pudo crear viaje.\nDetalle: ${error.responseText}`)
+			};
+			});
 	});
 
 </script>

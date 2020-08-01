@@ -1,15 +1,17 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify, send_from_directory
 from flask_login import login_required, current_user
 import cursa_acarreo.trips.forms as f
+from cursa_acarreo.trips.ticket import Ticket
 from cursa_acarreo.models.trip import Trip
 from cursa_acarreo.models.general import MaterialBank, Project
 from cursa_acarreo.security import mustbe_admin
 import json
 
+
 trips_blueprint = Blueprint('trips', __name__)
 
 
-@trips_blueprint.route('/create', methods=['GET', 'POST'])
+@trips_blueprint.route('/create_home') #, methods=['GET', 'POST']
 @login_required
 def create():
     form = f.CreateTripForm()
@@ -18,23 +20,54 @@ def create():
                           [('section_label', '-------Obras--------')] + f.project_choices()
     form.material.choices = f.material_choices()
     form.destination.choices = [('section_label', '-------Obras--------')] + f.project_choices() + \
-                            [('section_label', '-------Bancos-------')] + f.bank_choices()
-    if form.validate_on_submit():
-        trip_dict = {
-            'truck_id': form.truck.data,
-            'material_name': form.material.data,
-            'origin_name': form.origin.data,
-            'destination_name': form.destination.data,
-            'sender_username': current_user.username,
-            'sender_comment': form.sender_comment.data
-        }
-        print('sender_comment: ', trip_dict['sender_comment'])
-        trip = Trip.create(**trip_dict)
-        flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck),
-              ('success', 'popup'))
-        return redirect(url_for('trips.create'))
+                               [('section_label', '-------Bancos-------')] + f.bank_choices()
+    # if form.validate_on_submit():
+    #     trip_dict = {
+    #         'truck_id': form.truck.data,
+    #         'material_name': form.material.data,
+    #         'origin_name': form.origin.data,
+    #         'destination_name': form.destination.data,
+    #         'sender_username': current_user.username,
+    #         'sender_comment': form.sender_comment.data
+    #     }
+    #     print('sender_comment: ', trip_dict['sender_comment'])
+    #     trip = Trip.create(**trip_dict)
+    #     flash('Viaje #{} con camión {} creado!'.format(trip.trip_id, trip.truck),
+    #           ('success', 'popup'))
+    #     return redirect(url_for('trips.create'))
     return render_template('create_home.html', form=form)
 
+
+@trips_blueprint.route('/create_trip', methods=['POST'])
+@login_required
+def create_trip():
+    trip_dict = {
+        'truck_id': request.form.get('truck_id'),
+        'material_name': request.form.get('material_name'),
+        'origin_name': request.form.get('origin_name'),
+        'destination_name': request.form.get('destination_name'),
+        'sender_username': current_user.username,
+        'sender_comment': request.form.get('sender_comment')
+        }
+    try:
+        trip = Trip.create(**trip_dict)
+        return jsonify({'trip_id': trip.trip_id}), 200
+    except Exception as e:
+        return jsonify({'error': e.args[0]}), 400
+
+
+@trips_blueprint.route('/get_trip_ticket')
+@login_required
+def get_trip_ticket():
+    try:
+        trip_id = request.args.get('trip_id')
+        trip_dict = Trip.find_by_tripid(int(trip_id))
+        ticket = Ticket(trip_dict)
+        ticket.create_ticket()
+        ticket_b64 = ticket.encode_b64()
+        return jsonify(ticket_b64=ticket_b64.decode()), 200
+    except Exception as e:
+        return jsonify(error=e.args[0]), 400
 
 @trips_blueprint.route('/_get_materials')
 @login_required
@@ -51,6 +84,7 @@ def _get_materials():
     material_choices = [(m, m) for m in materials]
     return jsonify(material_choices)
 
+
 @trips_blueprint.route('/_get_materials_on_trip')
 @login_required
 def _get_materials_on_trip():
@@ -58,6 +92,7 @@ def _get_materials_on_trip():
     materials_in_progress_l = set([i['material'] for i in trips])
     dict_of_materials = {m: m for m in materials_in_progress_l}
     return json.dumps(dict_of_materials)
+
 
 @trips_blueprint.route('/receive_dashboard')
 @login_required
@@ -99,13 +134,3 @@ def list():
     finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
                              key=lambda i: i['trip_id'], reverse=True)
     return render_template('list_home.html', in_progress_trips=in_progress_trips, finalized_trips=finalized_trips)
-
-@trips_blueprint.route('/test.pdf')
-def test_print():
-    return send_from_directory('temp', 'test.pdf')
-
-@trips_blueprint.route('/printbt') 
-def test_printbt():
-    j = json.dumps( [{"type": 0, 'content': "Printing!", 'bold': 1, 'align': 2, 'format': 0}] )  
-    print(j)
-    return j
