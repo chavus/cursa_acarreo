@@ -11,7 +11,7 @@ import json
 trips_blueprint = Blueprint('trips', __name__)
 
 
-@trips_blueprint.route('/create_home') #, methods=['GET', 'POST']
+@trips_blueprint.route('/create_home')
 @login_required
 def create_home():
     form = f.CreateTripForm()

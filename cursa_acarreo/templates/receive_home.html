@@ -39,7 +39,7 @@
 
 					</tr>
 					<tr>
-						<td colspan="3">
+						<td colspan="4">
 							<div id="accordion{{trip['trip_id']}}" class="collapse" data-parent="#accordiontable">
 								<table class="table table-borderless" style="width: 90%; margin: 0px auto;">
 
@@ -67,9 +67,10 @@
 										<th class="text-nowrap font-weight-bold">Hora de Envío:</th>
 										<td>{{trip['sent_datetime'] | formatdate_mx }}</td>
 									</tr>
-									{% if current_user.is_admin%}
+									
 									<tr>
 										<th>
+											{% if current_user.is_admin%}
 											<button type="button" class="btn btn-danger cancellation_button"
 											        style="font-size: .75rem;"
 											        value="{'trip_id': '{{trip['trip_id']}}','truck': '{{trip['truck']}}',
@@ -77,12 +78,21 @@
 											        'destination': '{{trip['destination']}}' }">
 												<span class="fa fa-ban"></span>
 												Cancelar Viaje</button>
+											{% endif %}
 										</th>
+										<td>
+											<button type="button" class="btn btn-secondary reprint-btn" id="reprint-btn-{{trip['trip_id']}}"
+											style="font-size: .75rem;"
+											data-trip_id={{trip['trip_id']}}
+											onclick="reprintTicket(`{{trip['trip_id']}}`)">
+											<span class="fa fa-print"></span>
+											Re-imprimir ticket</button>
+										</td>
 									<td>
 
 									</td>
 									</tr>
-									{% endif %}
+									
 
 								</table>
 
@@ -148,15 +158,32 @@
 </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/tripScripts.js') }}"></script> 
 <script>
+	// Reprint function
+	async function reprintTicket(tripID) {
+
+		try{
+			const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripID});
+			printImage(ticketRes.ticket_b64);
+		}catch(error){
+			swal(`ERROR: No se pudo imprimir ticket.\nDetalle: ${error.responseText}`, '', 'error');
+		}		
+	};
+
 	$(function () {
+
+		// Add event listener to Reprint buttons to display Loader
+		document.querySelectorAll('.reprint-btn').forEach(item=>item.addEventListener('click',
+		(click)=>{
+			displayLoader(click.target.closest('.reprint-btn'), ' ', 'sm', 'afterbegin')
+			setTimeout(clearLoader,4000)
+		}))
 
 		var trip_dict
 		$('.confirmation_button, .cancellation_button').click(function(){
 			trip_dict = JSON.parse($(this).val().replace(/"/g,"\\\"").replace(/'/g,"\""));
-			console.log($(this))
 			if ($(this).hasClass("confirmation_button")){
-				console.log("In confirmation");
 				$('#modalHeader').text("Recibir viaje: #" + trip_dict.trip_id);
 				$('#complete_trip_button').css({"background-color": "#007bff","border-color": "#007bff", "color": "white"});
 				$('#cancel-icon-p').attr("hidden","hidden")
@@ -165,7 +192,6 @@
 
 				}
 			else if ($(this).hasClass("cancellation_button")){
-				console.log("In cancellation");
 				$('#modalHeader').text("¿Seguro que desea cancelar viaje: #" + trip_dict.trip_id + "?");
 				$('#complete_trip_button').css({"background-color": "#dc3545","border-color": "#dc3545", "color": "white"});
 				$('#cancel-icon-p').removeAttr("hidden")
@@ -196,7 +222,6 @@
 		}
 
 		$('#complete_trip_button').click(function(){
-			console.log('value of status: ', $(this).val())
 			finalizeTrip(trip_dict.trip_id, $(this).val(), $('#receiver_comment').val());
 			$('#complete_trip_button').attr('disabled','true');
 		});

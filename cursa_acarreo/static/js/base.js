@@ -1,25 +1,29 @@
-// export const elements = {
+// const elements = {
 
 // };
 
 const elementsString = {
-    innerLoader: 'innerLoader'
+    loader: 'loader'
 };
 
 
-function displayInnerLoader(parent, text, size='sm'){
+function displayLoader(parent, text='', size='sm', position='inner'){
+    // position = 'inner', 'afterbegin', 'beforeend'
     const sizeRem = size === 'lg' ? '1.5' : '1' 
 
     markup = ` 
-        <span class="spinner-border ${elementsString.innerLoader}" style="width: ${sizeRem}rem; height: ${sizeRem}rem;" role="status" aria-hidden="true"></span>
-        <span>   ${text}</span>
+        <span class="spinner-border ${elementsString.loader}" style="width: ${sizeRem}rem; height: ${sizeRem}rem;" role="status" aria-hidden="true"></span>
+        <span class=${elementsString.loader}>   ${text}</span>
     `
-    console.log(parent)
-    console.log(markup);
-    parent.innerHTML = markup
+    if (position === 'inner'){
+        parent.innerHTML = markup
+    }else{
+        parent.insertAdjacentHTML(position, markup)
+    }
+    
 }
 
-function clearInnerLoader(){
-    const loader = document.querySelector(`.${elementsString.innerLoader}`)
-    if (loader) loader.parentElement.removeChild(loader)
+function clearLoader(){
+    const loaderList = document.querySelectorAll(`.${elementsString.loader}`)
+    loaderList.forEach((el) => el.parentElement.removeChild(el))
 }

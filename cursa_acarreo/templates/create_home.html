@@ -3,6 +3,8 @@
 
 {% block content %}
 
+<!-- <button id='testBtn'>Test</button> -->
+
 <form class="needs-validation" novalidate id="create_form">
 	{{form.hidden_tag()}}
 	{{ form.csrf_token() }}
@@ -220,7 +222,6 @@
 		}else{
 			$('#origin, #material, #destination').removeAttr('disabled');
 			if($('#origin').val() == null) {
-				console.log('in if')
 		        $('#material').prop('disabled','true');
 		        $('#destination').prop('disabled','true');
 
@@ -334,12 +335,6 @@
 			}
 	    	});
 
-		//  $('#create_form').submit(function(){
-		//     $('#submit').attr('disabled','true');
-		//     $('#close_button').attr('disabled','true');
-		//     return true;
-		//  });
-
 		 function confirmationModal(tripID, truckID, ticketB64){
 			swal(`Viaje #${tripID} con camión ${truckID} creado!`,'','success',{
 				closeOnClickOutside: false,
@@ -349,30 +344,47 @@
 						value: "reprint",
 						closeModal: false
 					},
-					confirm: "OK"
+					confirm: {
+						text: "   OK   ",
+						closeModal: false
+					}
 				}
 			}).then((ret) => {
 				// If OK button is clicked without clicking Reprint button
 				if (ret === 'reprint'){
 					printImage(ticketB64);
+					displayLoader( $('.swal-button--reprint')[0], '  ', 						size='sm', position='afterbegin')
+					setTimeout(clearLoader, 3000)
 				} else {
+					$('.swal-button--confirm').attr('disabled','true');
+					$('.swal-button--reprint').attr('disabled','true');
+					displayLoader($('.swal-button--confirm')[0],'')
 					location.reload()
 				}  
 				// If Reprint button is clicked... Listeners handle behavior
 				swal.stopLoading()
-				$('.swal-button--reprint').click(()=>{
-					$('.swal-button--reprint').removeClass('swal-button--loading')
+				$('.swal-button--reprint').click((click)=>{
 					printImage(ticketB64);
+					click.target.classList.remove('swal-button--loading')
+					displayLoader(click.target, '  ',
+									size='sm',
+									position='afterbegin')
+					setTimeout(clearLoader, 3000)
 				});
-				$('.swal-button--confirm').click(()=>{
+				$('.swal-button--confirm').click((click)=>{
+					click.target.classList.remove('swal-button--loading')
+					$('.swal-button--confirm').attr('disabled','true');
+					$('.swal-button--reprint').attr('disabled','true');
+					displayLoader(click.target)
 					location.reload();
 				});
 			})
 		 }
 
+		//  $('#testBtn').click(()=>{printImage(image)})
 
 		 $('#createTrip').click(async () =>  {
-			displayInnerLoader($('#createTrip')[0], 'Creando viaje...', 'lg');
+			displayLoader($('#createTrip')[0], 'Creando viaje...', 'lg');
 		    $('#createTrip').attr('disabled','true');
 		    $('#close_button').attr('disabled','true');
 			trip_info = {
@@ -386,10 +398,15 @@
 				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", 											trip_info)
 				const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripRes.trip_id})
 				printImage(ticketRes.ticket_b64);
-				confirmationModal(tripRes.trip_id, trip_info.truck_id, ticketRes.ticket_b64)
-				$('#confirmationModal').modal('hide');
+				setTimeout(() => {
+					$('#confirmationModal').modal('hide');
+					confirmationModal(tripRes.trip_id, trip_info.truck_id, ticketRes.ticket_b64)
+				}, 1000);
+				
 			}catch(error){
-				alert(`ERROR: No se pudo crear viaje.\nDetalle: ${error.responseText}`)
+				swal(`ERROR: No se pudo crear viaje.\nDetalle: ${error.responseText}`, '', 'error').then(()=>location.reload())
+				
+				// alert(`ERROR: No se pudo crear viaje.\nDetalle: ${error.responseText}`)
 			};
 			});
 	});
