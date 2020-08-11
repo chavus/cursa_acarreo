@@ -4,21 +4,42 @@
 {% block content %}
 
 <style>
+	.confirmation-table tr td{
+		padding-top: 8px;
+		padding-bottom: 8px;
+	}
+	.confirmation-table tr th{
+		padding-top: 8px;
+		padding-bottom: 8px;
+	}
 
 </style>
 
+<script src="{{ url_for('static', filename='js/plugins/html5-qrcode.min.js') }}"></script>
+
+<!-- <button id="test-btn">Test</button> -->
+<div class="d-flex align-items-center flex-column bd-highlight mb-3" >
+	<div id="qr-reader" style="width:300px;"></div>
+	<!-- <div id="qr-reader-results"></div> -->
+	<button class="btn btn-primary" id="receive-scan-btn">
+		<div><i class="fa fa-qrcode fa-4" aria-hidden="true" style="font-size: 3rem;"></i> </div>
+		Recibir viaje
+	</button>
+	<button class="btn btn-secondary btn-lg mt-0" id="cancel-scan-btn" hidden><i class="fa fa-times" aria-hidden="true" style="font-size: 1rem;"></i> Cancelar</button>
+</div>
 
 <div class="jumbotron pt-2 px-2">
-<h4 class="text-center">En proceso <span class="badge badge-pill badge-primary"> {{ in_progress_trips|length }} viajes</span>
+<h4 class="text-center">En proceso <span class="badge badge-pill badge-secondary"> {{ in_progress_trips|length }} viajes</span>
 </h4>
 
 <div class="table-responsive table-hover">
 	<table class="table table-sm">
 		<thead>
 			<th></th>
+			<th class="text-center">#</th>
 			<th class="text-center">Camión</th>
 			<th class="text-center">Destino</th>
-			<th class="text-center">Recibir</th>
+
 
 		</thead>
 
@@ -28,15 +49,9 @@
 					<tr class="clickable"  style="background-color: #dfe2e5">
 						<td class="align-middle" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}">
 							<i class="fa fa-plus-square" id="icon{{trip['trip_id']}}" aria-hidden="true" style="color:gray"></i></td>
-						<td class="align-middle text-center" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}">{{trip['truck']}}</td>
+						<td class="align-middle text-center" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}">{{trip['trip_id']}}</td>
+						<td class="align-middle text-center" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}" nowrap>{{trip['truck']}}</td>
 						<td class="align-middle text-center" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}">{{trip['destination']}}</td>
-						<td class="align-middle text-center">
-							<button type="button" class="btn btn-primary confirmation_button"
-							        value="{'trip_id': '{{trip['trip_id']}}','truck': '{{trip['truck']}}',
-							        'origin': '{{trip['origin']}}','material': '{{trip['material']}}',
-							        'destination': '{{trip['destination']}}' }">
-								Recibir viaje #{{trip['trip_id']}}</button></td>
-
 					</tr>
 					<tr>
 						<td colspan="4">
@@ -70,15 +85,10 @@
 									
 									<tr>
 										<th>
-											{% if current_user.is_admin%}
-											<button type="button" class="btn btn-danger cancellation_button"
-											        style="font-size: .75rem;"
-											        value="{'trip_id': '{{trip['trip_id']}}','truck': '{{trip['truck']}}',
-											        'origin': '{{trip['origin']}}','material': '{{trip['material']}}',
-											        'destination': '{{trip['destination']}}' }">
-												<span class="fa fa-ban"></span>
-												Cancelar Viaje</button>
-											{% endif %}
+											<button type="button" class="btn btn-primary receive-complete-button"
+													value="{{trip['trip_id']}}"
+													style="font-size: .75rem;">
+												Recibir viaje</button>
 										</th>
 										<td>
 											<button type="button" class="btn btn-secondary reprint-btn" id="reprint-btn-{{trip['trip_id']}}"
@@ -88,12 +98,18 @@
 											<span class="fa fa-print"></span>
 											Re-imprimir ticket</button>
 										</td>
-									<td>
-
-									</td>
 									</tr>
-									
-
+									{% if current_user.is_admin%}
+									<tr>
+										<th>
+											<button type="button" class="btn btn-danger receive-cancel-button"
+											        style="font-size: .75rem; width: 94px;"
+											        value="{{trip['trip_id']}}" nowrap>
+												<span class="fa fa-ban"></span>
+												Cancelar viaje</button>
+										</th>
+									</tr>
+									{% endif %}
 								</table>
 
 
@@ -109,56 +125,57 @@
 </div>
 
 <!-- CONFIRMATION Modal -->
-<div class="modal fade" id="receiveConfirmationModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+<div class="modal fade" id="receive-confirmation-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
      role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header" style="padding-top:10px; padding-bottom:10px; background-color: lightgrey;">
-        <h4 class="modal-title text-center" id="modalHeader"></h4>
-        <button type="button" id="close_button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title text-center" id="receive-modal-header"></h5>
+        <button type="button" id="receive-modal-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" style="font-size: 2rem;">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="font-size:1.2rem">
-	        <p id="cancel-icon-p" class="text-center"><i class="fa fa-exclamation-circle fa-5" aria-hidden="true" style="font-size:4rem; color:#ffc107"></i></p>
-	      <table class="table table-borderless" style="width: 90%; margin: 0px auto; padding: .3rem;">
+      <div class="modal-body" style="font-size:1rem;padding-top: 10px;padding-bottom: 10px;">
+	        <p id="cancel-icon-p" class="text-center" style="margin-bottom: 0px;">
+				<i class="fa fa-exclamation-circle fa-5" aria-hidden="true" style="font-size:4rem; color:#ffc107"
+				></i>
+			</p>
+	      <table class="table table-borderless confirmation-table" style="width: 90%; margin: 0px auto; padding: .3rem;">
 			<tr>
 				<th class="font-weight-bold" style="padding-right:0 ;">Camión:</th>
-				<td id="truck_row" style="padding-left: .3rem;"></td>
+				<td id="receive-modal-truck" style="padding-left: .3rem;"></td>
 			</tr>
-			<tr>
+			<tr class="confirmation-row">
 				<th class="font-weight-bold" style="padding-right:0 ;">Origen: </th>
-				<td id="origin_row" style="padding-left: .3rem;"></td>
+				<td id="receive-modal-origin" style="padding-left: .3rem;"></td>
 			</tr>
 			<tr>
 				<th class="font-weight-bold" style="padding-right:0 ;">Material: </th>
-				<td id="material_row" style="padding-left: .3rem;"></td>
+				<td id="receive-modal-material" style="padding-left: .3rem;"></td>
 			</tr>
 			<tr>
 				<th class="font-weight-bold" style="padding-right:0 ;">Destino:</th>
-				<td id="destination_row" style="padding-left: .3rem;"></td>
+				<td id="receive-modal-destination" style="padding-left: .3rem;"></td>
 			</tr>
 		</table>
 	      {% if current_user.is_admin%}
 	      <div class="form-group mt-2 mb-0">
-		      <label class="font-weight-bold" for="receiver_comment" style="font-size:1rem">Agregar comentario:</label>
-		      <textarea id="receiver_comment" maxlength="100" name="receiver_comment" placeholder="Máximo 100 caracteres" style="font-size:1rem; width: 306px; height: 72px; "></textarea>
+		      <label class="font-weight-bold" for="receive-modal-comment" style="font-size:1rem">Agregar comentario:</label>
+		      <textarea id="receive-modal-comment" maxlength="100" name="receive-modal-comment" placeholder="Máximo 100 caracteres" style="font-size:1rem; width: 306px; height: 72px; "></textarea>
 	      </div>
-	      {% endif %}
+		  {% endif %}
+		  
+	    <button class="btn btn-primary btn-lg btn-block py-3" id="receive-modal-complete-btn" value=""></button>
 
 		</div>
-
-
-      <div class="modal-footer">
-	      <button class="btn btn-primary btn-lg btn-block py-3" id="complete_trip_button"
-	             value=""></button>
-      </div>
     </div>
   </div>
 </div>
 </div>
 
+<div></div>
 <script src="{{ url_for('static', filename='js/tripScripts.js') }}"></script> 
+<script src="{{ url_for('static', filename='js/receiveScripts.js') }}"></script>
 <script>
 	// Reprint function
 	async function reprintTicket(tripID) {
@@ -179,57 +196,6 @@
 			displayLoader(click.target.closest('.reprint-btn'), ' ', 'sm', 'afterbegin')
 			setTimeout(clearLoader,4000)
 		}))
-
-		var trip_dict
-		$('.confirmation_button, .cancellation_button').click(function(){
-			trip_dict = JSON.parse($(this).val().replace(/"/g,"\\\"").replace(/'/g,"\""));
-			if ($(this).hasClass("confirmation_button")){
-				$('#modalHeader').text("Recibir viaje: #" + trip_dict.trip_id);
-				$('#complete_trip_button').css({"background-color": "#007bff","border-color": "#007bff", "color": "white"});
-				$('#cancel-icon-p').attr("hidden","hidden")
-				$('#complete_trip_button').text("Recibir Viaje")
-				$('#complete_trip_button').val("complete")
-
-				}
-			else if ($(this).hasClass("cancellation_button")){
-				$('#modalHeader').text("¿Seguro que desea cancelar viaje: #" + trip_dict.trip_id + "?");
-				$('#complete_trip_button').css({"background-color": "#dc3545","border-color": "#dc3545", "color": "white"});
-				$('#cancel-icon-p').removeAttr("hidden")
-				$('#complete_trip_button').text("Cancelar Viaje")
-				$('#complete_trip_button').val("canceled")
-
-				}
-			$('#origin_row').text(trip_dict.origin);
-			$('#material_row').text(trip_dict.material);
-			$('#destination_row').text(trip_dict.destination);
-			$('#truck_row').text(trip_dict.truck);
-			$('#receiveConfirmationModal').modal('show');
-		});
-
-		function finalizeTrip(trip_id,status, comment) {
-		    var return_of_func
-			var send = {trip_id: trip_id,
-						status: status,
-			            finalizer_comment: comment};
-			$.post("{{ url_for('trips.receive') }}", send, function(return_val){
-				if(return_val == 'success'){
-					location.reload()
-				}else{
-					swal(return_val,'','error');
-				}
-
-			});
-		}
-
-		$('#complete_trip_button').click(function(){
-			finalizeTrip(trip_dict.trip_id, $(this).val(), $('#receiver_comment').val());
-			$('#complete_trip_button').attr('disabled','true');
-		});
-
-		$('#cancel_trip_button').click(function(){
-			finalizeTrip(trip_dict.trip_id,'cancel', $('#receiver_comment').val());
-			$('#complete_trip_button').attr('disabled','true');
-		});
 
 		$('.collapse').on('show.bs.collapse', function () {
 			var id = $(this).attr('id').replace("accordion","");

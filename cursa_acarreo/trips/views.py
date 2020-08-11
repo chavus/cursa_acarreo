@@ -71,7 +71,6 @@ def _get_materials():
     material_choices = [(m, m) for m in materials]
     return jsonify(material_choices)
 
-
 @trips_blueprint.route('/_get_materials_on_trip')
 @login_required
 def _get_materials_on_trip():
@@ -88,28 +87,42 @@ def receive_dashboard():
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
     return render_template('receive_home.html', in_progress_trips=in_progress_trips)
 
+@trips_blueprint.route('/_get_trip_info')
+# @login_required
+def get_trip_info():
+    try:
+        print(request.args.get('trip_id'))
+        trip_id = request.args.get('trip_id')
+        trip = Trip.find_by_tripid(trip_id)
+        return trip.to_json(), 200
+    except Exception as e:
+        print(e)
+        return jsonify(error=f'Server Error: {e.args[0]}'), 500
+
 
 @trips_blueprint.route('/receive', methods=['POST'])
-@login_required
+# @login_required
 def receive():
     try:
-        trip_id = request.form.get('trip_id')
-        status = request.form.get('status')
-        finalizer_comment = request.form.get('finalizer_comment')
+        trip_id = request.json['trip_id']
+        status = request.json['status']
+        finalizer_comment = request.json['finalizer_comment']
         if finalizer_comment is None:
             finalizer_comment = ""
-        print('finalizer_comment: ', finalizer_comment)
         trip = Trip.find_by_tripid(trip_id)
-        trip.finalize(current_user.username, status, finalizer_comment)
-        if status == 'complete':
-            flash('Viaje #{} con camión {} ha sido recibido!'.format(trip_id, trip.truck),
-                  ('success', 'popup'))
-        elif status == 'canceled':
-            flash('Viaje #{} con camión {} ha sido cancelado!'.format(trip_id, trip.truck),
-                  ('success', 'popup'))
-        return jsonify('success')
+        if trip.status == 'in_progress':
+            trip.finalize(current_user.username, status, finalizer_comment)
+            if status == 'complete':
+                return jsonify(message=f'Viaje #{trip_id} con camión {trip.truck} ha sido RECIBIDO!'), 200
+            elif status == 'canceled':
+                return jsonify(message=f'Viaje #{trip_id} con camión {trip.truck} ha sido CANCELADO!'), 200
+        else:
+            status_translation = {'complete': 'COMPLETO', 'canceled': 'CANCELADO'}
+            return jsonify(message=f'Viaje #{trip_id} con camión {trip.truck} ya había sido completado con estatus: \
+                                    {status_translation[trip.status]}!'), 409
     except Exception as e:
-        return jsonify(e.args[0])
+        print(e)
+        return jsonify(error=f'Server Error: {e.args[0]}'), 500
 
 
 @trips_blueprint.route('/list')
