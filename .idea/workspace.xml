@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/static/js/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/static/js/base.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/create_home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/receive_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/receive_home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/trips/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/trips/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/users/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -363,13 +355,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588214470140</updated>
     </task>
-    <task id="LOCAL-00002" summary="&quot;Adding uwsgi to requirements&quot;">
-      <created>1588628714222</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1588628714222</updated>
-    </task>
     <task id="LOCAL-00003" summary="&quot;Adding uwsgi to requirements&quot;">
       <created>1588629250119</created>
       <option name="number" value="00003" />
@@ -706,7 +691,14 @@
       <option name="project" value="LOCAL" />
       <updated>1596435164477</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="&quot;Added scanning to receive, Reorganized receive page buttons&quot;">
+      <created>1597187307841</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1597187307842</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TodoView">
@@ -838,7 +830,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;Enhanced validation errors of login&quot;" />
     <MESSAGE value="&quot;Enhanced validation errors of create trips&quot;" />
     <MESSAGE value="&quot;Dummy to test form-control vs form-control-lg&quot;" />
     <MESSAGE value="&quot;Moving back to selectors with form-control-lg&quot;" />
@@ -863,7 +854,8 @@
     <MESSAGE value="&quot;Fixed routing of create_home&quot;" />
     <MESSAGE value="&quot;Updated requirements.txt&quot;" />
     <MESSAGE value="&quot;Added spinners and added Reprint button to Receive view&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Added spinners and added Reprint button to Receive view&quot;" />
+    <MESSAGE value="&quot;Added scanning to receive, Reorganized receive page buttons&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Added scanning to receive, Reorganized receive page buttons&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
