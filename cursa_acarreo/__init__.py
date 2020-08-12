@@ -60,12 +60,6 @@ login_manager.login_message = 'Ingresa tus credenciales para acceder!'
 def index():
     return redirect(url_for('trips.create_home'))
 
-
-@app.route('/test')
-def test():
-    return json.dumps({'GRAVA 1.5"': 'GRAVA 1.5"', 'val2': 'val2'})
-
-
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint
 from cursa_acarreo.error_pages.handlers import error_pages
