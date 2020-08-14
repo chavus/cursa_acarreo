@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_cursa_acarreo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_cursa_acarreo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cursa_acarreo/static/js/receiveScripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/static/js/receiveScripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/receive_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/receive_home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cursa_acarreo/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/templates/login.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,15 +19,6 @@
     <splitter split-orientation="horizontal" split-proportion="0.7491857">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/base_user.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="45">
-                  <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/cursa_acarreo/security.py">
               <provider selected="true" editor-type-id="text-editor">
@@ -77,11 +67,23 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app_cursa_acarreo.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="135">
                   <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/login.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="167">
+                  <caret line="39" column="28" lean-forward="true" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
+                  <folding>
+                    <element signature="n#style#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -213,6 +215,7 @@
       <find>popover</find>
       <find>submit</find>
       <find>formatdate_mx</find>
+      <find>logo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -248,7 +251,6 @@
         <option value="$PROJECT_DIR$/cursa_acarreo/.locales" />
         <option value="$PROJECT_DIR$/cursa_acarreo/models/user.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/models/general.py" />
-        <option value="$PROJECT_DIR$/cursa_acarreo/templates/login.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/cursa_acarreo/dummy.js" />
         <option value="$PROJECT_DIR$/cursa_acarreo/trips/forms.py" />
@@ -268,6 +270,7 @@
         <option value="$PROJECT_DIR$/cursa_acarreo/__init__.py" />
         <option value="$PROJECT_DIR$/cursa_acarreo/templates/base_user.html" />
         <option value="$PROJECT_DIR$/app_cursa_acarreo.py" />
+        <option value="$PROJECT_DIR$/cursa_acarreo/templates/login.html" />
       </list>
     </option>
   </component>
@@ -295,6 +298,25 @@
               <item name="cursa-acarreo" type="b2602c69:ProjectViewProjectNode" />
               <item name="cursa-acarreo" type="462c0819:PsiDirectoryNode" />
               <item name="cursa_acarreo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cursa-acarreo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cursa-acarreo" type="462c0819:PsiDirectoryNode" />
+              <item name="cursa_acarreo" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cursa-acarreo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cursa-acarreo" type="462c0819:PsiDirectoryNode" />
+              <item name="cursa_acarreo" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="app_images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cursa-acarreo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cursa-acarreo" type="462c0819:PsiDirectoryNode" />
+              <item name="cursa_acarreo" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -345,20 +367,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588214470140</updated>
-    </task>
-    <task id="LOCAL-00006" summary="&quot;fixed header&quot;">
-      <created>1589089402518</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1589089402518</updated>
-    </task>
-    <task id="LOCAL-00007" summary="&quot;create trip ui enhancements&quot;">
-      <created>1589256770588</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1589256770588</updated>
     </task>
     <task id="LOCAL-00008" summary="&quot;Enable/disable submit button&quot;">
       <created>1589260882219</created>
@@ -689,7 +697,21 @@
       <option name="project" value="LOCAL" />
       <updated>1597206919068</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="&quot;Fixed camera errors&quot;">
+      <created>1597377395925</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1597377395926</updated>
+    </task>
+    <task id="LOCAL-00056" summary="&quot;Removed alerts&quot;">
+      <created>1597377693993</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1597377693994</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TodoView">
@@ -705,11 +727,11 @@
     <frame x="1457" y="-157" width="1440" height="822" extended-state="0" />
     <layout>
       <window_info id="Favorites" order="0" sideWeight="0.5009346" side_tool="true" weight="0.103212215" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49812734" visible="true" weight="0.30091614" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49812734" visible="true" weight="0.30091614" />
       <window_info id="Structure" order="2" sideWeight="0.50187266" side_tool="true" weight="0.2677116" />
       <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.6060606" weight="0.25068492" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.3939394" side_tool="true" weight="0.25068492" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="2" sideWeight="0.6483439" visible="true" weight="0.5" />
+      <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.6483439" visible="true" weight="0.5" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" sideWeight="0.76093024" weight="0.32917964" />
       <window_info anchor="bottom" id="Version Control" order="5" sideWeight="0.4976744" weight="0.49012345" />
@@ -821,8 +843,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;modified to custom style lg-selector&quot;" />
-    <MESSAGE value="&quot;modified to custom inavalid&quot;" />
     <MESSAGE value="&quot;Fixed size width of selectors&quot;" />
     <MESSAGE value="&quot;Format date to mx format and TZ&quot;" />
     <MESSAGE value="&quot;Set locale setting for mx with heroku support&quot;" />
@@ -846,7 +866,9 @@
     <MESSAGE value="&quot;Clear trash files and added receive.js&quot;" />
     <MESSAGE value="&quot;Add htmt-qrcode library&quot;" />
     <MESSAGE value="&quot;Adjusted icons&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Adjusted icons&quot;" />
+    <MESSAGE value="&quot;Fixed camera errors&quot;" />
+    <MESSAGE value="&quot;Removed alerts&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Removed alerts&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -958,16 +980,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-616">
           <caret line="230" column="4" selection-start-line="230" selection-start-column="4" selection-end-line="230" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
-          <folding>
-            <element signature="n#style#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1231,6 +1243,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/templates/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="39" column="28" lean-forward="true" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
+          <folding>
+            <element signature="n#style#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

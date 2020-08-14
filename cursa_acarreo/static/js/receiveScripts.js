@@ -32,6 +32,9 @@ const ReceiveCtrl = () => {
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
                 // Try to get camera with label back first. Otherwise get first camera in list
+                const cameras = devices.flatMap(i=>i.label)
+                console.log(cameras);
+                swal(String(cameras),'')
                 const backCamList = devices.filter(i => i.label.includes('back'));
                 if (backCamList.length !== 0){
                     cameraId = backCamList[0].id
@@ -193,11 +196,11 @@ const ReceiveCtrl = () => {
             receiveElements.receiveScanBtn.
                 setAttribute('disabled', 'disabled')
             // 1.- Identify cam ID
-            let cameraId = localStorage.cameraId; // Check if there is camera saved
-            if (!cameraId){
+            // let cameraId = localStorage.cameraId; // Check if there is camera saved
+            // if (!cameraId){
                 cameraId = await getCamera();
                 localStorage.setItem('cameraId', cameraId)
-            }
+            // }
             receiveElements.receiveScanBtn.
                 setAttribute('hidden', 'hidden')
             receiveElements.receiveCancelScanBtn.removeAttribute('hidden')
