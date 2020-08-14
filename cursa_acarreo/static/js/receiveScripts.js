@@ -32,9 +32,6 @@ const ReceiveCtrl = () => {
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
                 // Try to get camera with label back first. Otherwise get first camera in list
-                console.log(devices);
-                const labelsList = devices.flatMap(i=>i.label)
-                alert(labelsList)
                 const backCamList = devices.filter(i => i.label.includes('back'));
                 if (backCamList.length !== 0){
                     cameraId = backCamList[0].id
