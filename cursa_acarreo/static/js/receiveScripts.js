@@ -32,6 +32,9 @@ const ReceiveCtrl = () => {
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
                 // Try to get camera with label back first. Otherwise get first camera in list
+                console.log(devices);
+                const labelsList = devices.flatMap(i=>i.label)
+                alert(labelsList)
                 const backCamList = devices.filter(i => i.label.includes('back'));
                 if (backCamList.length !== 0){
                     cameraId = backCamList[0].id
@@ -43,6 +46,7 @@ const ReceiveCtrl = () => {
                 swal('No se encontró cámara','Intente recibir viaje manualmente','error')
             }
         }).catch( err =>{
+            console.log(err);
             swal('Error', err.message, 'error')
         });
         return(cameraId);
@@ -67,7 +71,8 @@ const ReceiveCtrl = () => {
                 // Too much verbose
             })
             .catch(err => {
-                swal('Error', err.message, 'error')
+                console.log(err);
+                // swal('Error', err.message, 'error')
             });
             })
     }
@@ -116,10 +121,8 @@ const ReceiveCtrl = () => {
                 status: status,
                 finalizer_comment: comment
             });
-            console.log('Trip received');
-            console.log(ret);
             swal(ret.data.message,'', 'success').then(()=>{
-                cancelScanTrip();
+                // cancelScanTrip();
                 location.reload()});
         }catch(error){
             console.log(error.response);
@@ -134,7 +137,7 @@ const ReceiveCtrl = () => {
                 errorMsg = error.response.statusText
             }
             swal(errorMsg,'', type).then(()=>{
-                cancelScanTrip();
+                // cancelScanTrip();
                 location.reload()})
         }
     };
@@ -151,19 +154,17 @@ const ReceiveCtrl = () => {
                         displayLoader(receiveElements.receiveModalCompleteBtn,
                             ' ', 'lg')
                         await finalizeTrip(tripId, status, ret.comment)
-                        console.log('after finalized');
                         clearLoader()
                         $(`#${elementsId.receiveModalId}`).modal('hide')
 
                     }else if(ret.resp === 'cancel' && scanning){
-                        cancelScanTrip();
                         receiveTrip();
                     }
                 })
             }else{
                 const status_translation = {'complete': 'COMPLETO', 'canceled': 'CANCELADO'}
                 swal(`Viaje ${tripInfo._id} con camión ${tripInfo.truck} ya había sido completado con estatus: ${status_translation[tripInfo.status]}!`, '', 'warning').then(()=> {
-                    cancelScanTrip();
+                    // cancelScanTrip();
                     if (scanning) {receiveTrip()}})
             }   
         }catch(error){
@@ -175,7 +176,7 @@ const ReceiveCtrl = () => {
                 errorMsg = error.response.statusText
             }
             swal(errorMsg,'', 'error').then(()=>{
-                cancelScanTrip();
+                // cancelScanTrip();
                 location.reload()})
         }
     }
@@ -184,7 +185,10 @@ const ReceiveCtrl = () => {
         receiveElements.receiveScanBtn.removeAttribute('hidden');
         receiveElements.receiveScanBtn.removeAttribute('disabled');
         receiveElements.receiveCancelScanBtn.setAttribute('hidden','hidden')
-        if (qrScanner) { qrScanner.stop()}
+        if (qrScanner) { qrScanner.stop().then(ignore => {
+                //ignore
+            }).catch(err=>console.log(err))
+        }
     }
 
     async function receiveTrip() {

@@ -19,7 +19,7 @@
 
 <!-- <button id="test-btn">Test</button> -->
 <div class="d-flex align-items-center flex-column bd-highlight mb-3" >
-	<div id="qr-reader" style="width:300px;"></div>
+	<div id="qr-reader" style="width:320px;"></div>
 	<!-- <div id="qr-reader-results"></div> -->
 	<button class="btn btn-primary" id="receive-scan-btn">
 		<div><i class="fa fa-qrcode fa-4" aria-hidden="true" style="font-size: 3rem;"></i> </div>
@@ -84,12 +84,14 @@
 									</tr>
 									
 									<tr>
+									{% if current_user.is_admin%}
 										<th>
 											<button type="button" class="btn btn-primary receive-complete-button"
 													value="{{trip['trip_id']}}"
 													style="font-size: .75rem;">
 												Recibir viaje</button>
 										</th>
+									{% endif %}
 										<td>
 											<button type="button" class="btn btn-secondary reprint-btn" id="reprint-btn-{{trip['trip_id']}}"
 											style="font-size: .75rem;"
