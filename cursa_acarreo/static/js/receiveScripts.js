@@ -53,6 +53,7 @@ const ReceiveCtrl = () => {
                     cameraId = devices[0].id; } 
                 // More than one camera
                 else { 
+                    alert('IN else');
                     // Filter labels with "back" words
                     const backCamList = devices.filter(d => _containsBackLabel(d.label)); 
                     // Show first camera with label "back"                  
