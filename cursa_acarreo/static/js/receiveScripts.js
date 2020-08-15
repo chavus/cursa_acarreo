@@ -4,6 +4,7 @@ const ReceiveCtrl = () => {
 
     const RECEIVE_URL = '/receive';
     const TRIP_INFO_URL = '/_get_trip_info'
+    const BACK_CAMERAS_LABELS = ['back', 'trasera']
     let qrScanner = undefined;
 
     const elementsId = {
@@ -27,21 +28,48 @@ const ReceiveCtrl = () => {
         receiveModalCloseBtn: document.querySelector('#receive-modal-close')
     };
 
+    function _containsBackLabel(label){ 
+        // Returns true if label of camera contains BACK_CAMERAS_LABELS 
+        for (i=0; i<BACK_CAMERAS_LABELS.length; i++){ 
+            if (label.toLowerCase().includes(BACK_CAMERAS_LABELS[i])){
+                return(true)
+            } 
+        }
+    }
+
     async function getCamera() {
         let cameraId = undefined;
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
                 // Try to get camera with label back first. Otherwise get first camera in list
+                console.log(devices);
                 const cameras = devices.flatMap(i=>i.label)
                 console.log(cameras);
-                swal(String(cameras),'')
-                const backCamList = devices.filter(i => i.label.includes('back'));
-                if (backCamList.length !== 0){
-                    cameraId = backCamList[0].id
-                } else{
-                    console.log('No back camera. Getting default [0]');
+                // swal(String(cameras),'')
+                if (devices.length === 1){ // Only one camera
+                    swal(`Just one camera ${devices[0].label}`,'')
+                    console.log(devices[0].id);
                     cameraId = devices[0].id
-                }
+                } else { // More than one camera
+                    // Filter labels with "back" words
+                    const backCamList = devices.filter(d => _containsBackLabel(d.label));
+                    // Show first camera with label "back"
+                    if (backCamList){
+                        swal(`Getting first camera of back cameras ${backCamList[0].label}`,'')
+                        cameraId = backCamList[0].id}
+                    // If none show camera [1], typically back camera
+                    else {
+                        swal(`No back camera label, getting [1] ${devices[1].label}`,'')
+                        cameraId = devices[1].id}
+                } 
+                // const backCamList = devices.filter(i => i.label.includes('back'));
+                // if (backCamList.length !== 0){
+                //     cameraId = backCamList[0].id
+                // } else{
+                //     console.log('No back camera. Getting default [0]');
+                //     cameraId = devices[0].id
+                // }
+                // console.log(cameraID);
             } else{
                 swal('No se encontró cámara','Intente recibir viaje manualmente','error')
             }
@@ -199,7 +227,7 @@ const ReceiveCtrl = () => {
             // let cameraId = localStorage.cameraId; // Check if there is camera saved
             // if (!cameraId){
                 cameraId = await getCamera();
-                localStorage.setItem('cameraId', cameraId)
+                // localStorage.setItem('cameraId', cameraId)
             // }
             receiveElements.receiveScanBtn.
                 setAttribute('hidden', 'hidden')
