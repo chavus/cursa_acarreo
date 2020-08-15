@@ -41,6 +41,9 @@ const ReceiveCtrl = () => {
         let cameraId = undefined;
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
+                swal(`# of cameras: ${devices.length}\n
+                     labels of cameras: ${String(devices.flatMap(d => d.label))}\n
+                     ids of cacmeras: ${String(devices.flatMap(d => d.id))}`)
                 // Only one camera
                 if (devices.length === 1){ cameraId = devices[0].id } 
                 // More than one camera
