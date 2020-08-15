@@ -41,26 +41,16 @@ const ReceiveCtrl = () => {
         let cameraId = undefined;
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
-                alert('IN devices')
                 // Only one camera
-                if (devices.length === 1){ 
-                    alert(`In Device lenght 1, showing ${devices[0].id}`);
-                    cameraId = devices[0].id; } 
+                if (devices.length === 1){ cameraId = devices[0].id; } 
                 // More than one camera
                 else { 
-                    alert('IN else');
                     // Filter labels with "back" words
                     const backCamList = devices.filter(d => _containsBackLabel(d.label)); 
-                    // Show first camera with label "back"   
-                    alert(`Backcamlist len: ${backCamList.length}`)               
-                    if (backCamList.length > 0){ 
-                        alert(`In backCamLists, showing ${backCamList[0].id}`);
-                        cameraId = backCamList[0].id;}
+                    // Show first camera with label "back"                 
+                    if (backCamList.length > 0){ cameraId = backCamList[0].id; }
                     // If none, show camera [1], typically back camera                   
-                    else { 
-                        alert(`In none, showing ${devices[1].id}`);
-                        alert(`In none, showing ${devices[1].label}`);
-                        cameraId = devices[1].id;}
+                    else { cameraId = devices[1].id; }
                 } 
             } else{
                 swal('No se encontró cámara','Intente recibir viaje manualmente','error')
