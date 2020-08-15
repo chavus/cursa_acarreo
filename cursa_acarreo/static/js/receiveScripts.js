@@ -56,7 +56,9 @@ const ReceiveCtrl = () => {
                     // Show first camera with label "back"                  
                     if (backCamList){ cameraId = backCamList[0].id}
                     // If none, show camera [1], typically back camera                   
-                    else { cameraId = devices[1].id}
+                    else { 
+                        alert(`In none, showing ${devices[0].id}`)
+                        cameraId = devices[0].id}
                 } 
             } else{
                 swal('No se encontró cámara','Intente recibir viaje manualmente','error')
