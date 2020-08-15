@@ -367,20 +367,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588214470140</updated>
     </task>
-    <task id="LOCAL-00012" summary="&quot;Disable testing list&quot;">
-      <created>1589435505759</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1589435505759</updated>
-    </task>
-    <task id="LOCAL-00013" summary="&quot;Disable testing list&quot;">
-      <created>1589698227537</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1589698227538</updated>
-    </task>
     <task id="LOCAL-00014" summary="&quot;Enhanced select fields&quot;">
       <created>1589698453922</created>
       <option name="number" value="00014" />
@@ -710,7 +696,21 @@
       <option name="project" value="LOCAL" />
       <updated>1597467240907</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="&quot;Testing cams for app maker 2&quot;">
+      <created>1597467705375</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1597467705376</updated>
+    </task>
+    <task id="LOCAL-00062" summary="&quot;Testing cams for app maker 3&quot;">
+      <created>1597470605892</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1597470605892</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TodoView">
@@ -842,8 +842,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;set connect:false to mongodb settings&quot;" />
-    <MESSAGE value="&quot;Add development database and configuration&quot;" />
     <MESSAGE value="&quot;Udpated requirements.txt with pygit&quot;" />
     <MESSAGE value="&quot;Code to define if it is a heroku environment or git or none and prod or dev&quot;" />
     <MESSAGE value="&quot;Added confirmation dialog and comments&quot;" />
@@ -867,7 +865,9 @@
     <MESSAGE value="&quot;Test cameras with apps and ios v2&quot;" />
     <MESSAGE value="&quot;Made back camera detection more robust for iOS and Android and PC&quot;" />
     <MESSAGE value="&quot;Testing cams for app maker&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Testing cams for app maker&quot;" />
+    <MESSAGE value="&quot;Testing cams for app maker 2&quot;" />
+    <MESSAGE value="&quot;Testing cams for app maker 3&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Testing cams for app maker 3&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

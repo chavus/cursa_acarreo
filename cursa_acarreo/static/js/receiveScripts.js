@@ -42,23 +42,27 @@ const ReceiveCtrl = () => {
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
                 alert('IN devices')
-                alert(`# of cameras: ${devices.length}\n
-                     labels of cameras: ${String(devices.flatMap(d => d.label))}\n
-                     ids of cacmeras: ${String(devices.flatMap(d => d.id))}`)
+                // alert(`# of cameras: ${devices.length}\n
+                    //  labels of cameras: ${String(devices.flatMap(d => d.label))}\n
+                    //  ids of cacmeras: ${String(devices.flatMap(d => d.id))}`)
                 
 
                 // Only one camera
-                if (devices.length === 1){ cameraId = devices[0].id } 
+                if (devices.length === 1){ 
+                    alert(`In Device lenght 1, showing ${devices[0].id}`);
+                    cameraId = devices[0].id; } 
                 // More than one camera
                 else { 
                     // Filter labels with "back" words
                     const backCamList = devices.filter(d => _containsBackLabel(d.label)); 
                     // Show first camera with label "back"                  
-                    if (backCamList){ cameraId = backCamList[0].id}
+                    if (backCamList){ 
+                        alert(`In backCamLists, showing ${backCamList[0].id}`);
+                        cameraId = backCamList[0].id;}
                     // If none, show camera [1], typically back camera                   
                     else { 
-                        alert(`In none, showing ${devices[0].id}`)
-                        cameraId = devices[0].id}
+                        alert(`In none, showing ${devices[0].id}`);
+                        cameraId = devices[0].id;}
                 } 
             } else{
                 swal('No se encontró cámara','Intente recibir viaje manualmente','error')
