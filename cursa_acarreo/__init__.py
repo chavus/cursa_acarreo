@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 import locale
@@ -10,6 +10,7 @@ import json
 login_manager = LoginManager()
 app = Flask(__name__)
 
+project_dir = os.getcwd()
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 
@@ -38,7 +39,7 @@ else:
 
 
 app.config['SECRET_KEY'] = 'secretkey'
-
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @app.template_filter()
 def formatdate_mx(datetime_val):
@@ -57,12 +58,7 @@ login_manager.login_message = 'Ingresa tus credenciales para acceder!'
 
 @app.route('/')
 def index():
-    return redirect(url_for('trips.create'))
-
-
-@app.route('/test')
-def test():
-    return json.dumps({'GRAVA 1.5"': 'GRAVA 1.5"', 'val2': 'val2'})
+    return redirect(url_for('trips.create_home'))
 
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint
