@@ -56,12 +56,14 @@ const ReceiveCtrl = () => {
                     alert('IN else');
                     // Filter labels with "back" words
                     const backCamList = devices.filter(d => _containsBackLabel(d.label)); 
-                    // Show first camera with label "back"                  
-                    if (backCamList){ 
+                    // Show first camera with label "back"   
+                    alert(`Backcamlist len: ${backCamList.length}`)               
+                    if (backCamList.length > 0){ 
                         alert(`In backCamLists, showing ${backCamList[0].id}`);
                         cameraId = backCamList[0].id;}
                     // If none, show camera [1], typically back camera                   
                     else { 
+                        alert('In none none')
                         alert(`In none, showing ${devices[0].id}`);
                         cameraId = devices[0].id;}
                 } 

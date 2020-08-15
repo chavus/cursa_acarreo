@@ -367,20 +367,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588214470140</updated>
     </task>
-    <task id="LOCAL-00014" summary="&quot;Enhanced select fields&quot;">
-      <created>1589698453922</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1589698453922</updated>
-    </task>
-    <task id="LOCAL-00015" summary="&quot;Added Keep selection toogle button&quot;">
-      <created>1589782833942</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1589782833942</updated>
-    </task>
     <task id="LOCAL-00016" summary="&quot;Added Keep selection toogle button&quot;">
       <created>1589864782280</created>
       <option name="number" value="00016" />
@@ -710,7 +696,21 @@
       <option name="project" value="LOCAL" />
       <updated>1597470605892</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="&quot;Testing cams for app maker 4&quot;">
+      <created>1597471028817</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1597471028817</updated>
+    </task>
+    <task id="LOCAL-00064" summary="&quot;Testing cams for app maker 5&quot;">
+      <created>1597471348284</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1597471348284</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TodoView">
@@ -842,8 +842,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;Udpated requirements.txt with pygit&quot;" />
-    <MESSAGE value="&quot;Code to define if it is a heroku environment or git or none and prod or dev&quot;" />
     <MESSAGE value="&quot;Added confirmation dialog and comments&quot;" />
     <MESSAGE value="&quot;Added confirmation dialog and comments to receive view&quot;" />
     <MESSAGE value="&quot;Adde receive comment, cancel option for admin and table sorting&quot;" />
@@ -867,7 +865,9 @@
     <MESSAGE value="&quot;Testing cams for app maker&quot;" />
     <MESSAGE value="&quot;Testing cams for app maker 2&quot;" />
     <MESSAGE value="&quot;Testing cams for app maker 3&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Testing cams for app maker 3&quot;" />
+    <MESSAGE value="&quot;Testing cams for app maker 4&quot;" />
+    <MESSAGE value="&quot;Testing cams for app maker 5&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Testing cams for app maker 5&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
