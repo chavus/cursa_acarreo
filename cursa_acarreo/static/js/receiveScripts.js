@@ -41,35 +41,17 @@ const ReceiveCtrl = () => {
         let cameraId = undefined;
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
-                // Try to get camera with label back first. Otherwise get first camera in list
-                console.log(devices);
-                const cameras = devices.flatMap(i=>i.label)
-                console.log(cameras);
-                // swal(String(cameras),'')
-                if (devices.length === 1){ // Only one camera
-                    swal(`Just one camera ${devices[0].label}`,'')
-                    console.log(devices[0].id);
-                    cameraId = devices[0].id
-                } else { // More than one camera
+                // Only one camera
+                if (devices.length === 1){ cameraId = devices[0].id } 
+                // More than one camera
+                else { 
                     // Filter labels with "back" words
-                    const backCamList = devices.filter(d => _containsBackLabel(d.label));
-                    // Show first camera with label "back"
-                    if (backCamList){
-                        swal(`Getting first camera of back cameras ${backCamList[0].label}`,'')
-                        cameraId = backCamList[0].id}
-                    // If none show camera [1], typically back camera
-                    else {
-                        swal(`No back camera label, getting [1] ${devices[1].label}`,'')
-                        cameraId = devices[1].id}
+                    const backCamList = devices.filter(d => _containsBackLabel(d.label)); 
+                    // Show first camera with label "back"                  
+                    if (backCamList){ cameraId = backCamList[0].id}
+                    // If none, show camera [1], typically back camera                   
+                    else { cameraId = devices[1].id}
                 } 
-                // const backCamList = devices.filter(i => i.label.includes('back'));
-                // if (backCamList.length !== 0){
-                //     cameraId = backCamList[0].id
-                // } else{
-                //     console.log('No back camera. Getting default [0]');
-                //     cameraId = devices[0].id
-                // }
-                // console.log(cameraID);
             } else{
                 swal('No se encontró cámara','Intente recibir viaje manualmente','error')
             }
@@ -100,7 +82,6 @@ const ReceiveCtrl = () => {
             })
             .catch(err => {
                 console.log(err);
-                // swal('Error', err.message, 'error')
             });
             })
     }
