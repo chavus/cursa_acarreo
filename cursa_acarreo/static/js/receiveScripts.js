@@ -42,11 +42,6 @@ const ReceiveCtrl = () => {
         await Html5Qrcode.getCameras().then(devices => {
             if (devices){
                 alert('IN devices')
-                // alert(`# of cameras: ${devices.length}\n
-                    //  labels of cameras: ${String(devices.flatMap(d => d.label))}\n
-                    //  ids of cacmeras: ${String(devices.flatMap(d => d.id))}`)
-                
-
                 // Only one camera
                 if (devices.length === 1){ 
                     alert(`In Device lenght 1, showing ${devices[0].id}`);
@@ -63,9 +58,9 @@ const ReceiveCtrl = () => {
                         cameraId = backCamList[0].id;}
                     // If none, show camera [1], typically back camera                   
                     else { 
-                        alert('In none none')
-                        alert(`In none, showing ${devices[0].id}`);
-                        cameraId = devices[0].id;}
+                        alert(`In none, showing ${devices[1].id}`);
+                        alert(`In none, showing ${devices[1].label}`);
+                        cameraId = devices[1].id;}
                 } 
             } else{
                 swal('No se encontró cámara','Intente recibir viaje manualmente','error')
