@@ -51,7 +51,7 @@ class Ticket:
         '''
         Format String to max 2 lines no longer than 23 chars each line
         1.- Skip line at 23 chars, add a '-' if it is a work
-        2.- Truncate at 23 on 2nd line and add ...
+        2.- Truncate at 23 on 2nd line and add "..."
         :param value:
         :return:
         '''
