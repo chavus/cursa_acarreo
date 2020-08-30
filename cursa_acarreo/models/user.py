@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def load_user(id):
     return User.find_by_id(id)
 
-
+ROLES = ('operator', 'supervisor', 'admin')
 class User(db.Document, UserMixin):
     """
     User Model
@@ -19,7 +19,7 @@ class User(db.Document, UserMixin):
     name = db.StringField(max_length=50)
     last_name = db.StringField(max_length=50)
     email = db.EmailField(unique=True, sparse=True, max_length=100)
-    is_admin = db.BooleanField(required=True, default=False)
+    role = db.StringField(required=True, choices=ROLES)
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow())
 
     def json(self):
@@ -38,9 +38,9 @@ class User(db.Document, UserMixin):
         return check_password_hash(self.hashed_pwd, password)
 
     @classmethod
-    def add(cls, username, password, email=None, name=None, last_name=None, is_admin=False):
+    def add(cls, username, password, email=None, name=None, last_name=None, role='operator'):
         return cls(username=username, hashed_pwd=generate_password_hash(password), name=name.upper(),
-                   last_name=last_name.upper(), email=email, is_admin=is_admin).save()
+                   last_name=last_name.upper(), email=email, role=role).save()
 
     @classmethod
     def find_by_username(cls, username, raise_if_none=True):

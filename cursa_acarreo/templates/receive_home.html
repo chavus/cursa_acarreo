@@ -84,7 +84,7 @@
 									</tr>
 									
 									<tr>
-									{% if current_user.is_admin%}
+									{% if current_user.role in ['admin', 'supervisor']%}
 										<th>
 											<button type="button" class="btn btn-primary receive-complete-button"
 													value="{{trip['trip_id']}}"
@@ -101,7 +101,7 @@
 											Re-imprimir ticket</button>
 										</td>
 									</tr>
-									{% if current_user.is_admin%}
+									{% if current_user.role in ['admin', 'supervisor']%}
 									<tr>
 										<th>
 											<button type="button" class="btn btn-danger receive-cancel-button"
@@ -160,7 +160,7 @@
 				<td id="receive-modal-destination" style="padding-left: .3rem;"></td>
 			</tr>
 		</table>
-	      {% if current_user.is_admin%}
+	      {% if current_user.role in ['admin', 'supervisor']%}
 	      <div class="form-group mt-2 mb-0">
 		      <label class="font-weight-bold" for="receive-modal-comment" style="font-size:1rem">Agregar comentario:</label>
 		      <textarea id="receive-modal-comment" maxlength="100" name="receive-modal-comment" placeholder="Máximo 100 caracteres" style="font-size:1rem; width: 306px; height: 72px; "></textarea>

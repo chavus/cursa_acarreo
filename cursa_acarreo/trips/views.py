@@ -88,7 +88,7 @@ def receive_dashboard():
     return render_template('receive_home.html', in_progress_trips=in_progress_trips)
 
 @trips_blueprint.route('/_get_trip_info')
-# @login_required
+@login_required
 def get_trip_info():
     try:
         print(request.args.get('trip_id'))
@@ -101,7 +101,7 @@ def get_trip_info():
 
 
 @trips_blueprint.route('/receive', methods=['POST'])
-# @login_required
+@login_required
 def receive():
     try:
         trip_id = request.json['trip_id']

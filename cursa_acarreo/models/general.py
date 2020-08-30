@@ -5,8 +5,6 @@ import datetime
 """
 Validation functions
 """
-
-
 def _validate_no_duplicates(lst):  # General purpose validation
     """
     Validate there are no duplicates values in the field

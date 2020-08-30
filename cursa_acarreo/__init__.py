@@ -40,6 +40,7 @@ else:
 
 app.config['SECRET_KEY'] = 'secretkey'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['ENV'] = app_env
 
 @app.template_filter()
 def formatdate_mx(datetime_val):
