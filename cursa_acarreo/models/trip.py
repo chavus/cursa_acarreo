@@ -3,6 +3,22 @@ from cursa_acarreo.models.general import Truck, Project, Material, MaterialBank
 from cursa_acarreo.models.user import User
 import datetime
 
+"""
+Base Class
+"""
+
+class Base:
+    @classmethod
+    def update_field(cls, field, old_value, new_value):
+        find_query = {field: old_value}
+        update_query = {field: new_value}
+        cls.objects(**find_query).update(**update_query)
+
+
+"""
+Validation Functions
+"""
+
 
 def validate_truck_options(value):
     if value not in Truck.get_list_by('id_code'):
@@ -23,8 +39,14 @@ def validate_user_options(value):
     if value not in User.get_list_by('username'):
         raise db.ValidationError('Usuario {} no encontrado en lista de usuarios.'.format(value))
 
+
+"""
+Model classes
+"""
+
+
 STATUS_LIST = ('in_progress', 'complete', 'canceled')
-class Trip(db.Document):
+class Trip(db.Document, Base):
     """
     Trip model
     """
@@ -32,7 +54,7 @@ class Trip(db.Document):
     trip_id = db.SequenceField(primary_key=True)
     truck = db.StringField(required=True, validation=validate_truck_options)
     material = db.StringField(required=True, validation=validate_material_options)
-    amount = db.IntField(required=False, min_value=0)
+    amount = db.IntField(required=True, min_value=0)
     origin = db.StringField(required=True, validation=validate_location_options)
     destination = db.StringField(required=True, validation=validate_location_options)
     sender_user = db.StringField(required=True, validation=validate_user_options)

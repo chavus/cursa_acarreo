@@ -3,8 +3,22 @@ import datetime
 
 
 """
+Base Class
+"""
+
+
+class Base:
+    @classmethod
+    def update_field(cls, field, old_value, new_value):
+        find_query = {field: old_value}
+        update_query = {field: new_value}
+        cls.objects(**find_query).update(**update_query)
+
+"""
 Validation functions
 """
+
+
 def _validate_no_duplicates(lst):  # General purpose validation
     """
     Validate there are no duplicates values in the field
@@ -33,18 +47,18 @@ Model classes
 """
 
 
-class Driver(db.Document):
+class Driver(db.Document, Base):
     """
     Driver model
     """
     meta = {'collection': 'drivers'}
 
     name = db.StringField(required=True, max_length=50)
-    last_name = db.StringField(unique_with='name', required=True, max_length=50)
+    last_name = db.StringField(unique_with='name', required=False, max_length=50)
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
 
     @classmethod
-    def add(cls, name, last_name):
+    def add(cls, name, last_name=''):
         return cls(name=name.upper(), last_name=last_name.upper()).save()
 
     @classmethod
@@ -58,7 +72,8 @@ class Driver(db.Document):
     def get_all(cls):
         return [{'name': i.name, 'last_name': i.last_name} for i in cls.objects]
 
-class Supplier(db.Document):
+
+class Supplier(db.Document, Base):
     """
     Supplier model
     """
@@ -81,7 +96,7 @@ class Supplier(db.Document):
         return [t[param] for t in cls.objects]
 
 
-class Customer(db.Document):
+class Customer(db.Document, Base):
     """
     Customer model
     """
@@ -104,7 +119,7 @@ class Customer(db.Document):
         return [t[param] for t in cls.objects]
 
 
-class Truck(db.Document):
+class Truck(db.Document, Base):
     """
     Truck model
     """
@@ -114,11 +129,11 @@ class Truck(db.Document):
     color = db.StringField(max_length=50)
     serial_number = db.StringField(required=True, unique=True, sparse=True, max_length=50)  # mark as required???
     plate = db.StringField(required=False, unique=True, sparse=True, max_length=50)  # mark as required???
-    capacity = db.IntField(required=False, min_value=0)
+    capacity = db.IntField(required=True, min_value=0)
     driver = db.ReferenceField(Driver, dbref=True, reverse_delete_rule=db.NULLIFY)
     owner = db.ReferenceField(Supplier, dbref=True, reverse_delete_rule=db.NULLIFY)
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
-    is_active = db.BooleanField(default=True)
+    is_active = db.BooleanField(required=True, default=True)
 
     def json(self):
         skip_items = []
@@ -213,15 +228,14 @@ class Truck(db.Document):
         return [t.id_code for t in cls.objects if t.is_active]
 
 
-
-class Material(db.Document):
+class Material(db.Document, Base):
     """
     Material class
     """
     meta = {'collection': 'materials'}
     name = db.StringField(required=True, unique=True, max_length=50)
     description = db.StringField(max_length=150)
-    is_active = db.BooleanField(default=True)
+    is_active = db.BooleanField(required=True, default=True)
 
     @classmethod
     def add(cls, name, description=None, is_active=None):
@@ -247,7 +261,7 @@ class Material(db.Document):
         return [t[param] for t in cls.objects]
 
 
-class Project(db.Document):
+class Project(db.Document, Base):
     """
     Project class
     """
@@ -340,17 +354,17 @@ class Project(db.Document):
 
 
 
-class MaterialBank(db.Document):
+class MaterialBank(db.Document, Base):
     """
     MaterialBank class
     """
     meta = {'collection': 'material_banks'}
     name = db.StringField(required=True, unique=True, max_length=50)
-    location = db.StringField(unique=True, sparse=True, max_length=150)
+    location = db.StringField(max_length=150)  # unique=True, sparse=True,
     description = db.StringField(max_length=150)
     owner = db.ReferenceField(Supplier, dbref=True, reverse_delete_rule=db.NULLIFY)
     materials_available = db.ListField(db.ReferenceField(Material, dbref=True, reverse_delete_rule=db.PULL),
-                                      validation=_validate_no_duplicate_objects)
+                                       validation=_validate_no_duplicate_objects)
     royalty = db.DecimalField(min_value=0, precision=2, default=0)
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
     is_active = db.BooleanField(default=True)

@@ -53,8 +53,11 @@
 
 	<div class="collapse navbar-collapse justify-content-sm-end" id="navbarNavAltMarkup">
 		<div class="navbar-nav ">
-			<a class="nav-item nav-link active" href=#>Usuario: {{ current_user.username }}</a>
+			<a class="nav-item nav-link active">Usuario: {{ current_user.username }}</a>
+			<a class="nav-item nav-link active" href="{{url_for('admin.admin_panel')}}">Panel Admin</a>
 			<a class="nav-item nav-link active" href="{{url_for('users.logout')}}">Salir</a>
+
+
 		</div>
 	</div>
 </nav>
@@ -88,6 +91,10 @@
 
 <div class="container">
 <div class=" row my-2 justify-content-center">
+	
+<!-- <a class="btn btn-primary" href="{{url_for('admin.admin_panel')}}">web test 1</a> -->
+	<!-- <a class="btn btn-primary" href="">web test 2</a> -->
+
 	<a class="col ml-3 p-1 py-3 btn btn-warning btn-lg" href="{{url_for('trips.create_home')}}"><span class="fas fa-plus"></span>      Crear</a>
 	<a class="col mx-3 p-1 py-3 btn btn-warning btn-lg text-nowrap" href="{{url_for('trips.receive_dashboard')}}"><span class="fas fa-check"></span>      Recibir</a>
 	{% if current_user.role == 'admin' %}
@@ -120,7 +127,6 @@
       text-align: center;
   }
 </style>
-
 
 </body>
 </html>

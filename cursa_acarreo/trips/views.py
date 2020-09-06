@@ -10,7 +10,6 @@ import json
 
 trips_blueprint = Blueprint('trips', __name__)
 
-
 @trips_blueprint.route('/create_home')
 @login_required
 def create_home():
@@ -86,6 +85,7 @@ def receive_dashboard():
     trips = Trip.get_all()
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
     return render_template('receive_home.html', in_progress_trips=in_progress_trips)
+
 
 @trips_blueprint.route('/_get_trip_info')
 @login_required

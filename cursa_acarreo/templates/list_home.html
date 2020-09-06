@@ -2,32 +2,13 @@
 {% extends 'base_user.html' %}
 
 {% block content %}
-<style>
-<!--@media (max-width: 575px) {-->
-    <!--body {-->
-        <!--font-size: .9rem;-->
-    <!--}-->
 
-<!--}-->
+<style>
 
 .trunc{
   width:280px;
-  <!--white-space: nowrap;-->
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-table.dataTable thead .sorting:after,
-table.dataTable thead .sorting:before,
-table.dataTable thead .sorting_asc:after,
-table.dataTable thead .sorting_asc:before,
-table.dataTable thead .sorting_asc_disabled:after,
-table.dataTable thead .sorting_asc_disabled:before,
-table.dataTable thead .sorting_desc:after,
-table.dataTable thead .sorting_desc:before,
-table.dataTable thead .sorting_desc_disabled:after,
-table.dataTable thead .sorting_desc_disabled:before {
-bottom: .5em;
 }
 
 .complete-style{
@@ -39,7 +20,6 @@ bottom: .5em;
     color: #dc3545;
     font-weight: bold;
 }
-
 
 </style>
 
@@ -94,60 +74,61 @@ bottom: .5em;
 
 	<!--Finalized table-->
 	<div class="tab-pane fade" id="finalized-pill" role="tabpanel" aria-labelledby="pills-finalized-tab">
-			<table class="table-responsive table table-striped table-sm"  id="finalized_table"
-			       data-toggle="table"
-			       data-sortable="true"
-			       data-buttons-align="right"
-			       data-search="true" data-search-align="right" data-show-search-clear-button="true"
-			       data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
-			       data-show-export="true"
-			       data-filter-control="true"
-			       data-pagination="true"  data-page-size=25 data-page-list="[25, 50, 100, 200, All]" data-pagination-v-align="top"
-			       style="font-size:.8rem">
-		      <thead>
-		        <tr class="text-center align-middle">
-					<th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
-					<th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
-					<th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
-					<th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select"
-					    data-filter-data=url:{{url_for('trips._get_materials_on_trip')}}
 
-					     id="material_column">Material</th>
-					<th class="align-middle" data-field="amount" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
-					<th class="align-middle" data-field="origin" data-sortable="true" data-filter-control="select">Origen</th>
-					<th class="align-middle" data-field="destination" data-sortable="true" data-filter-control="select">Destino</th>
-					<th class="align-middle" data-field="sender_user" data-sortable="true" data-filter-control="select">Envió</th>
-					<th class="align-middle" data-field="sent_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
-					<th class="align-middle" data-field="sender_comment" data-filter-control="input">Comentario Envío</th>
-					<th class="align-middle" data-field="finalizer_user" data-sortable="true" data-filter-control="select">Finalizó</th>
-					<th class="align-middle" data-field="finalized_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
-					<th class="align-middle" data-field="finalizer_comment" data-filter-control="input">Comentario Recibo</th>
-		        </tr>
-		      </thead>
-		      <tbody>
-		      {% for trip in finalized_trips %}
-				<tr class="text-center">
-					<td class="align-middle">{{trip['trip_id']}}</td>
-					{% if trip['status'] == "complete" %}
-						<td class="align-middle complete-style">Completo</td>
-					{% elif trip['status'] == "canceled" %}
-						<td class="align-middle canceled-style">Cancelado</td>
-					{% endif %}
-					<td class="align-middle">{{trip['truck']}}</td>
-					<td class="align-middle">{{trip['material']}}</td>
-					<td class="align-middle">{{trip['amount']}}</td>
-					<td class="align-middle">{{trip['origin']}}</td>
-					<td class="align-middle">{{trip['destination']}}</td>
-					<td class="align-middle">{{trip['sender_user']}}</td>
-					<td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
-					<td class="align-middle"><div class="trunc">{{trip['sender_comment']}}</div></td>
-					<td class="align-middle">{{trip['finalizer_user']}}</td>
-					<td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
-					<td class="align-middle"><div class="trunc">{{trip['finalizer_comment']}}</div></td>
-				</tr>
-		      {% endfor %}
-		      </tbody>
-		    </table>
+		<table class="table-responsive table table-striped table-sm"  id="finalized_table"
+				data-toggle="table"
+				data-sortable="true"
+				data-buttons-align="right"
+				data-search="true" data-search-align="right" data-show-search-clear-button="true"
+				data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
+				data-show-export="true"
+				data-filter-control="true"
+				data-pagination="true"  data-page-size=25 data-page-list="[25, 50, 100, 200, All]" data-pagination-v-align="top"
+				style="font-size:.8rem">
+			<thead>
+			<tr class="text-center align-middle">
+				<th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
+				<th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
+				<th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
+				<th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select"
+					data-filter-data=url:{{url_for('trips._get_materials_on_trip')}}
+
+						id="material_column">Material</th>
+				<th class="align-middle" data-field="amount" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
+				<th class="align-middle" data-field="origin" data-sortable="true" data-filter-control="select">Origen</th>
+				<th class="align-middle" data-field="destination" data-sortable="true" data-filter-control="select">Destino</th>
+				<th class="align-middle" data-field="sender_user" data-sortable="true" data-filter-control="select">Envió</th>
+				<th class="align-middle" data-field="sent_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
+				<th class="align-middle" data-field="sender_comment" data-filter-control="input">Comentario Envío</th>
+				<th class="align-middle" data-field="finalizer_user" data-sortable="true" data-filter-control="select">Finalizó</th>
+				<th class="align-middle" data-field="finalized_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
+				<th class="align-middle" data-field="finalizer_comment" data-filter-control="input">Comentario Recibo</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for trip in finalized_trips %}
+			<tr class="text-center">
+				<td class="align-middle">{{trip['trip_id']}}</td>
+				{% if trip['status'] == "complete" %}
+					<td class="align-middle complete-style">Completo</td>
+				{% elif trip['status'] == "canceled" %}
+					<td class="align-middle canceled-style">Cancelado</td>
+				{% endif %}
+				<td class="align-middle">{{trip['truck']}}</td>
+				<td class="align-middle">{{trip['material']}}</td>
+				<td class="align-middle">{{trip['amount']}}</td>
+				<td class="align-middle">{{trip['origin']}}</td>
+				<td class="align-middle">{{trip['destination']}}</td>
+				<td class="align-middle">{{trip['sender_user']}}</td>
+				<td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
+				<td class="align-middle"><div class="trunc">{{trip['sender_comment']}}</div></td>
+				<td class="align-middle">{{trip['finalizer_user']}}</td>
+				<td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
+				<td class="align-middle"><div class="trunc">{{trip['finalizer_comment']}}</div></td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
 	</div>
 </div>
 

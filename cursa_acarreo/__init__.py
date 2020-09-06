@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for
 from flask_mongoengine import MongoEngine
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 import locale
 import pytz
 import os
@@ -38,7 +38,7 @@ else:
     app_env = 'DEV'
 
 
-app.config['SECRET_KEY'] = 'secretkey'
+app.config['SECRET_KEY'] = 'secretkey' # >`o"Lb0bR@yMc<|&GM6g,nCQd([?-6|8QHNLAKc,l~^4]Lq,g(&h9tn$,uxQTn@
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['ENV'] = app_env
 
@@ -59,12 +59,18 @@ login_manager.login_message = 'Ingresa tus credenciales para acceder!'
 
 @app.route('/')
 def index():
-    return redirect(url_for('trips.create_home'))
+    print(current_user.is_authenticated)
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect(url_for('trips.admin_dashboard'))
+    else:
+        return redirect(url_for('trips.create_home'))
 
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint
+from cursa_acarreo.admin.views import admin_blueprint
 from cursa_acarreo.error_pages.handlers import error_pages
 
 app.register_blueprint(users_blueprint)
 app.register_blueprint(trips_blueprint)
+app.register_blueprint(admin_blueprint)
 app.register_blueprint(error_pages)
