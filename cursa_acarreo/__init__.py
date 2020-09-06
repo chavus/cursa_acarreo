@@ -57,6 +57,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'users.login'
 login_manager.login_message = 'Ingresa tus credenciales para acceder!'
 
+
 @app.route('/')
 def index():
     print(current_user.is_authenticated)
@@ -64,6 +65,7 @@ def index():
         return redirect(url_for('trips.admin_dashboard'))
     else:
         return redirect(url_for('trips.create_home'))
+
 
 from cursa_acarreo.users.views import users_blueprint
 from cursa_acarreo.trips.views import trips_blueprint
