@@ -77,12 +77,43 @@ class Supplier(db.Document, Base):
     """
     Supplier model
     """
-    meta = {'collection': 'suppliers'}
-    name = db.StringField(required=True, unique=True, sparse=True, max_length=50)
+    meta = {'collection': 'suppliers',
+            'indexes': [
+                {'fields': ['name'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 }]}
+
+    name = db.StringField(required=True, unique= True, sparse=True, max_length=50)
+
+    def json(self):
+        skip_items = []
+        d_json = dict()
+        for i in self:
+            if i not in skip_items:
+                d_json[i] = self[i]
+        return d_json
+
+    def save_to_db(self):
+        """
+        Try to save instance. If there is an error, it reload info from DB to discard changes.
+        :param self:
+        :return:
+        """
+        try:
+            return self.save()
+        except Exception as e:
+            self.reload()
+            raise e
+
+    def update(self, **field_value):
+        for fv in field_value:
+            self[fv] = field_value[fv]
+        return self.save_to_db()
 
     @classmethod
-    def add(cls, name):
-        return cls(name=name.upper()).save()
+    def add(cls, **field_value):
+        return cls(**field_value).save()
 
     @classmethod
     def find_by_name(cls, name, raise_if_none=True):
@@ -92,8 +123,16 @@ class Supplier(db.Document, Base):
         return supplier
 
     @classmethod
+    def find_by_id(cls, _id):
+        return cls.objects(id=_id).first()
+
+    @classmethod
     def get_list_by(cls, param):
         return [t[param] for t in cls.objects]
+
+    @classmethod
+    def get_all(cls):
+        return [i.json() for i in cls.objects]
 
 
 class Customer(db.Document, Base):

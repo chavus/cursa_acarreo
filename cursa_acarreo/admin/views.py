@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, request, url_for, redirect
 from cursa_acarreo.admin import forms
 from cursa_acarreo.models.user import User
+from cursa_acarreo.models import general as g
 from flask_login import login_user, current_user, login_required, logout_user
 
 admin_blueprint = Blueprint('admin', __name__)
@@ -38,7 +39,7 @@ def user_add_edit(username=None):
                 del user_new['csrf_token']
                 del user_new['password_confirm']
                 User.add(**user_new)
-                flash(f"Usuario {user_new['username']} fue agregado", ['success', 'popup'])
+                flash(f"Usuario {user_new['username'].lower()} fue agregado", ['success', 'popup'])
                 return redirect(url_for('admin.admin_users'))
             except Exception as e:
                 return render_template('admin_panel/error_pages/500.html', error=e, back_page='admin.admin_users')
@@ -52,11 +53,12 @@ def user_add_edit(username=None):
                 if user_form['password'] == '':
                     del user_form['password']
                 user.update(**user_form)
-                flash(f"Usuario {username} fue actualizado.", ['success', 'popup'])
+                flash(f"Usuario {username.lower()} fue actualizado.", ['success', 'popup'])
                 return redirect(url_for('admin.admin_users'))
             except Exception as e:
                 flash(f"Error: {e}", ['error', 'popup'])
     return render_template('admin_panel/user_add_edit.html', form=form, user=User)
+
 
 @admin_blueprint.route('/admin-users/delete/<username>', methods=['GET', 'POST'])
 def user_delete(username):
@@ -68,3 +70,29 @@ def user_delete(username):
         print(e)
         flash(f"Error: { e }", ['error', 'popup'])
     return redirect(url_for('admin.admin_users'))
+
+
+@admin_blueprint.route('/suppliers-admin')
+def suppliers_admin():
+    suppliers = g.Supplier.get_all()
+    return render_template('admin_panel/suppliers_admin.html', suppliers=suppliers)
+
+
+@admin_blueprint.route('/suppliers-admin/new', methods=['GET', 'POST'])
+@admin_blueprint.route('/suppliers-admin/edit/<name>', methods=['GET', 'POST'])
+def supplier_add_edit(name=None):
+    pass
+
+
+@admin_blueprint.route('/suppliers-admin/delete/<id>', methods=['GET', 'POST'])
+def supplier_delete(id):
+    try:
+        print(id)
+        supplier = g.Supplier.find_by_id(id)
+        name = supplier.name
+        supplier.delete()
+        flash(f'Proveedor {name} fue eliminado.', ['success', 'popup'])
+    except Exception as e:
+        print(e)
+        flash(f"Error: { e }", ['error', 'popup'])
+    return redirect(url_for('admin.suppliers_admin'))

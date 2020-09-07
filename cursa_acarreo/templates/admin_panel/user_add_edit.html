@@ -7,14 +7,15 @@
 			content:'*';
 			color: #d41616;
 	}
+
 </style>
 
-<form method="POST" novalidate autocomplete="false">
+<form id="form" method="POST" novalidate autocomplete="false">
 	{{ form.hidden_tag()}}
 	<div class="modal-body">
 		<div class="form-group">
 			<label class="mandatory" for="username">Usuario</label>
-			{{ form.username(class="form-control", autocomplete="false", maxlength=user.username.max_length) }}
+			{{ form.username(class="form-control", autocomplete="false", maxlength=user.username.max_length, style="text-transform:lowercase") }}
 			{% for error in form.username.errors %}
 				<script>
 					$('#username').addClass('is-invalid')
@@ -49,7 +50,7 @@
 		<div class="row">
 		<div class="form-group col-sm-6">
 			<label for="nf-email">Email</label>
-			{{ form.email(class="form-control", maxlength=user.email.max_length) }}
+			{{ form.email(class="form-control", maxlength=user.email.max_length, style="text-transform:lowercase") }}
 			{% for error in form.email.errors %}
 				<script>
 					$('#email').addClass('is-invalid')
@@ -92,12 +93,31 @@
 			{% endfor %}
 			</div>
 		</div>
+		<div style="text-align: right;">
+			<p>(<span style="color: #d41616;">*</span> Campo requerido)</p>
+		</div>
 
 	</div>
 	<div class="modal-footer">
-		<a href="{{ url_for('admin.admin_users') }}" class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</a>
+		<a href="{{ url_for('admin.admin_users') }}" class="btn btn-secondary"  data-dismiss="modal">Cancelar</a>
 		<button class="btn btn-info" type="submit" id="confirm-btn">Confirmar</button>
 	</div>
 </form>
+
+<script>
+
+$(function(){
+
+	// Spinner
+	const confirmBtn = document.getElementById('confirm-btn');
+	confirmBtn.addEventListener('click', (click) => {
+		displayLoader(click.target, 'Guardando')
+		click.target.setAttribute('disabled','disabled')
+		document.getElementById('form').submit()
+	})
+
+  })
+
+</script>
 
 {% endblock %}

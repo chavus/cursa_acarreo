@@ -9,12 +9,34 @@ def load_user(id):
     return User.find_by_id(id)
 
 
+# def username_strong_unique(value):
+#     if value.lower() in User.get_list_by('username', lower=True):
+#         raise db.ValidationError('Username {} not available. Already in use.'.format(value.lower()))
+#
+# def email_strong_unique(value):
+#     print('in validation')
+#     print(value)
+#     if value:
+#         if value.lower() in User.get_list_by('email', lower=True):
+#             raise db.ValidationError('Email {} not available. Already in use.'.format(value.lower()))
+
+
 ROLES = ('operator', 'supervisor', 'admin')
 class User(db.Document, UserMixin):
     """
     User Model
     """
-    meta = {'collection': 'users'}
+    meta = {'collection': 'users',
+            'indexes': [
+                {'fields': ['username'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                            }
+                 },
+                {'fields': ['email'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 }]}
+
     username = db.StringField(unique=True, required=True, max_length=25)
     hashed_pwd = db.StringField(required=True)
     name = db.StringField(max_length=50)
@@ -34,6 +56,18 @@ class User(db.Document, UserMixin):
                     d_json[i] = self[i]
         return d_json
 
+    def save_to_db(self):
+        """
+        Try to save instance. If there is an error, it reload info from DB to discard changes.
+        :param self:
+        :return:
+        """
+        try:
+            self.save()
+        except Exception as e:
+            self.reload()
+            raise e
+
     def set_password(self, password):
         self.hashed_pwd = generate_password_hash(password)
         self.save()
@@ -47,19 +81,21 @@ class User(db.Document, UserMixin):
                 self.hashed_pwd = generate_password_hash(field_value['password'])
             elif fv == 'email' and field_value['email'] == '':
                 self['email'] = None
+            elif fv == 'email' or fv == 'username':
+                self[fv] = field_value[fv].lower()
             else:
                 self[fv] = field_value[fv]
-        self.save()
+        self.save_to_db()
 
     @classmethod
     def add(cls, username, password, email=None, name='', last_name='', role='operator'):
-        if email == '': email = None
-        return cls(username=username, hashed_pwd=generate_password_hash(password), email=email,
-                   name=name.upper(), last_name=last_name.upper(), role=role).save()
+        email = None if (email == '' or email is None) else email.lower()
+        return cls(username=username.lower(), hashed_pwd=generate_password_hash(password), email=email,
+                   name=name, last_name=last_name, role=role).save()
 
     @classmethod
     def find_by_username(cls, username, raise_if_none=True):
-        user = cls.objects(username__iexact=username).first()
+        user = cls.objects(username=username).first()
         if not user and raise_if_none:
             raise NameError('Usuario {} no encontrado.'.format(username))
         return user
@@ -77,7 +113,9 @@ class User(db.Document, UserMixin):
         return [u.json() for u in cls.objects]
 
     @classmethod
-    def get_list_by(cls, param):
+    def get_list_by(cls, param, lower=False):
+        if lower:
+            return [t[param].lower() if t[param] else t[param] for t in cls.objects]
         return [t[param] for t in cls.objects]
 
 

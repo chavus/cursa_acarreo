@@ -66,26 +66,25 @@ class UserForm(FlaskForm):
     password = PasswordField('Contraseña')
     password_confirm = PasswordField('Confirmar Contraseña')
 
-    def __init__(self, user=None, **kwargs): # Had to do this to be able to validate duplicates when updating
+    def __init__(self, user=None, **kwargs):  # Had to do this to be able to validate duplicates when updating
         super(UserForm, self).__init__(**kwargs)
         self.user = user
 
     def validate_username(self, field):
-        if u.User.find_by('username', field.data):
+        if u.User.find_by('username', field.data.lower()):
             if self.user:
-                if not self.user.username == field.data:
+                if not self.user.username.lower() == field.data.lower():
                     raise ValidationError('Nombre de usuario ya existe')
             else:
                 raise ValidationError('Nombre de usuario ya existe')
 
     def validate_email(self, field):
-        if u.User.find_by('email', field.data):
+        if u.User.find_by('email', field.data.lower()):
             if self.user:
-                if not self.user.email == field.data:
+                if not ('' if not self.user.email else self.user.email.lower()) == field.data.lower():
                     raise ValidationError('Email ya ha sido registrado')
             else:
                 raise ValidationError('Email ya ha sido registrado')
-
 
     def validate_password(self, field):
         if not self.user:  # If new user, make password required
@@ -96,3 +95,19 @@ class UserForm(FlaskForm):
         else:  # If editing a user and password was entered, make sure password is confirmed
             if field.data != '' and field.data != self.password_confirm.data:
                     raise ValidationError('Contraseñas no coinciden')
+
+
+class SupplierForm(FlaskForm):
+    name = StringField('Nombre', validators=[DataRequired('Favor de ingresar un Nombre de Proveedor')])
+
+    def __init__(self, supplier=None, **kwargs):  # Had to do this to be able to validate duplicates when updating
+        super(SupplierForm, self).__init__(**kwargs)
+        self.supplier = supplier
+
+    def validate_name(self, field):
+        if g.Supplier.find_by('name', field.data.lower()):
+            if self.supplier:
+                if not self.supplier.name.lower() == field.data.lower():
+                    raise ValidationError('Nombre de proveedor ya existe')
+            else:
+                raise ValidationError('Nombre de proveedor ya existe')
