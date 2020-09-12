@@ -14,9 +14,15 @@
         }
       })
   }
-
 </script>
 
+<style>
+  .btns-col {
+    width: 15%;
+  }
+</style>
+
+<div><h3 style="margin-top: 8px;">Usuarios</h3></div>
 <div id="toolbar">
     <a class="btn btn-pill btn-success"  
     href="{{url_for('admin.user_add_edit')}}"+"/new"
@@ -44,7 +50,7 @@
             <th data-sortable="true">Nombre</th>
             <th data-sortable="true">Correo</th>
             <th data-sortable="true">Rol</th>
-            <th></th>
+            <th class="btns-col"></th>
           </tr>
         </thead>
         <tbody>

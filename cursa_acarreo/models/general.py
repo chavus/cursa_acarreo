@@ -14,6 +14,7 @@ class Base:
         update_query = {field: new_value}
         cls.objects(**find_query).update(**update_query)
 
+
 """
 Validation functions
 """
@@ -84,7 +85,7 @@ class Supplier(db.Document, Base):
                                }
                  }]}
 
-    name = db.StringField(required=True, unique= True, sparse=True, max_length=50)
+    name = db.StringField(required=True, unique=True, sparse=True, max_length=50)
 
     def json(self):
         skip_items = []
@@ -139,12 +140,46 @@ class Customer(db.Document, Base):
     """
     Customer model
     """
-    meta = {'collection': 'customers'}
+    meta = {'collection': 'customers',
+            'indexes': [
+                {'fields': ['name'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 }]}
     name = db.StringField(required=True, unique=True, sparse=True, max_length=50)
 
+    def json(self):
+        skip_items = []
+        d_json = dict()
+        for i in self:
+            if i not in skip_items:
+                d_json[i] = self[i]
+        return d_json
+
+    def save_to_db(self):
+        """
+        Try to save instance. If there is an error, it reload info from DB to discard changes.
+        :param self:
+        :return:
+        """
+        try:
+            return self.save()
+        except Exception as e:
+            self.reload()
+            raise e
+
+    def update(self, **field_value):
+        for fv in field_value:
+            self[fv] = field_value[fv]
+        return self.save_to_db()
+
     @classmethod
-    def add(cls, name):
-        return cls(name=name.upper()).save()
+    def add(cls, **field_value):
+        return cls(**field_value).save()
+
+    @classmethod
+    def find_by_id(cls, _id):
+        return cls.objects(id=_id).first()
 
     @classmethod
     def find_by_name(cls, name, raise_if_none=True):
@@ -156,6 +191,10 @@ class Customer(db.Document, Base):
     @classmethod
     def get_list_by(cls, param):
         return [t[param] for t in cls.objects]
+
+    @classmethod
+    def get_all(cls):
+        return [i.json() for i in cls.objects]
 
 
 class Truck(db.Document, Base):
@@ -269,35 +308,68 @@ class Truck(db.Document, Base):
 
 class Material(db.Document, Base):
     """
-    Material class
+    Material model
     """
-    meta = {'collection': 'materials'}
+    meta = {'collection': 'materials',
+            'indexes': [
+                {'fields': ['name'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 }]}
     name = db.StringField(required=True, unique=True, max_length=50)
     description = db.StringField(max_length=150)
-    is_active = db.BooleanField(required=True, default=True)
+    # is_active = db.BooleanField(required=True, default=True)
+
+    def json(self):
+        skip_items = []
+        d_json = dict()
+        for i in self:
+            if i not in skip_items:
+                if self[i] is None:
+                    d_json[i] = ''
+                else:
+                    d_json[i] = self[i]
+        return d_json
+
+    def save_to_db(self):
+        """
+        Try to save instance. If there is an error, it reload info from DB to discard changes.
+        :param self:
+        :return:
+        """
+        try:
+            return self.save()
+        except Exception as e:
+            self.reload()
+            raise e
+
+    def update(self, **field_value):
+        for fv in field_value:
+            self[fv] = field_value[fv]
+        return self.save_to_db()
 
     @classmethod
-    def add(cls, name, description=None, is_active=None):
-        return cls(name=name.upper(), description=description, is_active=is_active).save()
+    def add(cls, **field_value):
+        return cls(**field_value).save()
 
     @classmethod
-    def delete_by_name(cls, name):
-        material = cls.find_by_name(name, False)
-        if material:
-            material.delete()
-        else:
-            raise NameError('Material "{}" no encontrado.'.format(name.upper()))
+    def find_by_id(cls, _id):
+        return cls.objects(id=_id).first()
 
     @classmethod
     def find_by_name(cls, name, raise_if_none=True):
-        material = cls.objects(name__iexact=name).first()
-        if not material and raise_if_none:
-            raise NameError('Material "{}" no encontrado.'.format(name))
-        return material
+        customer = cls.objects(name__iexact=name).first()
+        if not customer and raise_if_none:
+            raise NameError('"{}" no encontrado.'.format(name))
+        return customer
 
     @classmethod
     def get_list_by(cls, param):
         return [t[param] for t in cls.objects]
+
+    @classmethod
+    def get_all(cls):
+        return [i.json() for i in cls.objects]
 
 
 class Project(db.Document, Base):
@@ -397,9 +469,14 @@ class MaterialBank(db.Document, Base):
     """
     MaterialBank class
     """
-    meta = {'collection': 'material_banks'}
+    meta = {'collection': 'material_banks',
+            'indexes': [
+                {'fields': ['name'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 }]}
     name = db.StringField(required=True, unique=True, max_length=50)
-    location = db.StringField(max_length=150)  # unique=True, sparse=True,
+    location = db.StringField(max_length=150)
     description = db.StringField(max_length=150)
     owner = db.ReferenceField(Supplier, dbref=True, reverse_delete_rule=db.NULLIFY)
     materials_available = db.ListField(db.ReferenceField(Material, dbref=True, reverse_delete_rule=db.PULL),
@@ -407,6 +484,24 @@ class MaterialBank(db.Document, Base):
     royalty = db.DecimalField(min_value=0, precision=2, default=0)
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
     is_active = db.BooleanField(default=True)
+
+    def json(self):
+        skip_items = []
+        d_json = dict()
+        for i in self:
+            if i not in skip_items:
+                if i == 'owner':  # Get name of object
+                    d_json['owner_name'] = self[i].name if self[i] else ''
+                elif i == 'materials_available':  # Get names list of materials
+                    l = []
+                    for m in self[i]:
+                       l.append(m.name)
+                    d_json['material_name_list'] = l
+                elif self[i] is None:
+                    d_json[i] = ''
+                else:
+                    d_json[i] = self[i]
+        return d_json
 
     def save_to_db(self):
         """
@@ -419,6 +514,19 @@ class MaterialBank(db.Document, Base):
         except Exception as e:
             self.reload()
             raise e
+
+    def update(self, **field_value):
+        # Use owner_name and material_name_list instead of owner and materials_available
+        for fv in field_value:
+            if fv == 'owner_name':
+                self.owner = Supplier.find_by_name(field_value[fv]) if field_value[fv] else None
+                # self.owner = Supplier.find_by_name(field_value[fv])
+            elif fv == 'material_name_list':
+                self.materials_available = [Material.find_by_name(mn) for mn in field_value[fv]]
+            else:
+                self[fv] = field_value[fv]
+        return self.save_to_db()
+
 
     def set_owner(self, name):
         supplier = Supplier.find_by_name(name, False)
@@ -455,20 +563,24 @@ class MaterialBank(db.Document, Base):
         return [i.name for i in self.materials_available]
 
     @classmethod
-    def add(cls, name, location=None, description=None, owner_name=None, royalty=None, is_active=None):
-        if owner_name:
-            owner = Supplier.find_by_name(owner_name)
-        else:
-            owner = owner_name
+    def add(cls, name, location=None, description=None, owner_name=None, material_name_list=None, royalty=None,
+            is_active=None):
+        owner = Supplier.find_by_name(owner_name) if owner_name else None
+        materials_list = [Material.find_by_name(mn) for mn in material_name_list] if material_name_list else []
         params = {
-            'name': name.upper(),
-            'location': location.upper() if location else location,
-            'description': description.upper() if description else description,
+            'name': name,
+            'location': location,
+            'description': description,
             'owner': owner,
+            'materials_available': materials_list,
             'royalty': royalty,
             'is_active': is_active
         }
         return cls(**params).save()
+
+    @classmethod
+    def find_by_id(cls, _id):
+        return cls.objects(id=_id).first()
 
     @classmethod
     def find_by_name(cls, name, raise_if_none=True):
@@ -484,3 +596,7 @@ class MaterialBank(db.Document, Base):
     @classmethod
     def get_active(cls):
         return [b.name for b in cls.objects if b.is_active]
+
+    @classmethod
+    def get_all(cls):
+        return [i.json() for i in cls.objects]

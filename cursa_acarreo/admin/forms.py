@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, ValidationError, PasswordField, StringField
+from wtforms import (SelectField, SelectMultipleField, ValidationError, PasswordField, StringField, TextAreaField,
+                     BooleanField)
+from wtforms.fields.html5 import DecimalField
 from wtforms.validators import Email, DataRequired, Optional
 import cursa_acarreo.models.general as g
 import cursa_acarreo.models.trip as t
@@ -105,9 +107,69 @@ class SupplierForm(FlaskForm):
         self.supplier = supplier
 
     def validate_name(self, field):
-        if g.Supplier.find_by('name', field.data.lower()):
+        if g.Supplier.find_by_name(field.data, False):
             if self.supplier:
                 if not self.supplier.name.lower() == field.data.lower():
-                    raise ValidationError('Nombre de proveedor ya existe')
+                    raise ValidationError('Nombre de Proveedor ya existe')
             else:
-                raise ValidationError('Nombre de proveedor ya existe')
+                raise ValidationError('Nombre de Proveedor ya existe')
+
+
+class CustomerForm(FlaskForm):
+    name = StringField('Nombre', validators=[DataRequired('Favor de ingresar un Nombre de Cliente')])
+
+    def __init__(self, customer=None, **kwargs):  # Had to do this to be able to validate duplicates when updating
+        super(CustomerForm, self).__init__(**kwargs)
+        self.customer = customer
+
+    def validate_name(self, field):
+        if g.Customer.find_by_name(field.data, False):
+            if self.customer:
+                if not self.customer.name.lower() == field.data.lower():
+                    raise ValidationError('Nombre de Cliente ya existe')
+            else:
+                raise ValidationError('Nombre de Cliente ya existe')
+
+
+class MaterialForm(FlaskForm):
+    name = StringField('Nombre', validators=[DataRequired('Favor de ingresar un Nombre de Material')])
+    description = TextAreaField('Descripción')
+
+    def __init__(self, material=None, **kwargs):  # Had to do this to be able to validate duplicates when updating
+        super(MaterialForm, self).__init__(**kwargs)
+        self.material = material
+
+    def validate_name(self, field):
+        if g.Material.find_by_name(field.data, False):
+            if self.material:
+                if not self.material.name.lower() == field.data.lower():
+                    raise ValidationError('Material ya existe')
+            else:
+                raise ValidationError('Material ya existe')
+
+class BankForm(FlaskForm):
+    name = StringField('Nombre', validators=[DataRequired('Favor de ingresar un Nombre de Banco')])
+    location = StringField('Ubicación')
+    description = TextAreaField('Descripción')
+    owner_name = SelectField('Propietario', validate_choice=False)  # Must mark as validate_choice=False to skip validation
+    material_name_list = SelectMultipleField('Materiales disponibles')
+    royalty = DecimalField('Royalty', validators=[Optional()])
+    is_active = BooleanField('Activo', default='checked')
+
+    def __init__(self, bank=None, **kwargs):  # Had to do this to be able to validate duplicates when updating
+        super(BankForm, self).__init__(**kwargs)
+        self.bank = bank
+
+    def validate_name(self, field):
+        if g.MaterialBank.find_by_name(field.data, False):
+            if self.bank:
+                if not self.bank.name.lower() == field.data.lower():
+                    raise ValidationError('Banco ya existe')
+            else:
+                raise ValidationError('Banco ya existe')
+
+    def validate_royalty(self, field):
+        if field.data:
+            if field.data < 0:
+                raise ValidationError('Ingresa una cantidad igual o mayor a 0')
+
