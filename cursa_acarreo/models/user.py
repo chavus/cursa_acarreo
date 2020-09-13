@@ -9,18 +9,6 @@ def load_user(id):
     return User.find_by_id(id)
 
 
-# def username_strong_unique(value):
-#     if value.lower() in User.get_list_by('username', lower=True):
-#         raise db.ValidationError('Username {} not available. Already in use.'.format(value.lower()))
-#
-# def email_strong_unique(value):
-#     print('in validation')
-#     print(value)
-#     if value:
-#         if value.lower() in User.get_list_by('email', lower=True):
-#             raise db.ValidationError('Email {} not available. Already in use.'.format(value.lower()))
-
-
 ROLES = ('operator', 'supervisor', 'admin')
 class User(db.Document, UserMixin):
     """

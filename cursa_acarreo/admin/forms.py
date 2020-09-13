@@ -173,3 +173,50 @@ class BankForm(FlaskForm):
             if field.data < 0:
                 raise ValidationError('Ingresa una cantidad igual o mayor a 0')
 
+
+class ProjectForm(FlaskForm):
+    name = StringField('Nombre', validators=[DataRequired('Favor de ingresar un Nombre de Obra')])
+    location = StringField('Ubicación')
+    description = TextAreaField('Descripción')
+    customer_name = SelectField('Cliente',
+                                validate_choice=False)  # Must mark as validate_choice=False to skip validation
+    material_name_list = SelectMultipleField('Materiales requeridos')
+    resident = StringField('Residente')
+    is_active = BooleanField('Activo', default='checked')
+
+    def __init__(self, project=None, **kwargs):  # Had to do this to be able to validate duplicates when updating
+        super(ProjectForm, self).__init__(**kwargs)
+        self.project = project
+
+    def validate_name(self, field):
+        if g.Project.find_by_name(field.data, False):
+            if self.project:
+                if not self.project.name.lower() == field.data.lower():
+                    raise ValidationError('Obra ya existe')
+            else:
+                raise ValidationError('Obra ya existe')
+
+
+class DriverForm(FlaskForm):
+    name = StringField('Nombre', validators=[DataRequired('Favor de ingresar un Nombre')])
+    last_name = StringField('Apellido(s)', validators=[DataRequired('Favor de ingresar Apellido(s)')])
+
+    def __init__(self, driver=None, **kwargs):  # Had to do this to be able to validate duplicates when updating
+        super(DriverForm, self).__init__(**kwargs)
+        self.driver = driver
+
+    def validate_name(self, field):
+        if g.Driver.find_by_full_name(name=field.data, last_name=self.last_name.data, raise_if_none=False):
+            if self.driver:
+                if not (self.driver.name.lower() == field.data.lower() and
+                        self.driver.last_name.lower() == self.last_name.data.lower()):
+                    raise ValidationError('Combinación de Nombre y Apellido ya existe')
+            else:
+                raise ValidationError('Combinación de Nombre y Apellido ya existe')
+
+        # if u.User.find_by('username', field.data.lower()):
+        #     if self.user:
+        #         if not self.user.username.lower() == field.data.lower():
+        #             raise ValidationError('Nombre de usuario ya existe')
+        #     else:
+        #         raise ValidationError('Nombre de usuario ya existe')

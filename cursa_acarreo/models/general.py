@@ -52,15 +52,62 @@ class Driver(db.Document, Base):
     """
     Driver model
     """
-    meta = {'collection': 'drivers'}
+    # meta = {'collection': 'drivers'}
+    meta = {'collection': 'drivers',
+            'indexes': [
+                {'fields': ['name'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                            }
+                 },
+                {'fields': ['last_name'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 }]}
 
     name = db.StringField(required=True, max_length=50)
-    last_name = db.StringField(unique_with='name', required=False, max_length=50)
+    last_name = db.StringField(unique_with='name', required=True, max_length=50)
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
 
+    def clean(self):
+        """
+        Makes sure there are no duplicated name + last_name combinatino
+        """
+        search_driver = self.find_by_full_name(name=self.name, last_name=self.last_name, raise_if_none=False);
+        if search_driver:
+            if search_driver.id != self.id:
+                raise db.ValidationError('Combinación Nombre+Apellido ya ha sido dado de alta: ')
+
+    def json(self):
+        skip_items = []
+        d_json = dict()
+        for i in self:
+            d_json[i] = self[i]
+        return d_json
+
+    def save_to_db(self):
+        """
+        Try to save instance. If there is an error, it reload info from DB to discard changes.
+        :param self:
+        :return:
+        """
+        try:
+            self.save()
+        except Exception as e:
+            self.reload()
+            raise e
+
+    def update(self, **field_value):
+        for fv in field_value:
+            self[fv] = field_value[fv]
+        return self.save_to_db()
+
     @classmethod
-    def add(cls, name, last_name=''):
-        return cls(name=name.upper(), last_name=last_name.upper()).save()
+    def add(cls, **kwargs):
+        return cls(**kwargs).save()
+
+    @classmethod
+    def find_by_id(cls, _id):
+        return cls.objects(id=_id).first()
 
     @classmethod
     def find_by_full_name(cls, name, last_name, raise_if_none=True):
@@ -71,7 +118,7 @@ class Driver(db.Document, Base):
 
     @classmethod
     def get_all(cls):
-        return [{'name': i.name, 'last_name': i.last_name} for i in cls.objects]
+        return [i.json() for i in cls.objects]
 
 
 class Supplier(db.Document, Base):
@@ -376,7 +423,12 @@ class Project(db.Document, Base):
     """
     Project class
     """
-    meta = {'collection': 'projects'}
+    meta = {'collection': 'projects',
+            'indexes': [
+                {'fields': ['name'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 }]}
     name = db.StringField(required=True, unique=True, max_length=50)
     location = db.StringField(max_length=150)
     description = db.StringField(max_length=150)
@@ -386,6 +438,24 @@ class Project(db.Document, Base):
                                       validation=_validate_no_duplicate_objects)
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
     is_active = db.BooleanField(default=True)
+
+    def json(self):
+        skip_items = []
+        d_json = dict()
+        for i in self:
+            if i not in skip_items:
+                if i == 'customer':  # Get name of object
+                    d_json['customer_name'] = self[i].name if self[i] else ''
+                elif i == 'materials_required':  # Get names list of materials
+                    l = []
+                    for m in self[i]:
+                       l.append(m.name)
+                    d_json['material_name_list'] = l
+                elif self[i] is None:
+                    d_json[i] = ''
+                else:
+                    d_json[i] = self[i]
+        return d_json
 
     def save_to_db(self):
         """
@@ -398,6 +468,17 @@ class Project(db.Document, Base):
         except Exception as e:
             self.reload()
             raise e
+
+    def update(self, **field_value):
+        # Use customer_name and material_name_list instead of customer and materials_required(str vs object)
+        for fv in field_value:
+            if fv == 'customer_name':
+                self.customer = Customer.find_by_name(field_value[fv]) if field_value[fv] else None
+            elif fv == 'material_name_list':
+                self.materials_required = [Material.find_by_name(mn) for mn in field_value[fv]]
+            else:
+                self[fv] = field_value[fv]
+        return self.save_to_db()
 
     def add_materials(self, material_name):
         if not isinstance(material_name, list):
@@ -433,20 +514,24 @@ class Project(db.Document, Base):
             raise NameError('Cliente "{}" no encontrado en sistema. Favor de agregarlo primero.'.format(name))
 
     @classmethod
-    def add(cls, name, description=None, location=None, customer_name=None, resident=None, is_active=None):
-        if customer_name:
-            customer = Customer.find_by_name(customer_name)
-        else:
-            customer = customer_name
+    def add(cls, name, location=None, description=None, customer_name=None, material_name_list=None,
+            is_active=None, resident=None):
+        customer = Customer.find_by_name(customer_name) if customer_name else None
+        materials_list = [Material.find_by_name(mn) for mn in material_name_list] if material_name_list else []
         params = {
-            'name': name.upper(),
-            'description': description.upper() if description else description,
-            'location': location.upper() if location else location,
+            'name': name,
+            'location': location,
+            'description': description,
             'customer': customer,
-            'resident': resident.upper if resident else resident,
+            'materials_required': materials_list,
+            'resident': resident,
             'is_active': is_active
         }
         return cls(**params).save()
+
+    @classmethod
+    def find_by_id(cls, _id):
+        return cls.objects(id=_id).first()
 
     @classmethod
     def find_by_name(cls, name, raise_if_none=True):
@@ -462,6 +547,10 @@ class Project(db.Document, Base):
     @classmethod
     def get_active(cls):
         return [p.name for p in cls.objects if p.is_active]
+
+    @classmethod
+    def get_all(cls):
+        return [i.json() for i in cls.objects]
 
 
 
@@ -520,7 +609,6 @@ class MaterialBank(db.Document, Base):
         for fv in field_value:
             if fv == 'owner_name':
                 self.owner = Supplier.find_by_name(field_value[fv]) if field_value[fv] else None
-                # self.owner = Supplier.find_by_name(field_value[fv])
             elif fv == 'material_name_list':
                 self.materials_available = [Material.find_by_name(mn) for mn in field_value[fv]]
             else:

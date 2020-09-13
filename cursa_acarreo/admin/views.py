@@ -287,9 +287,6 @@ def bank_add_edit(param=None):
         except Exception as e:
             return render_template('admin_panel/error_pages/404.html', error=e, back_page='admin.banks_admin')
 
-    if request.method == 'POST':
-        print(form.is_active.data)
-
     if form.validate_on_submit():
         filled_form = {}
         for f in form:
@@ -320,12 +317,135 @@ def bank_add_edit(param=None):
 @admin_blueprint.route('/banks-admin/delete/<id>', methods=['GET', 'POST'])
 def bank_delete(id):
     try:
-        print(id)
         bank = g.MaterialBank.find_by_id(id)
         name = bank.name
         bank.delete()
         flash(f'Banco: {name} fue eliminado.', ['success', 'popup'])
     except Exception as e:
-        print(e)
         flash(f"Error: { e }", ['error', 'popup'])
     return redirect(url_for('admin.banks_admin'))
+
+
+'''
+PROJECTS
+'''
+
+
+@admin_blueprint.route('/projects-admin')
+def projects_admin():
+    projects = g.Project.get_all()
+    return render_template('admin_panel/projects_admin.html', projects=projects)
+
+
+@admin_blueprint.route('/projects-admin/<string:param>', methods=['GET', 'POST'])
+def project_add_edit(param=None):
+    if param == 'new':
+        form = forms.ProjectForm()
+        form.customer_name.choices = [('', 'Seleccionar...')] + [(i, i) for i in g.Customer.get_list_by('name')]
+        form.material_name_list.choices = [(i, i) for i in g.Material.get_list_by('name')]
+    else:  # Edit user
+        try:
+            project = g.Project.find_by_id(param)
+            form = forms.ProjectForm(**project.json(), project=project)  # Create a form passing value of object for duplicate validations
+            form.customer_name.choices = [('', 'Seleccionar...')] + [(i, i) for i in g.Customer.get_list_by('name')]
+            form.material_name_list.choices = [(i, i) for i in g.Material.get_list_by('name')]
+        except Exception as e:
+            return render_template('admin_panel/error_pages/404.html', error=e, back_page='admin.projects_admin')
+
+    if form.validate_on_submit():
+        filled_form = {}
+        for f in form:
+            filled_form[f.name] = f.data
+        del filled_form['csrf_token']
+        print(filled_form)
+        if param == 'new':
+            try:
+                g.Project.add(**filled_form)
+                flash(f"Obra: {filled_form['name']} fue agregado", ['success', 'popup'])
+                return redirect(url_for('admin.projects_admin'))
+            except Exception as e:
+                    return render_template('admin_panel/error_pages/500.html', error=e,
+                                           back_page='admin.projects_admin')
+        else:
+            try:
+                project.update(**filled_form)
+                flash(f"Obra: {filled_form['name']} fue actualizado", ['success', 'popup'])
+                return redirect(url_for('admin.projects_admin'))
+            except Exception as e:
+                print(e)
+                flash(f"Error: {e}", ['error', 'popup'])
+    return render_template('admin_panel/project_add_edit.html', form=form, project_model=g.Project,
+                           action='create' if param == 'new' else 'edit')
+
+
+@admin_blueprint.route('/projects-admin/delete/<id>', methods=['GET', 'POST'])
+def project_delete(id):
+    try:
+        project = g.Project.find_by_id(id)
+        name = project.name
+        project.delete()
+        flash(f'Obra: {name} fue eliminado.', ['success', 'popup'])
+    except Exception as e:
+        flash(f"Error: { e }", ['error', 'popup'])
+    return redirect(url_for('admin.projects_admin'))
+
+
+'''
+DRIVERS
+'''
+
+
+@admin_blueprint.route('/drivers-admin')
+def drivers_admin():
+    drivers = g.Driver.get_all()
+    return render_template('admin_panel/drivers_admin.html', drivers=drivers)
+
+
+@admin_blueprint.route('/drivers-admin/<string:param>', methods=['GET', 'POST'])
+def driver_add_edit(param=None):
+    if param == 'new':
+        form = forms.DriverForm()
+    else:  # Edit user
+        try:
+            driver = g.Driver.find_by_id(param)
+            form = forms.DriverForm(**driver.json(), driver=driver)  # Create a form passing value of object for duplicate validations
+        except Exception as e:
+            return render_template('admin_panel/error_pages/404.html', error=e, back_page='admin.drivers_admin')
+
+    if form.validate_on_submit():
+        filled_form = {}
+        for f in form:
+            filled_form[f.name] = f.data
+        del filled_form['csrf_token']
+        if param == 'new':
+            try:
+                g.Driver.add(**filled_form)
+                flash(f"Chofer: {filled_form['name']} {filled_form['last_name']} fue agregado", ['success', 'popup'])
+                return redirect(url_for('admin.drivers_admin'))
+            except Exception as e:
+                print(e)
+                return render_template('admin_panel/error_pages/500.html', error=e,
+                                           back_page='admin.drivers_admin')
+        else:
+            try:
+                driver.update(**filled_form)
+                flash(f"Chofer: {filled_form['name']} {filled_form['last_name']} fue actualizado", ['success', 'popup'])
+                return redirect(url_for('admin.drivers_admin'))
+            except Exception as e:
+                print(e)
+                flash(f"Error: {e}", ['error', 'popup'])
+    return render_template('admin_panel/driver_add_edit.html', form=form, driver_model=g.Driver,
+                           action='create' if param == 'new' else 'edit')
+
+
+@admin_blueprint.route('/drivers-admin/delete/<id>', methods=['GET', 'POST'])
+def driver_delete(id):
+    try:
+        driver = g.Driver.find_by_id(id)
+        name = driver.name
+        driver.delete()
+        flash(f'Chofer: {name} fue eliminado.', ['success', 'popup'])
+    except Exception as e:
+        print(e)
+        flash(f"Error: { e }", ['error', 'popup'])
+    return redirect(url_for('admin.drivers_admin'))
