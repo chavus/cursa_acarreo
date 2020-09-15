@@ -52,7 +52,6 @@ class Driver(db.Document, Base):
     """
     Driver model
     """
-    # meta = {'collection': 'drivers'}
     meta = {'collection': 'drivers',
             'indexes': [
                 {'fields': ['name'],
@@ -248,11 +247,26 @@ class Truck(db.Document, Base):
     """
     Truck model
     """
-    meta = {'collection': 'trucks'}
+    meta = {'collection': 'trucks',
+            'indexes': [
+                {'fields': ['id_code'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                            }
+                 },
+                {'fields': ['serial_number'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 },
+                {'fields': ['plate'],
+                 'collation': {'locale': 'en', 'strength': 1  # Considers case and diactritics
+                               }
+                 }
+            ]}
+    # meta = {'collection': 'trucks'}
     id_code = db.StringField(required=True, unique=True, max_length=50)
     brand = db.StringField(max_length=50)
     color = db.StringField(max_length=50)
-    serial_number = db.StringField(required=True, unique=True, sparse=True, max_length=50)  # mark as required???
+    serial_number = db.StringField(required=True, unique=True, sparse=True, max_length=50)
     plate = db.StringField(required=False, unique=True, sparse=True, max_length=50)  # mark as required???
     capacity = db.IntField(required=True, min_value=0)
     driver = db.ReferenceField(Driver, dbref=True, reverse_delete_rule=db.NULLIFY)
@@ -260,15 +274,25 @@ class Truck(db.Document, Base):
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
     is_active = db.BooleanField(required=True, default=True)
 
-    def json(self):
+    def json(self, driver_id=False):
+        """
+
+        :param driver_id: If true, driver_full_name shows ID value, instead of full name tupple
+        :return:
+        """
         skip_items = []
         d_json = dict()
         for i in self:
             if i not in skip_items:
-                if i == 'driver' and self[i]:
-                    d_json[i] = {'name': self[i].name, 'last_name': self[i].last_name}
-                elif i == 'owner' and self[i]:
-                    d_json[i] = self[i].name
+                if i == 'driver':
+                    if driver_id:
+                        d_json['driver_full_name'] = self[i].id if self[i] else ''
+                    else:
+                        d_json['driver_full_name'] = (self[i].name, self[i].last_name) if self[i] else ''  # tupple: (name, last_name)
+                elif i == 'owner':
+                    d_json['owner_name'] = self[i].name if self[i] else ''
+                elif self[i] is None:
+                    d_json[i] = ''
                 else:
                     d_json[i] = self[i]
         return d_json
@@ -285,6 +309,21 @@ class Truck(db.Document, Base):
             self.reload()
             raise e
 
+    def update(self, **field_value):
+        # Use owner_name and driver_full_name instead of owner and materials_available
+        for fv in field_value:
+            if fv == 'owner_name':
+                self.owner = Supplier.find_by_name(field_value[fv]) if field_value[fv] else None
+            elif fv == 'driver_full_name':
+                if field_value[fv] and not isinstance(field_value[fv], tuple):
+                    raise TypeError('Driver name must be a tuple with format ("name","last_name")')
+                self.driver = Driver.find_by_full_name(field_value[fv][0], field_value[fv][1]) if field_value[fv] else None
+            elif fv == 'plate':
+                self.plate = field_value[fv] if field_value[fv] else None
+            else:
+                self[fv] = field_value[fv]
+        return self.save_to_db()
+
     def set_driver(self, name, last_name):
         driver = Driver.find_by_full_name(name, last_name)
         self.driver = driver
@@ -299,43 +338,28 @@ class Truck(db.Document, Base):
             raise NameError('Proveedor "{}" no encontrado en sistema. Favor de agregarlo primero.'.format(name))
 
     @classmethod
-    def add(cls, id_code, serial_number, brand=None, color=None, plate=None, driver_name=None, capacity=None,
-            owner_name=None, is_active=None):
-        """
-
-        :param id_code:
-        :param serial_number:
-        :param brand:
-        :param color:
-        :param plate:
-        :param driver_name:
-        :param capacity:
-        :param owner_name: must be a tuple ('first name', 'last name')
-        :param is_active:
-        :return:
-        """
-        if driver_name:
-            if not isinstance(driver_name, tuple):
-                raise TypeError('Driver name must be a tuple with format ("name","last_name")')
-            driver = Driver.find_by_full_name(driver_name[0], driver_name[1])
-        else:
-            driver = driver_name
-        if owner_name:
-            owner = Supplier.find_by_name(owner_name)
-        else:
-            owner = owner_name
+    def add(cls, id_code, serial_number, capacity, brand=None, color=None, plate=None, owner_name=None,
+            driver_full_name=None, is_active=None):
+        owner = Supplier.find_by_name(owner_name) if owner_name else None
+        if driver_full_name and not isinstance(driver_full_name, tuple):
+            raise TypeError('Driver name must be a tuple with format ("name","last_name")')
+        driver = Driver.find_by_full_name(driver_full_name[0], driver_full_name[1]) if driver_full_name else None
         params = {
             'id_code': id_code.upper(),
             'serial_number': serial_number.upper(),
-            'brand': brand.upper() if brand else brand,
-            'color': color.upper() if color else color,
-            'plate': plate.upper() if plate else plate,
+            'brand': brand,
+            'color': color,
+            'plate': plate.upper() if plate else None,
             'capacity': capacity,
             'driver': driver,
             'owner': owner,
             'is_active': is_active
         }
         return cls(**params).save()
+
+    @classmethod
+    def find_by_id(cls, _id):
+        return cls.objects(id=_id).first()
 
     @classmethod
     def find_by_idcode(cls, id_code, raise_if_none=True):
@@ -349,8 +373,16 @@ class Truck(db.Document, Base):
         return [t[param] for t in cls.objects]
 
     @classmethod
+    def find_by(cls, field, value):
+        return cls.objects(**{field+'__iexact': value}).first()
+
+    @classmethod
     def get_active(cls):
         return [t.id_code for t in cls.objects if t.is_active]
+
+    @classmethod
+    def get_all(cls):
+        return [i.json() for i in cls.objects]
 
 
 class Material(db.Document, Base):
@@ -684,6 +716,7 @@ class MaterialBank(db.Document, Base):
     @classmethod
     def get_active(cls):
         return [b.name for b in cls.objects if b.is_active]
+
 
     @classmethod
     def get_all(cls):

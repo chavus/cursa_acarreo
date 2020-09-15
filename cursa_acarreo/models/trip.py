@@ -21,22 +21,22 @@ Validation Functions
 
 
 def validate_truck_options(value):
-    if value not in Truck.get_list_by('id_code'):
+    if not Truck.find_by_idcode(value, raise_if_none=False):
         raise db.ValidationError('Camión {} no encontrado en lista de camiones.'.format(value))
 
 
 def validate_material_options(value):
-    if value not in Material.get_list_by('name'):
+    if not Material.find_by_name(value, raise_if_none=False):
         raise db.ValidationError('Material {} no encontrado en lista de materiales.'.format(value))
 
 
 def validate_location_options(value):
-    if value not in (MaterialBank.get_list_by('name') + Project.get_list_by('name')):
+    if not (MaterialBank.find_by_name(value, raise_if_none=False) or Project.find_by_name(value, raise_if_none=False)):
         raise db.ValidationError('Ubicación {} no encontrado en lista de bancos ni obras.'.format(value))
 
 
 def validate_user_options(value):
-    if value not in User.get_list_by('username'):
+    if not User.find_by_username(value, raise_if_none=False):
         raise db.ValidationError('Usuario {} no encontrado en lista de usuarios.'.format(value))
 
 
@@ -75,14 +75,14 @@ class Trip(db.Document, Base):
                 trip_dict[i] = self[i]
         return trip_dict
 
-    def save_to_db(self):
+    def save_to_db(self, validation=True):
         """
         Try to save instance. If there is an error, it reload info from DB to discard changes.
         :param self:
         :return:
         """
         try:
-            self.save()
+            self.save(validate=validation)
         except Exception as e:
             self.reload()
             raise e
@@ -93,14 +93,13 @@ class Trip(db.Document, Base):
         :param username: username of user doing the operation
         :param status: "complete" or "canceled"
         :param finalizer_comment: optional comment
-
         :return:
         """
         self.status = status
         self.finalizer_user = username
         self.finalizer_comment = finalizer_comment
         self.finalized_datetime = datetime.datetime.utcnow()
-        self.save_to_db()
+        self.save_to_db(validation=False)  # This is a temporary solution, instead code logic to execute validate_x_options
 
     @classmethod
     def create(cls, truck_id, material_name, origin_name, destination_name, sender_username, sender_comment=None,

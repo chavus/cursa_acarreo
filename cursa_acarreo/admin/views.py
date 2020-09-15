@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, flash, request, url_for, redirect
 from cursa_acarreo.admin import forms
 from cursa_acarreo.models.user import User
 from cursa_acarreo.models import general as g
+from cursa_acarreo.models.trip import Trip
 from flask_login import login_user, current_user, login_required, logout_user
 
 admin_blueprint = Blueprint('admin', __name__)
@@ -11,9 +12,29 @@ admin_blueprint = Blueprint('admin', __name__)
 def admin_panel():
     return render_template('admin_panel/admin_base.html')
 
-@admin_blueprint.route('/test')
-def admin_test():
-    return render_template('admin_panel/admin_test.html')
+
+'''
+PANEL
+'''
+
+@admin_blueprint.route('/general-admin')
+def general_admin():
+    return render_template('admin_panel/general_admin.html')
+
+@admin_blueprint.route('/trips-admin')
+def trips_admin():
+    # return render_template('admin_panel/trips_admin.html')
+    trips = Trip.get_all()
+    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
+                             key=lambda i: i['trip_id'], reverse=True)
+    return render_template('admin_panel/trips_admin.html', in_progress_trips=in_progress_trips,
+                           finalized_trips=finalized_trips)
+
+
+'''
+CONFIGURACION
+'''
 
 '''
 USERS
@@ -449,3 +470,75 @@ def driver_delete(id):
         print(e)
         flash(f"Error: { e }", ['error', 'popup'])
     return redirect(url_for('admin.drivers_admin'))
+
+
+'''
+TRUCK
+'''
+
+
+@admin_blueprint.route('/trucks-admin')
+def trucks_admin():
+    trucks = g.Truck.get_all()
+    return render_template('admin_panel/trucks_admin.html', trucks=trucks)
+
+
+@admin_blueprint.route('/trucks-admin/<string:param>', methods=['GET', 'POST'])
+def truck_add_edit(param=None):
+    if param == 'new':
+        form = forms.TruckForm()
+        form.owner_name.choices = [('', 'Seleccionar...')] + [(i, i) for i in g.Supplier.get_list_by('name')]
+        form.driver_full_name.choices = [('', 'Seleccionar...')] + [(i['id'], i['name'] + ' ' + i['last_name'])
+                                                                    for i in g.Driver.get_all()]
+    else:  # Edit user
+        try:
+            truck = g.Truck.find_by_id(param)
+            print(truck.json(driver_id=True))
+            form = forms.TruckForm(**truck.json(driver_id=True), truck=truck)  # Create a form passing value of object for duplicate validations
+            form.owner_name.choices = [('', 'Seleccionar...')] + [(i, i) for i in g.Supplier.get_list_by('name')]
+            form.driver_full_name.choices = [('', 'Seleccionar...')] + [(i['id'], i['name'] + ' ' + i['last_name'])
+                                                                        for i in g.Driver.get_all()]
+        except Exception as e:
+            return render_template('admin_panel/error_pages/404.html', error=e, back_page='admin.trucks_admin')
+
+    if form.validate_on_submit():
+        filled_form = {}
+        for f in form:
+            filled_form[f.name] = f.data
+        del filled_form['csrf_token']
+        if filled_form['driver_full_name']:
+            driver = g.Driver.find_by_id(filled_form['driver_full_name'])
+            filled_form['driver_full_name'] = (driver.name, driver.last_name)
+        print(filled_form)
+        if param == 'new':
+            try:
+                g.Truck.add(**filled_form)
+                flash(f"Camión: {filled_form['id_code'].upper()} fue agregado", ['success', 'popup'])
+                return redirect(url_for('admin.trucks_admin'))
+            except Exception as e:
+                print(e)
+                return render_template('admin_panel/error_pages/500.html', error=e,
+                                           back_page='admin.trucks_admin')
+        else:
+            try:
+                truck.update(**filled_form)
+                flash(f"Camión: {filled_form['id_code'].upper()} fue actualizado", ['success', 'popup'])
+                return redirect(url_for('admin.trucks_admin'))
+            except Exception as e:
+                print(e)
+                flash(f"Error: {e}", ['error', 'popup'])
+    return render_template('admin_panel/truck_add_edit.html', form=form, truck_model=g.Truck,
+                           action='create' if param == 'new' else 'edit')
+
+
+@admin_blueprint.route('/trucks-admin/delete/<id>', methods=['GET', 'POST'])
+def truck_delete(id):
+    try:
+        truck = g.Truck.find_by_id(id)
+        id_code = truck.id_code
+        truck.delete()
+        flash(f'Camión: {id_code} fue eliminado.', ['success', 'popup'])
+    except Exception as e:
+        print(e)
+        flash(f"Error: { e }", ['error', 'popup'])
+    return redirect(url_for('admin.trucks_admin'))

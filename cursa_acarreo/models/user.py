@@ -83,7 +83,7 @@ class User(db.Document, UserMixin):
 
     @classmethod
     def find_by_username(cls, username, raise_if_none=True):
-        user = cls.objects(username=username).first()
+        user = cls.objects(username__iexact=username).first()
         if not user and raise_if_none:
             raise NameError('Usuario {} no encontrado.'.format(username))
         return user

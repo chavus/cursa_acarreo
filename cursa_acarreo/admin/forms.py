@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import (SelectField, SelectMultipleField, ValidationError, PasswordField, StringField, TextAreaField,
                      BooleanField)
-from wtforms.fields.html5 import DecimalField
+from wtforms.fields.html5 import DecimalField, IntegerField
 from wtforms.validators import Email, DataRequired, Optional
 import cursa_acarreo.models.general as g
 import cursa_acarreo.models.trip as t
@@ -214,9 +214,49 @@ class DriverForm(FlaskForm):
             else:
                 raise ValidationError('Combinación de Nombre y Apellido ya existe')
 
-        # if u.User.find_by('username', field.data.lower()):
-        #     if self.user:
-        #         if not self.user.username.lower() == field.data.lower():
-        #             raise ValidationError('Nombre de usuario ya existe')
-        #     else:
-        #         raise ValidationError('Nombre de usuario ya existe')
+
+class TruckForm(FlaskForm):
+    id_code = StringField('Código', validators=[DataRequired('Favor de ingresar un Código de camión')])
+    brand = StringField('Marca')
+    color = StringField('Color')
+    serial_number = StringField('Número de Serie', validators=[DataRequired('Favor de ingresar Número de Serie de camión')])
+    plate = StringField('Placa')
+    capacity = IntegerField('Capacidad', validators=[DataRequired('Favor de ingresar Capacidad de camión')])
+    driver_full_name = SelectField('Chofer',
+                                validate_choice=False)  # Must mark as validate_choice=False to skip validation
+    owner_name = SelectField('Propietario',
+                                validate_choice=False)  # Must mark as validate_choice=False to skip validation    resident = StringField('Residente')
+    is_active = BooleanField('Activo', default='checked')
+
+    def __init__(self, truck=None, **kwargs):  # Had to do this to be able to validate duplicates when updating
+        super(TruckForm, self).__init__(**kwargs)
+        self.truck = truck
+
+    def validate_id_code(self, field):
+        if g.Truck.find_by_idcode(field.data, False):
+            if self.truck:
+                if not self.truck.id_code.lower() == field.data.lower():
+                    raise ValidationError('Código ya existe')
+            else:
+                raise ValidationError('Código ya existe')
+
+    def validate_serial_number(self, field):
+        if g.Truck.find_by('serial_number', field.data):
+            if self.truck:
+                if not self.truck.serial_number.lower() == field.data.lower():
+                    raise ValidationError('Número de Serie ya existe')
+            else:
+                raise ValidationError('Número de Serie ya existe')
+
+    def validate_plate(self, field):
+        if field.data and g.Truck.find_by('plate', field.data):
+            if self.truck:
+                if not self.truck.plate.lower() == field.data.lower():
+                    raise ValidationError('Número de Placa ya existe')
+            else:
+                raise ValidationError('Número de Placa ya existe')
+
+    def validate_capacity(self, field):
+        if field.data:
+            if field.data < 0:
+                raise ValidationError('Ingresa una cantidad igual o mayor a 0')

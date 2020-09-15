@@ -38,7 +38,8 @@ def create_trip():
         trip = Trip.create(**trip_dict)
         return jsonify({'trip_id': trip.trip_id}), 200
     except Exception as e:
-        return jsonify({'error': e.args[0]}), 400
+        print(e)
+        return jsonify({'error': str(e)}), 400
 
 
 @trips_blueprint.route('/get_trip_ticket')
@@ -52,7 +53,7 @@ def get_trip_ticket():
         ticket_b64 = ticket.encode_b64()
         return jsonify(ticket_b64=ticket_b64.decode()), 200
     except Exception as e:
-        return jsonify(error=e.args[0]), 400
+        return jsonify(error=str(e)), 400
 
 
 @trips_blueprint.route('/_get_materials')
@@ -69,6 +70,7 @@ def _get_materials():
         materials = []
     material_choices = [(m, m) for m in materials]
     return jsonify(material_choices)
+
 
 @trips_blueprint.route('/_get_materials_on_trip')
 @login_required
