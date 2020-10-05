@@ -8,9 +8,15 @@ from flask_login import login_user, current_user, login_required, logout_user
 admin_blueprint = Blueprint('admin', __name__)
 
 
-@admin_blueprint.route('/base')
-def admin_panel():
-    return render_template('admin_panel/admin_base.html')
+# @admin_blueprint.route('/base')
+# def admin_panel():
+#     return render_template('admin_panel/admin_base.html')
+
+
+@admin_blueprint.before_request
+def validate_login_admin():
+    if request.endpoint and current_user.role != 'admin':
+
 
 
 '''
@@ -23,7 +29,6 @@ def general_admin():
 
 @admin_blueprint.route('/trips-admin')
 def trips_admin():
-    # return render_template('admin_panel/trips_admin.html')
     trips = Trip.get_all()
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
     finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
@@ -44,7 +49,7 @@ USERS
 @admin_blueprint.route('/admin-users')
 def admin_users():
     users = User.get_all()
-    return render_template('admin_panel/admin_users.html', users=users)
+    return render_template('admin_panel/users_admin.html', users=users)
 
 
 @admin_blueprint.route('/admin-users/new', methods=['GET', 'POST'])

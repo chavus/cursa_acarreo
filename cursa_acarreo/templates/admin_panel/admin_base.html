@@ -101,22 +101,22 @@
           </ul>
         </li>
         <li class="c-sidebar-nav-item c-sidebar-nav-dropdown c-show" style="margin-top: 0px;">
-          <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle_disabled" href="#" style="font-weight: bold;pointer-events: none;">
-          <svg class="c-sidebar-nav-icon">
-            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
-          </svg> CONFIGURACIÓN</a>
-        <ul class="c-sidebar-nav-dropdown-items">
-          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.admin_users')}}"><span class="c-sidebar-nav-icon"></span> Usuarios</a></li>
-          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.suppliers_admin')}}"><span class="c-sidebar-nav-icon"></span> Proveedores</a></li>
-        </ul>
-        <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.customers_admin')}}"><span class="c-sidebar-nav-icon"></span> Clientes</a></li>
-        <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.materials_admin')}}"><span class="c-sidebar-nav-icon"></span> Materiales</a></li>
-        <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.banks_admin')}}"><span class="c-sidebar-nav-icon"></span> Bancos de Material</a></li>
-        <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.projects_admin')}}"><span class="c-sidebar-nav-icon"></span> Obras</a></li>
-        <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.drivers_admin')}}"><span class="c-sidebar-nav-icon"></span> Choferes</a></li>
-        <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.trucks_admin')}}"><span class="c-sidebar-nav-icon"></span> Camiones</a></li>
+          <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle_disabled" href="#"       style="font-weight: bold;pointer-events: none;">
+            <svg class="c-sidebar-nav-icon">
+              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
+            </svg> CONFIGURACIÓN</a>
+          <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.admin_users')}}"><span class="c-sidebar-nav-icon"></span> Usuarios</a></li>
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.suppliers_admin')}}"><span class="c-sidebar-nav-icon"></span> Proveedores</a></li>
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.customers_admin')}}"><span class="c-sidebar-nav-icon"></span> Clientes</a></li>
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.materials_admin')}}"><span class="c-sidebar-nav-icon"></span> Materiales</a></li>
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.banks_admin')}}"><span class="c-sidebar-nav-icon"></span> Bancos de Material</a></li>
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.projects_admin')}}"><span class="c-sidebar-nav-icon"></span> Obras</a></li>
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.drivers_admin')}}"><span class="c-sidebar-nav-icon"></span> Choferes</a></li>
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.trucks_admin')}}"><span class="c-sidebar-nav-icon"></span> Camiones</a></li>   
+          </ul>
+        </li>
       </ul>
-      </li>
 
       </ul>
       <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
@@ -151,8 +151,8 @@
             </svg>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
-              <div class="dropdown-header bg-light py-2"><strong>{{ current_user.name }}</strong></div>
-              <a class="dropdown-item" href="#">
+              <div class="dropdown-header bg-light py-2" style="color: #3c4b64;"><strong>{{ current_user.name }}</strong></div>
+              <a class="dropdown-item" href="/admin-users/edit/{{current_user.username}}">
                 <svg class="c-icon mr-2">
                   <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
                 </svg> Perfil</a>

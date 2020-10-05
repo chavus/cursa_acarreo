@@ -7,6 +7,7 @@ import datetime
 Base Class
 """
 
+
 class Base:
     @classmethod
     def update_field(cls, field, old_value, new_value):
