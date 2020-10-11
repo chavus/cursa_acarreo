@@ -60,11 +60,7 @@ login_manager.login_message = 'Ingresa tus credenciales para acceder!'
 
 @app.route('/')
 def index():
-    print(current_user.is_authenticated)
-    if current_user.is_authenticated and current_user.role == 'admin':
-        return redirect(url_for('trips.admin_dashboard'))
-    else:
-        return redirect(url_for('trips.create_home'))
+    return redirect(url_for('users.login'))
 
 
 from cursa_acarreo.users.views import users_blueprint

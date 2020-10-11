@@ -3,9 +3,10 @@ from cursa_acarreo.admin import forms
 from cursa_acarreo.models.user import User
 from cursa_acarreo.models import general as g
 from cursa_acarreo.models.trip import Trip
+from cursa_acarreo.security import mustbe_admin
 from flask_login import login_user, current_user, login_required, logout_user
 
-admin_blueprint = Blueprint('admin', __name__)
+admin_blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 
 
 # @admin_blueprint.route('/base')
@@ -14,9 +15,13 @@ admin_blueprint = Blueprint('admin', __name__)
 
 
 @admin_blueprint.before_request
-def validate_login_admin():
+@login_required
+@mustbe_admin
+def validate_login_admin():  # before_request executed to validate if user is logged in and admin
     if request.endpoint and current_user.role != 'admin':
-
+        print('User is not an admin')
+    else:
+        print('Admin')
 
 
 '''
