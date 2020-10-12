@@ -1,0 +1,78 @@
+<!-- material_add_edit.html -->
+{% extends '/admin_panel/admin_base.html' %}
+
+{% block content %}
+<style>
+	.mandatory:before{
+			content:'*';
+			color: #d41616;
+	}
+
+</style>
+<div><h3 style="margin-top: 8px;margin-left: 12px;margin-bottom: 0px;">
+	{% if action == 'edit' %} Editar Material
+	{% else %} Agregar Material
+	{% endif %}
+</h3></div>
+<form id="form" method="POST" novalidate autocomplete="false">
+	{{ form.hidden_tag()}}
+	<div class="modal-body">
+
+		<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="name" class="mandatory">Nombre</label>
+				{{ form.name(class="form-control", maxlength=material_model.name.max_length) }}
+				{% for error in form.name.errors %}
+					<script>
+						$('#name').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		</div>
+
+		<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="description">Descripción</label>
+				{{ form.description(class="form-control", maxlength=material_model.description.max_length) }}
+				{% for error in form.description.errors %}
+					<script>
+						$('#description').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		</div>
+
+		<div class="row">
+		<div class= "col-sm-6" style="text-align: right;">
+			<p>(<span style="color: #d41616;">*</span> Campo requerido)</p>
+		</div>
+		</div>
+
+
+	<div class="row">
+	<div class="modal-footer col-sm-6">
+		<a href="{{ url_for('admin.materials_admin') }}" class="btn btn-secondary"  data-dismiss="modal">Cancelar</a>
+		<button class="btn btn-info" type="submit" id="confirm-btn">Confirmar</button>
+	</div>
+</div>
+</form>
+
+<script>
+
+$(function(){
+
+	// Spinner
+	const confirmBtn = document.getElementById('confirm-btn');
+	confirmBtn.addEventListener('click', (click) => {
+		displayLoader(click.target, 'Guardando')
+		click.target.setAttribute('disabled','disabled')
+		document.getElementById('form').submit()
+	})
+
+  })
+
+</script>
+
+{% endblock %}

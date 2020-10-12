@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/admin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/admin/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursa_acarreo/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cursa_acarreo/users/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="adffd961-d4a6-4c5f-b06f-2f4906050d53" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,10 +22,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
+            <state relative-caret-position="608">
               <caret line="130" column="9" selection-start-line="130" selection-end-line="131" />
               <folding>
                 <element signature="e#0#69#0" expanded="true" />
@@ -39,7 +34,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cursa_acarreo/admin/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1945">
@@ -281,13 +276,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588214470140</updated>
-    </task>
-    <task id="LOCAL-00030" summary="&quot;Set locale setting for mx with heroku support&quot;">
-      <created>1590111189840</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1590111189840</updated>
     </task>
     <task id="LOCAL-00031" summary="&quot;fix get_trucks_in_trip&quot;">
       <created>1590558430732</created>
@@ -625,7 +613,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601862070853</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="&quot;v1.3 release candidate with admin panel&quot;">
+      <created>1602460434075</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1602460434076</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TodoView">
@@ -639,6 +634,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="-157" width="1920" height="1057" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" sideWeight="0.5023401" side_tool="true" weight="0.12561442" />
       <window_info content_ui="combo" id="Project" order="1" sideWeight="0.4976599" visible="true" weight="0.16324382" />
@@ -757,7 +753,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;Add htmt-qrcode library&quot;" />
     <MESSAGE value="&quot;Adjusted icons&quot;" />
     <MESSAGE value="&quot;Fixed camera errors&quot;" />
     <MESSAGE value="&quot;Removed alerts&quot;" />
@@ -782,7 +777,8 @@
     <MESSAGE value="Finished projects and drivers admnin views&quot;" />
     <MESSAGE value="&quot;Finished views and general mockup and trips view&quot;" />
     <MESSAGE value="&quot;Temp push as backup... in the middle of figuring out how to do manage accesses&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Temp push as backup... in the middle of figuring out how to do manage accesses&quot;" />
+    <MESSAGE value="&quot;v1.3 release candidate with admin panel&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;v1.3 release candidate with admin panel&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/mongoengine/fields.py">
@@ -1100,16 +1096,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="130" column="9" selection-start-line="130" selection-end-line="131" />
-          <folding>
-            <element signature="e#0#69#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cursa_acarreo/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
@@ -1136,6 +1122,16 @@
           <caret line="182" lean-forward="true" selection-start-line="182" selection-end-line="182" />
           <folding>
             <element signature="e#0#79#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cursa_acarreo/trips/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="130" column="9" selection-start-line="130" selection-end-line="131" />
+          <folding>
+            <element signature="e#0#69#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -1,0 +1,146 @@
+<!-- bank_add_edit.html -->
+{% extends '/admin_panel/admin_base.html' %}
+
+{% block content %}
+<style>
+	.mandatory:before{
+			content:'*';
+			color: #d41616;
+	}
+
+</style>
+
+<div><h3 style="margin-top: 8px;margin-left: 12px;margin-bottom: 0px;">
+	{% if action == 'edit' %} Editar Banco
+	{% else %} Agregar Banco
+	{% endif %}
+</h3></div>
+
+<form id="form" method="POST" novalidate autocomplete="false">
+	{{ form.hidden_tag()}}
+	<div class="modal-body">
+
+		<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="name" class="mandatory">Nombre</label>
+				{{ form.name(class="form-control", maxlength=bank_model.name.max_length) }}
+				{% for error in form.name.errors %}
+					<script>
+						$('#name').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		<div class="form-group col-sm-2">
+			<label for="is-active" class="">Estatus</label>
+			<br>
+			{{ form.is_active(class="form-control") }}
+				{% for error in form.is_active.errors %}
+					<script>
+						$('#is_active').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		<div class="form-group col-sm-3">
+			<label for="royalty" class="">Regalía<span style="font-size: .5rem;">(MXN)</span>
+			</label>
+				{{ form.royalty(class="form-control", min="0", placeholder="0.00") }}
+				{% for error in form.royalty.errors %}
+					<script>
+						$('#royalty').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label for="owner-name" class="">Propietario</label>
+					{{ form.owner_name(class="form-control") }}
+					{% for error in form.owner_name.errors %}
+						<script>
+							$('#owner_name').addClass('is-invalid')
+						</script>
+						<div class="invalid-feedback">{{error}}</div>
+					{% endfor %}
+			</div>
+			<div class="form-group col-sm-6">
+
+				<label for="material-name-list" class="">Materiales Disponibles</label>
+				{{ form.material_name_list(id="material_name_list") }}
+				{% for error in form.material_name_list.errors %}
+					<script>
+						$('#material_name_list').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+			</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="location">Ubicación</label>
+						{{ form.location(class="form-control", maxlength=bank_model.location.max_length) }}
+						{% for error in form.description.errors %}
+							<script>
+								$('#location').addClass('is-invalid')
+							</script>
+							<div class="invalid-feedback">{{error}}</div>
+						{% endfor %}
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="description">Descripción</label>
+						{{ form.description(class="form-control", maxlength=bank_model.description.max_length) }}
+						{% for error in form.description.errors %}
+							<script>
+								$('#description').addClass('is-invalid')
+							</script>
+							<div class="invalid-feedback">{{error}}</div>
+						{% endfor %}
+				</div>
+				</div>
+			</div>
+
+		<div  style="text-align: right;">
+			<p>(<span style="color: #d41616;">*</span> Campo requerido)</p>
+		</div>
+
+	<div class="modal-footer">
+		<a href="{{ url_for('admin.banks_admin') }}" class="btn btn-secondary"  data-dismiss="modal">Cancelar</a>
+		<button class="btn btn-info" type="submit" id="confirm-btn">Confirmar</button>
+	</div>
+</form>
+
+<script>
+
+$(function(){
+
+	// Spinner
+	const confirmBtn = document.getElementById('confirm-btn');
+	confirmBtn.addEventListener('click', (click) => {
+		displayLoader(click.target, 'Guardando')
+		click.target.setAttribute('disabled','disabled')
+		document.getElementById('form').submit()
+	})
+
+	new SlimSelect({
+		placeholder: 'Seleccionar...',
+		select: '#material_name_list',
+		hideSelectedOption: true,
+		closeOnSelect: false
+	  	})
+
+	  $('#is_active').bootstrapToggle({
+		on: "Activo",
+		off: "Inactivo",
+		onstyle: "info"
+	  })
+
+  })
+
+
+</script>
+
+{% endblock %}
