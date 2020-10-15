@@ -1,6 +1,6 @@
 # Cursa Acarreo
 
-An application to track and manage construction material shipping and trucks
+An application to track and manage construction materials shipping.
 
 ## Application functionality
 
@@ -16,13 +16,17 @@ The application is divided in 2 main parts: the administration panel and the ope
 
 ## Project stack
 
-- Framework: Python/Flask - Blueprint, flask_login, flask_wtf/wtforms, flask_mongoengine
-- Frontend: Enhanced frontend with javascript(ES5/ES6), Bootstrap, Bootstrap-table, libraries: html5-qrcode.min.js
-- Database: MongoDB
+- Framework: Python/Flask using Blueprint, flask_login, flask_wtf/wtforms, flask_mongoengine.
+- Frontend: Enhanced frontend with javascript(ES5/ES6), Bootstrap, Bootstrap-table, Bootstrap Admin Template Coreui.io, libraries: SweetAlert, Html5-QRCode
+- Database: MongoDB with Mongoengine ODM
 - App hosting: Heroku
 
+## Platform/Support
 
-Demo url:
-https://cursa-acarreo-dev.herokuapp.com/login
-Operator User: operator, Password: operator
-Admin User: admin, Password: admin
+- Web: Chrome(fully tested), Safari and Firefox(not fully tested)
+- Mobile: Fully responsive
+
+## Demo access 
+URL: https://cursa-acarreo-dev.herokuapp.com/login
+- Operator User: operator, Password: operator
+- Admin User: admin, Password: admin
