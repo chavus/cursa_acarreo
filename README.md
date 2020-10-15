@@ -12,6 +12,16 @@ The application is divided in 2 main parts: the administration panel and the ope
 
 - Operators application: Can be accessed by operators and admins. Here users can create new trips or shipping of material. An receive or complete a trip when it is done.
 
+![App](https://github.com/chavus/cursa_acarreo/blob/master/readme_imgs/2020-10-14_19-08-59.png)
+
+## Project stack
+
+- Framework: Python/Flask - Blueprint, flask_login, flask_wtf/wtforms, flask_mongoengine
+- Frontend: Enhanced frontend with javascript(ES5/ES6), Bootstrap, Bootstrap-table, libraries: html5-qrcode.min.js
+- Database: MongoDB
+- App hosting: Heroku
+
+
 Demo url:
 https://cursa-acarreo-dev.herokuapp.com/login
 Operator User: operator, Password: operator
