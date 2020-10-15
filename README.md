@@ -12,7 +12,7 @@ The application is divided in 2 main parts: the administration panel and the ope
 
 - Operators application: Can be accessed by operators and admins. Here users can create new trips or shipping of material. An receive or complete a trip when it is done.
 
-![App](https://github.com/chavus/cursa_acarreo/blob/master/readme_imgs/2020-10-14_19-08-59.png)
+![App](https://github.com/chavus/cursa_acarreo/blob/master/readme_imgs/)
 
 ## Project stack
 
