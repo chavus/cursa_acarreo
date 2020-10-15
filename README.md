@@ -1,6 +1,7 @@
 # Cursa Acarreo
 
 An application to track and manage construction materials shipping.
+
 *Application UI is in Spanish since it is developed for a client in México. Code is all in English.*
 
 ## Application functionality
