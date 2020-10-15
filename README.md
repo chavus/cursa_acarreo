@@ -8,9 +8,7 @@ The application is divided in 2 main parts: the administration panel and the ope
 
 - Adminsitration panel: Only accessed by users with admin role. Here admins can visualize all the material shippings that are in progress and finalized. Also, admins can create new users, material banks, projects, drivers and trucks.
 
-![Image of Cursa]
-
-(https://github.com/chavus/cursa_acarreo/tree/master/cursa_acarreo/static/app_images/cursa_logo__.jpg)
+![Admin Panel](2020-10-14_18-47-12.png)
 
 - Operators application: Can be accessed by operators and admins. Here users can create new trips or shipping of material. An receive or complete a trip when it is done.
 
