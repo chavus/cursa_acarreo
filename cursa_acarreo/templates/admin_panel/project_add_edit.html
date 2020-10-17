@@ -1,0 +1,147 @@
+<!-- project_add_edit.html -->
+{% extends '/admin_panel/admin_base.html' %}
+
+{% block content %}
+<style>
+	.mandatory:before{
+			content:'*';
+			color: #d41616;
+	}
+
+</style>
+
+<div><h3 style="margin-top: 8px;margin-left: 12px;margin-bottom: 0px;">
+	{% if action == 'edit' %} Editar Obra
+	{% else %} Agregar Obra
+	{% endif %}
+</h3></div>
+
+<form id="form" method="POST" novalidate autocomplete="false">
+	{{ form.hidden_tag()}}
+	<div class="modal-body">
+
+		<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="name" class="mandatory">Nombre</label>
+				{{ form.name(class="form-control", maxlength=project_model.name.max_length) }}
+				{% for error in form.name.errors %}
+					<script>
+						$('#name').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		<div class="form-group col-sm-2">
+			<label for="is-active" class="">Estatus</label>
+			<br>
+			{{ form.is_active(class="form-control") }}
+				{% for error in form.is_active.errors %}
+					<script>
+						$('#is_active').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		<div class="form-group col-sm-4">
+			<label for="resident" class="">Residente
+			</label>
+				{{ form.resident(class="form-control", maxlength=project_model.resident.max_length) }}
+				{% for error in form.resident.errors %}
+					<script>
+						$('#resident').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label for="customer-name" class="">Cliente</label>
+					{{ form.customer_name(class="form-control") }}
+					{% for error in form.customer_name.errors %}
+						<script>
+							console.log("{{error}}");
+							$('#customer_name').addClass('is-invalid')
+						</script>
+						<div class="invalid-feedback">{{error}}</div>
+					{% endfor %}
+			</div>
+			<div class="form-group col-sm-6">
+
+				<label for="material-name-list" class="">Materiales Requeridos</label>
+				{{ form.material_name_list(id="material_name_list") }}
+				{% for error in form.material_name_list.errors %}
+					<script>
+						$('#material_name_list').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+			</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="location">Ubicación</label>
+						{{ form.location(class="form-control", maxlength=project_model.location.max_length) }}
+						{% for error in form.description.errors %}
+							<script>
+								$('#location').addClass('is-invalid')
+							</script>
+							<div class="invalid-feedback">{{error}}</div>
+						{% endfor %}
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="description">Descripción</label>
+						{{ form.description(class="form-control", maxlength=project_model.description.max_length) }}
+						{% for error in form.description.errors %}
+							<script>
+								$('#description').addClass('is-invalid')
+							</script>
+							<div class="invalid-feedback">{{error}}</div>
+						{% endfor %}
+				</div>
+				</div>
+			</div>
+
+		<div  style="text-align: right;">
+			<p>(<span style="color: #d41616;">*</span> Campo requerido)</p>
+		</div>
+
+	<div class="modal-footer">
+		<a href="{{ url_for('admin.projects_admin') }}" class="btn btn-secondary"  data-dismiss="modal">Cancelar</a>
+		<button class="btn btn-info" type="submit" id="confirm-btn">Confirmar</button>
+	</div>
+</form>
+
+<script>
+
+$(function(){
+
+	// Spinner
+	const confirmBtn = document.getElementById('confirm-btn');
+	confirmBtn.addEventListener('click', (click) => {
+		displayLoader(click.target, 'Guardando')
+		click.target.setAttribute('disabled','disabled')
+		document.getElementById('form').submit()
+	})
+
+	new SlimSelect({
+		placeholder: 'Seleccionar...',
+		select: '#material_name_list',
+		hideSelectedOption: true,
+		closeOnSelect: false
+	  	})
+
+	  $('#is_active').bootstrapToggle({
+		on: "Activo",
+		off: "Inactivo",
+		onstyle: "info"
+	  })
+
+  })
+
+
+</script>
+
+{% endblock %}

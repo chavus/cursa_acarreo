@@ -10,7 +10,6 @@ import json
 
 trips_blueprint = Blueprint('trips', __name__)
 
-
 @trips_blueprint.route('/create_home')
 @login_required
 def create_home():
@@ -39,7 +38,8 @@ def create_trip():
         trip = Trip.create(**trip_dict)
         return jsonify({'trip_id': trip.trip_id}), 200
     except Exception as e:
-        return jsonify({'error': e.args[0]}), 400
+        print(e)
+        return jsonify({'error': str(e)}), 400
 
 
 @trips_blueprint.route('/get_trip_ticket')
@@ -53,7 +53,7 @@ def get_trip_ticket():
         ticket_b64 = ticket.encode_b64()
         return jsonify(ticket_b64=ticket_b64.decode()), 200
     except Exception as e:
-        return jsonify(error=e.args[0]), 400
+        return jsonify(error=str(e)), 400
 
 
 @trips_blueprint.route('/_get_materials')
@@ -71,6 +71,7 @@ def _get_materials():
     material_choices = [(m, m) for m in materials]
     return jsonify(material_choices)
 
+
 @trips_blueprint.route('/_get_materials_on_trip')
 @login_required
 def _get_materials_on_trip():
@@ -87,8 +88,9 @@ def receive_dashboard():
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
     return render_template('receive_home.html', in_progress_trips=in_progress_trips)
 
+
 @trips_blueprint.route('/_get_trip_info')
-# @login_required
+@login_required
 def get_trip_info():
     try:
         print(request.args.get('trip_id'))
@@ -101,7 +103,7 @@ def get_trip_info():
 
 
 @trips_blueprint.route('/receive', methods=['POST'])
-# @login_required
+@login_required
 def receive():
     try:
         trip_id = request.json['trip_id']

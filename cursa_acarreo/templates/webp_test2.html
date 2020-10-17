@@ -1,0 +1,18 @@
+{% extends 'base_user.html' %}
+
+{% block content %}
+
+	<p>Hello you are successfully rendering {{ test_variable }}</p>
+
+	<input type="number" id="decimal-input2">
+	<p id="fraction-display2">Fraction will be displayed here</p>
+	<button id="test-btn2"> Convert decimal to fraction</button>
+
+	<!-- <button onclick="convert()"></button> -->
+
+	<script
+	type="text/javascript"
+	src="{{ url_for('static', filename='dist/test2.bundle.js') }}"
+	></script>
+
+{% endblock %}

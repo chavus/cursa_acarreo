@@ -1,0 +1,125 @@
+<!-- banks_admin.html -->
+{% extends '/admin_panel/admin_base.html' %}
+
+{% block content %}
+<script>
+
+    // Confirm "Delete"
+  function remove(id, name) {
+    // const username = username
+    swal('', `¿Seguro que desea borrar Banco: ${name}?`, 'warning', {dangerMode:true, 
+      buttons: ["Cancelar", "Borrar"]}).then((res)=>{
+        if (res) {
+          window.location.href = "{{url_for('admin.banks_admin')}}"+`/delete/${id}`
+        }
+      })
+  }
+
+</script>
+
+<style>
+  .btns-col {
+    width: 15%;
+  }
+  .name-col{
+    width: 20%;
+  }
+  .royalty-col{
+    width: 5%;
+  }
+  .loc-col{
+    /* width: 5%; */
+  }
+  .mat-col{
+    width: 5%;
+    text-align: center;
+  }
+  .own-col{
+    width: 20%;
+  }
+  .stat-col{
+    width: 10%;
+    text-align: center;
+  }
+</style>
+
+<div><h3 style="margin-top: 8px;">Bancos de Material</h3></div>
+<div id="toolbar">
+    <a class="btn btn-pill btn-success"  
+    href="{{url_for('admin.bank_add_edit', param='new')}}"
+    style="font-weight: 500; ">
+        <i class="fas fa-plus"></i> 
+        <span class="d-none d-md-inline">Agregar</span>
+      </a>
+</div>
+
+<div>
+    <table class="table table-responsive-sm table-striped" 
+        data-toolbar="#toolbar"
+        data-toggle="table" 
+        data-sortable="true"
+        data-pagination="true"
+        data-page-size="25"
+        data-page-list="[25, 50, 100, 200, All]"
+        data-search="true"
+        data-show-search-clear-button="true"
+        data-show-toggle="true"
+        >
+        <thead>
+          <tr>
+            <th class="name-col" data-sortable="true">Nombre</th>
+            <th class="stat-col" data-sortable="true">Estatus</th>
+            <th class="mat-col" data-sortable="true">Materiales</th>
+            <th class="owner-col" data-sortable="true">Propietario</th>
+            <th class="loc-col" data-sortable="true">Ubicación</th>
+            <th class="royalty-col" data-sortable="true">Regalía</th>
+            <th class="btns-col"></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for bank in banks %}
+          <tr>
+            <td>{{ bank['name'] }}</td>
+            <td>
+              {% if bank['is_active'] %}
+                <h5><span class="badge badge-primary" style="background-color: #007bff;">Activo</span></h5>
+              {% else %}
+                <h5><span class="badge badge-dark">Inactivo</span></h5>
+              {% endif %}
+            <td><button type="button" class="btn btn-pill btn-info" style="font-weight: bold;" data-container="body" data-toggle="popover" data-placement="top" data-content="{{ ', '.join(bank['material_name_list']) }}">
+              <span class="fa fa-eye"></span>
+            </button></td>
+            <td>{{ bank['owner_name'] }}</td>
+            <td>{{ bank['location'] }}</td>
+            <td>{{ bank['royalty'] }}</td>
+            <td>
+                <div class="row align-items-center justify-content-around flex-nowrap" style="margin-left: 0px; margin-right: 0px;">
+                    <a href="{{url_for('admin.bank_add_edit', param=bank['id'])}}" class="btn btn-pill btn-info" style="font-size: .8rem;margin-left: 1px;margin-right: 5px;">
+                        <span class="fa fa-pencil"></span>
+                    </a>
+                  <button onclick="remove('{{bank['id']}}', '{{bank['name']}}')" class="btn btn-pill btn-danger" type="button"
+                    style="font-size: .8rem;margin-left: 5px;margin-right: 1px;">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+</div>
+
+
+<script>
+  $(function(){
+    // Remove "table-bordered"
+    document.querySelector('table.table').classList.remove('table-bordered')
+
+    $('[data-toggle="popover"]').popover({
+      trigger: 'focus'
+    })
+
+  })
+</script>
+
+{% endblock %}

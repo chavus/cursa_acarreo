@@ -1,0 +1,161 @@
+<!-- truck_add_edit.html -->
+{% extends '/admin_panel/admin_base.html' %}
+
+{% block content %}
+<style>
+	.mandatory:before{
+			content:'*';
+			color: #d41616;
+	}
+
+</style>
+
+<div><h3 style="margin-top: 8px;margin-left: 12px;margin-bottom: 0px;">
+	{% if action == 'edit' %} Editar Camión
+	{% else %} Agregar Camión
+	{% endif %}
+</h3></div>
+
+<form id="form" method="POST" novalidate autocomplete="false">
+	{{ form.hidden_tag()}}
+	<div class="modal-body">
+
+		<div class="row">
+		<div class="form-group col-sm-3">
+			<label for="id_code" class="mandatory">Código</label>
+				{{ form.id_code(class="form-control", maxlength=truck_model.id_code.max_length, style="text-transform:uppercase;") }}
+				{% for error in form.id_code.errors %}
+					<script>
+						$('#id_code').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		<div class="form-group col-sm-2">
+			<label for="is-active" class="">Estatus</label>
+			<br>
+			{{ form.is_active(class="form-control") }}
+				{% for error in form.is_active.errors %}
+					<script>
+						$('#is_active').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		<div class="form-group col-sm-3">
+			<label for="serial_number" class="mandatory">Número de Serie
+			</label>
+				{{ form.serial_number(class="form-control", maxlength=truck_model.serial_number.max_length,style="text-transform:uppercase;") }}
+				{% for error in form.serial_number.errors %}
+					<script>
+						$('#serial_number').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		<div class="form-group col-sm-2">
+			<label for="capacity" class="mandatory">Capacidad<span style="font-size: .5rem;"> (mts3)</span></label>
+				{{ form.capacity(class="form-control", min=0) }}
+				{% for error in form.capacity.errors %}
+					<script>
+						$('#capacity').addClass('is-invalid')
+					</script>
+					<div class="invalid-feedback">{{error}}</div>
+				{% endfor %}
+		</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-sm-3">
+				<label for="plate" class="">Placas
+				</label>
+					{{ form.plate(class="form-control", maxlength=truck_model.serial_number.max_length) }}
+					{% for error in form.plate.errors %}
+						<script>
+							$('#plate').addClass('is-invalid')
+						</script>
+						<div class="invalid-feedback">{{error}}</div>
+					{% endfor %}
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="brand" class="">Marca
+				</label>
+					{{ form.brand(class="form-control", maxlength=truck_model.brand.max_length) }}
+					{% for error in form.brand.errors %}
+						<script>
+							$('#brand').addClass('is-invalid')
+						</script>
+						<div class="invalid-feedback">{{error}}</div>
+					{% endfor %}
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="color" class="">Color
+				</label>
+					{{ form.color(class="form-control", maxlength=truck_model.color.max_length) }}
+					{% for error in form.color.errors %}
+						<script>
+							$('#color').addClass('is-invalid')
+						</script>
+						<div class="invalid-feedback">{{error}}</div>
+					{% endfor %}
+			</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="driver_full_name" class="">Chofer</label>
+						{{ form.driver_full_name(class="form-control") }}
+						{% for error in form.driver_full_name.errors %}
+							<script>
+								$('#driver_full_name').addClass('is-invalid')
+							</script>
+							<div class="invalid-feedback">{{error}}</div>
+						{% endfor %}
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="owner_name" class="">Propietario</label>
+						{{ form.owner_name(class="form-control") }}
+						{% for error in form.owner_name.errors %}
+							<script>
+								$('#owner_name').addClass('is-invalid')
+							</script>
+							<div class="invalid-feedback">{{error}}</div>
+						{% endfor %}
+				</div>
+				</div>
+			</div>
+
+		<div  style="text-align: right;">
+			<p>(<span style="color: #d41616;">*</span> Campo requerido)</p>
+		</div>
+
+	<div class="modal-footer">
+		<a href="{{ url_for('admin.trucks_admin') }}" class="btn btn-secondary"  data-dismiss="modal">Cancelar</a>
+		<button class="btn btn-info" type="submit" id="confirm-btn">Confirmar</button>
+	</div>
+</form>
+
+<script>
+
+$(function(){
+
+	// Spinner
+	const confirmBtn = document.getElementById('confirm-btn');
+	confirmBtn.addEventListener('click', (click) => {
+		displayLoader(click.target, 'Guardando')
+		click.target.setAttribute('disabled','disabled')
+		document.getElementById('form').submit()
+	})
+
+	  $('#is_active').bootstrapToggle({
+		on: "Activo",
+		off: "Inactivo",
+		onstyle: "info"
+	  })
+
+  })
+
+
+</script>
+
+{% endblock %}
