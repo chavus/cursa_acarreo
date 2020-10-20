@@ -29,7 +29,7 @@ if not environment:
 
 if environment == 'master' or environment == 'production':
     db_pwd = os.environ.get('PROD_DB_PWD')
-    db_user = os.environ.get('DEV_DB_USER')
+    db_user = os.environ.get('PROD_DB_USER')
     app.config['MONGODB_SETTINGS'] = {'host': f'mongodb+srv://{db_user}:{db_pwd}@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
                                       'connect': False}
     print('Configuring as master/production environment')
