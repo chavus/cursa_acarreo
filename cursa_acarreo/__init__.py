@@ -43,7 +43,7 @@ else:
     app_env = 'DEV'
 
 
-app.config['SECRET_KEY'] = 'secretkey' # >`o"Lb0bR@yMc<|&GM6g,nCQd([?-6|8QHNLAKc,l~^4]Lq,g(&h9tn$,uxQTn@
+app.config['SECRET_KEY'] = 'secretkey'  # >`o"Lb0bR@yMc<|&GM6g,nCQd([?-6|8QHNLAKc,l~^4]Lq,g(&h9tn$,uxQTn@
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['ENV'] = app_env
 
