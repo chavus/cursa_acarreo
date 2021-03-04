@@ -27,7 +27,7 @@ if not environment:
         print('Directory not a git repositoy... running with development configuration.')
 
 
-if environment == 'master' or environment == 'production':
+if environment in ['master', 'production']:
     db_pwd = os.environ.get('PROD_DB_PWD')
     db_user = os.environ.get('PROD_DB_USER')
     app.config['MONGODB_SETTINGS'] = {'host': f'mongodb+srv://{db_user}:{db_pwd}@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
