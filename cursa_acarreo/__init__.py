@@ -27,7 +27,7 @@ if not environment:
         print('Directory not a git repositoy... running with development configuration.')
 
 
-if environment == 'master' or environment == 'production':
+if environment in ['master', 'production']:
     db_pwd = os.environ.get('PROD_DB_PWD')
     db_user = os.environ.get('PROD_DB_USER')
     app.config['MONGODB_SETTINGS'] = {'host': f'mongodb+srv://{db_user}:{db_pwd}@cluster0-atrnj.mongodb.net/general?retryWrites=true&w=majority',
@@ -43,7 +43,7 @@ else:
     app_env = 'DEV'
 
 
-app.config['SECRET_KEY'] = 'secretkey' # >`o"Lb0bR@yMc<|&GM6g,nCQd([?-6|8QHNLAKc,l~^4]Lq,g(&h9tn$,uxQTn@
+app.config['SECRET_KEY'] = 'secretkey'  # >`o"Lb0bR@yMc<|&GM6g,nCQd([?-6|8QHNLAKc,l~^4]Lq,g(&h9tn$,uxQTn@
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['ENV'] = app_env
 
