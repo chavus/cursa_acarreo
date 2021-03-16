@@ -50,9 +50,13 @@ app.config['ENV'] = app_env
 
 @app.template_filter()
 def formatdate_mx(datetime_val):
-    timezone = pytz.timezone('America/Mexico_City')
-    mx_time = timezone.fromutc(datetime_val)
-    return mx_time.strftime("%d-%b-%Y %H:%M")
+    if datetime_val:
+        timezone = pytz.timezone('America/Mexico_City')
+        mx_time = timezone.fromutc(datetime_val)
+        return mx_time.strftime("%d-%b-%Y %H:%M")
+    else:
+        return ""
+    
 
 
 db = MongoEngine()

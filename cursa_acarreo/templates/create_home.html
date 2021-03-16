@@ -13,6 +13,14 @@
 		<div class="mb-3">
 			<h4 class="text-center">Crear viaje</h4>
 		</div>
+
+		<!-- is-public switch -->
+		<div class="form-check row" style="margin-right: 8px;text-align: right;bottom: 10px;>
+			<label for="is-public" class="form-check-label">Venta Público</label>
+			<input id="is-public" class="form-check-input" type="checkbox" data-toggle="toggle"
+					data-on="Si" data-off="No" data-style="ios">
+		</div>
+
 		<div class="row">
 			<div class="col-xl">
 				<div class="d-flex flex-row form-group selector">
@@ -52,7 +60,7 @@
 				</div>
 			</div>
 
-			<div class="col-xl">
+			<div class="col-xl" id="destination-row">
 				<div class="d-flex flex-row form-group selector">
 					<div class="col-3 mr-2 pl-0">
 						{{ form.destination.label(class="col-form-label-lg")}}
@@ -71,25 +79,49 @@
 					</div>
 				</div>
 			</div>
+
+
+			<div class="col-xl" id="customer-row">
+				<div class="d-flex flex-row form-group selector">
+					<div class="col-3 mr-2 pl-0">
+						{{ form.customer.label(class="col-form-label-lg")}}
+					</div>
+					<div>
+						{{ form.customer(required=False, class="form-control-lg pr-1", style="width: 14rem;") }}   <!--required= False when DataRequired message is custom-->
+						<div class="invalid-feedback text-left" id="customer_error"></div>
+
+				            {% for error in form.customer.errors %}
+								<script>
+									$('#customer').addClass('is-invalid')
+									$('#customer').addClass('is-invalid_custom')
+								</script>
+								<div class="invalid-feedback text-left">{{ error }}</div>
+							{% endfor %}
+					</div>
+				</div>
+			</div>
 			</div>
 
 		<!-- Default switch -->
 		<div class="form-check row float-right" style="margin-right: 8px;">
 			<label for="keepselection" class="form-check-label">Mantener selección</label>
-		    <input id="keepselection" checked class="form-check-input" type="checkbox" data-toggle="toggle"
+		    <input id="keepselection" class="form-check-input" type="checkbox" data-toggle="toggle"
 		         data-on="Si" data-off="No" data-style="ios">
 		</div>
 
 	</div>
 	<div class="jumbotron py-2">
 		<div class="row">
-			<div class="col-lg">
+			<div id="truck-selection" class="col-lg">
 				<div class="row flex-nowrap form-group justify-content-center align-items-center selector">
 					<div class="col-auto p-2">
 						{{ form.truck.label(class="col-form-label-lg float-right")}}
 					</div>
 					<div class="col-auto p-2">
 						{% if form.truck.choices == [] %}
+							<script>
+								var noTrucksAvailable = true
+							</script>
 							<h4><span class="text-wrap badge badge-secondary" style="width:10rem">No hay camiones disponibles</span></h4>
 						{% else %}
 							{{ form.truck(required=False, class="form-control-lg", style="width: 14rem;") }}
@@ -107,6 +139,23 @@
 					</div>
 				</div>
 			</div>
+			<div id="amount-selection" class="col-lg">
+				<div class="row flex-nowrap form-group justify-content-center align-items-center selector">
+					<div class="col-auto p-2">
+						<label class="col-form-label-lg float-right" for="amount">Cantidad</label>
+					</div>
+					<div class="col-auto p-2">
+						
+							<select class="form-control-lg" id="amount" name="amount" style="width: 14rem;">
+								<option disabled="" selected="" value="default">Seleccionar...</option>
+								<option value=7>7 mts3</option>
+								<option value=14>14 mts3</option>
+								<option value=30>30 mts3</option>
+							</select>
+							<div class="invalid-feedback text-left" id="amount_error"></div>
+					</div>
+				</div>
+			</div>
 		<div class="form-group col-lg align-self-center">
 			<button type="button" class="btn btn-primary btn-lg btn-block" id="confirmation_button"
 			        value="Confirmar modal" {% if form.truck.choices  == [] %}disabled{% endif %}>
@@ -114,6 +163,7 @@
 			</button>
 		</div>
 	</div>
+
 
 	</div>
 
@@ -131,8 +181,12 @@
 	      <div class="modal-body" style="font-size:1.2rem">
 			<table class="table table-borderless" style="width: 90%; margin: 0px auto; padding: .3rem;">
 				<tr>
-					<th class="font-weight-bold" style="padding-right:0 ;">Camión:</th>
-					<td id="truck_row" style="padding-left: .3rem;"></td>
+					<th class="font-weight-bold" style="padding-right:0 ;">Tipo:</th>
+					<td id="trip_type_row" style="padding-left: .3rem;"></td>
+				</tr>
+				<tr>
+					<th id="truckamount_row_label" class="font-weight-bold" style="padding-right:0 ;"></th>
+					<td id="truckamount_row" style="padding-left: .3rem;"></td>
 				</tr>
 				<tr>
 					<th class="font-weight-bold" style="padding-right:0 ;">Origen: </th>
@@ -143,8 +197,8 @@
 					<td id="material_row" style="padding-left: .3rem;"></td>
 				</tr>
 				<tr>
-					<th class="font-weight-bold" style="padding-right:0 ;">Destino:</th>
-					<td id="destination_row" style="padding-left: .3rem;"></td>
+					<th id="destinationcustomer_row_label" class="font-weight-bold" style="padding-right:0 ;"></th>
+					<td id="destinationcustomer_row" style="padding-left: .3rem;"></td>
 				</tr>
 			</table>
 		      {% if current_user.role in ['admin', 'supervisor']%}
@@ -204,32 +258,115 @@
 		$('#origin').val(localStorage.getItem('origin_selection'));
 		$('#material').val(localStorage.getItem('material_selection'));
 		$('#destination').val(localStorage.getItem('destination_selection'));
-		$('#origin, #material, #destination').prop('disabled','true');
+		$('#customer').val(localStorage.getItem('customer_selection'));
+		$('#origin, #material, #destination, #customer').prop('disabled','true');
+		if (localStorage.getItem('is_public_value') == 'true'){
+			$('#is-public').bootstrapToggle('on');
+			$('#confirmation_button').prop('disabled', false)
+		}else{
+			$('#is-public').bootstrapToggle('off');
+		}
+		$('#is-public').bootstrapToggle('disable')
 	}else{
 		$('#keepselection').bootstrapToggle('off');
+		$('#is-public').bootstrapToggle('off');
+		$('#is-public').bootstrapToggle('enable')
 	}
 
+	//Initialize is-public switch on page load 
+	destinationRow = document.getElementById('destination-row')
+	customerRow = document.getElementById('customer-row')
+	if($('#is-public').prop('checked')){
+		destinationRow.setAttribute('hidden',true)
+		customerRow.removeAttribute('hidden')
+		$('#truck-selection').prop('hidden',true)
+		$('#amount-selection').prop('hidden',false)
+		
+	}else{
+		customerRow.setAttribute('hidden',true)
+		destinationRow.removeAttribute('hidden')
+		$('#truck-selection').prop('hidden',false)
+		$('#amount-selection').prop('hidden',true)
+	}
+
+
+// Show Destination or Client input drop down depending on is-public 
+	$('#is-public').change(function() {
+		destinationRow = document.getElementById('destination-row')
+		customerRow = document.getElementById('customer-row')
+		if($('#is-public').prop('checked')){
+			destinationRow.setAttribute('hidden',true)
+			customerRow.removeAttribute('hidden')
+			$('#truck-selection').prop('hidden',true)
+			$('#amount-selection').prop('hidden',false)
+			$('#customer').val('default')
+			$('#destination').val('default')
+			$('#truck').val('default')
+			$('#confirmation_button').prop('disabled', false)
+		}else{
+			customerRow.setAttribute('hidden',true)
+			destinationRow.removeAttribute('hidden')
+			$('#truck-selection').prop('hidden',false)
+			$('#amount-selection').prop('hidden',true)
+			$('#destination').val('default')
+			$('#customer').val('default')
+			$('#amount').val('default')
+			if (noTrucksAvailable){
+				$('#confirmation_button').prop('disabled', true)
+			}
+		}
+
+	});
+
 // <!--Save values of select fields to local storage and disable fields when toogle button is turned on-->
+
 	$('#keepselection').change(function() {
 		localStorage.setItem('keep_selection_value', $('#keepselection').prop('checked'));
 
 		if($('#keepselection').prop('checked')){
-			if($('#origin').val()==null  || $('#material').val()==null || $('#destination').val()==null) {
+			
+			if($('#is-public').prop('checked')){
+				if($('#origin').val()==null  || $('#material').val()==null || $('#customer').val()==null) {
+				$('#keepselection').bootstrapToggle('off')
+				swal('Debes seleccionar todos los campos','','warning');
+				}else{
+				localStorage.setItem('origin_selection', $('#origin').val());
+				localStorage.setItem('material_selection', $('#material').val());
+				localStorage.setItem('customer_selection', $('#customer').val());
+				localStorage.setItem('is_public_value', true)
+				$('#origin, #material, #customer').prop('disabled','true');
+				$('#is-public').bootstrapToggle('disable')
+				}
+
+			}else{
+				if($('#origin').val()==null  || $('#material').val()==null || $('#destination').val()==null) {
 				$('#keepselection').bootstrapToggle('off')
 				swal('Debes seleccionar todos los campos','','warning');
 				}else{
 				localStorage.setItem('origin_selection', $('#origin').val());
 				localStorage.setItem('material_selection', $('#material').val());
 				localStorage.setItem('destination_selection', $('#destination').val());
+				localStorage.setItem('is_public_value', false)
 				$('#origin, #material, #destination').prop('disabled','true');
+				$('#is-public').bootstrapToggle('disable')
 				}
-		}else{
-			$('#origin, #material, #destination').removeAttr('disabled');
-			if($('#origin').val() == null) {
-		        $('#material').prop('disabled','true');
-		        $('#destination').prop('disabled','true');
 
-	        }
+			}
+
+		}else{
+			$('#origin, #material, #destination, #customer').removeAttr('disabled');
+			$('#is-public').bootstrapToggle('enable')
+			localStorage.removeItem('origin_selection')
+			localStorage.removeItem('material_selection')
+			localStorage.removeItem('destination_selection')
+			localStorage.removeItem('is_public_value')
+			localStorage.removeItem('customer_selection')
+			localStorage.removeItem('keep_selection_value')
+			if($('#origin').val() == null) {
+				$('#material').prop('disabled','true');
+				$('#destination').prop('disabled','true');
+				$('#customer').prop('disabled','true');
+			}
 		}
 	});
 
@@ -252,7 +389,8 @@
         var dropdown = {
 	        origin: $('#origin'),
 	        material: $('#material'),
-	        destination: $('#destination')
+	        destination: $('#destination'),
+			customer: $('#customer')
         };
 
 	    // call to update on load
@@ -260,6 +398,7 @@
 	        dropdown.material.val('default');
 	        dropdown.material.attr('disabled', 'disabled');
 	        dropdown.destination.attr('disabled', 'disabled');
+			dropdown.customer.attr('disabled', 'disabled');
 
 	    }
 
@@ -294,6 +433,7 @@
 	    $('#origin').change(function() {
 	        updateMaterials();
 	        disableOriginInDestination();
+			$('#customer').removeAttr('disabled')
 	    });
 
 	    // <!--Update confirmation modal with selections-->
@@ -313,17 +453,28 @@
 				validated = false;
 
 	        }
-	        if ( $('#destination').val() == null ){
+	        if ( $('#destination').val() == null && !$('#is-public').prop('checked')){
 	            $('#destination').addClass('is-invalid')
 				$('#destination').addClass('is-invalid_custom')
 				$('#destination_error').text('Favor de seleccionar una opción')
 				validated = false;
-
 	        }
-	        if ( $('#truck').val() == null ){
+			if ( $('#customer').val() == null && $('#is-public').prop('checked')){
+	            $('#customer').addClass('is-invalid')
+				$('#customer').addClass('is-invalid_custom')
+				$('#customer_error').text('Favor de seleccionar una opción')
+				validated = false;
+	        }
+	        if ( $('#truck').val() == null && !$('#is-public').prop('checked')){
 	            $('#truck').addClass('is-invalid')
 				$('#truck').addClass('is-invalid_custom')
 				$('#truck_error').text('Favor de seleccionar una opción')
+				validated = false;
+	        }
+			if ( $('#amount').val() == null && $('#is-public').prop('checked')){
+	            $('#amount').addClass('is-invalid')
+				$('#amount').addClass('is-invalid_custom')
+				$('#amount_error').text('Favor de seleccionar una opción')
 				validated = false;
 	        }
 	        return validated
@@ -331,16 +482,35 @@
 
 	    $('#confirmation_button').click(function(){
 			if (validateForm() == true){
+				
 			    $('#origin_row').text($('#origin').val());
 	            $('#material_row').text($('#material').val());
-	            $('#destination_row').text($('#destination').val());
-	            $('#truck_row').text($('#truck').val());
+				if ($('#is-public').prop('checked')){
+					$('#trip_type_row').text("Venta Público")
+
+					$('#truckamount_row_label').text("Cantidad:");
+					$('#truckamount_row').text($('#amount').val() + " mts3");
+
+					$('#destinationcustomer_row_label').text("Cliente:");
+					$('#destinationcustomer_row').text($('#customer').val());
+				}else{
+					$('#trip_type_row').text("Viaje Interno")
+
+					$('#truckamount_row_label').text("Camión:");
+					$('#truckamount_row').text($('#truck').val());
+
+					$('#destinationcustomer_row_label').text("Destino:");
+					$('#destinationcustomer_row').text($('#destination').val());
+				}
+				
+	            
+
 				$('#confirmationModal').modal('show');
 			}
 	    	});
 
-		 function confirmationModal(tripID, truckID, ticketB64){
-			swal(`Viaje #${tripID} con camión ${truckID} creado!`,'','success',{
+		 function confirmationModal(tripID, ticketB64){
+			swal(`Viaje #${tripID} creado!`,'','success',{
 				closeOnClickOutside: false,
 				buttons: {
 					reprint: {
@@ -392,19 +562,23 @@
 		    $('#createTrip').attr('disabled','true');
 		    $('#close_button').attr('disabled','true');
 			trip_info = {
+				trip_type: $('#is-public').prop('checked') ? "public": "internal",
 				truck_id: $('#truck').val(),
+				amount: $('#amount').val(),
 				material_name: $('#material').val(),
 				origin_name: $('#origin').val(),
 				destination_name: $('#destination').val(),
+				customer_name: $('#customer').val(),
 				sender_comment: $('#sender_comment').val()
 			};
+			// console.log(trip_info);
 			try{
 				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", 											trip_info)
 				const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripRes.trip_id})
 				printImage(ticketRes.ticket_b64);
 				setTimeout(() => {
 					$('#confirmationModal').modal('hide');
-					confirmationModal(tripRes.trip_id, trip_info.truck_id, ticketRes.ticket_b64)
+					confirmationModal(tripRes.trip_id, ticketRes.ticket_b64)
 				}, 1000);
 				
 			}catch(error){

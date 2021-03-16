@@ -20,6 +20,7 @@ def create_home():
     form.material.choices = f.material_choices()
     form.destination.choices = [('section_label', '-------Obras--------')] + f.project_choices() + \
                                [('section_label', '-------Bancos-------')] + f.bank_choices()
+    form.customer.choices = f.customers_choice()
     return render_template('create_home.html', form=form)
 
 
@@ -27,14 +28,19 @@ def create_home():
 @login_required
 def create_trip():
     trip_dict = {
+        'type': request.form.get('trip_type'),
         'truck_id': request.form.get('truck_id'),
+        'amount': int(request.form.get('amount')) if request.form.get('amount') else None,
         'material_name': request.form.get('material_name'),
         'origin_name': request.form.get('origin_name'),
         'destination_name': request.form.get('destination_name'),
+        'client_name': request.form.get('customer_name'),
         'sender_username': current_user.username,
-        'sender_comment': request.form.get('sender_comment')
+        'sender_comment': request.form.get('sender_comment'),
+        'status': 'in_progress' if request.form.get('trip_type') == "internal" else "complete"
         }
     try:
+        # print(trip_dict)
         trip = Trip.create(**trip_dict)
         return jsonify({'trip_id': trip.trip_id}), 200
     except Exception as e:
@@ -93,7 +99,7 @@ def receive_dashboard():
 @login_required
 def get_trip_info():
     try:
-        print(request.args.get('trip_id'))
+        # print(request.args.get('trip_id'))
         trip_id = request.args.get('trip_id')
         trip = Trip.find_by_tripid(trip_id)
         return trip.to_json(), 200
