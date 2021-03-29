@@ -47,17 +47,19 @@ Model classes
 
 
 STATUS_LIST = ('in_progress', 'complete', 'canceled')
+TRIP_TYPES_LIST = ('internal', 'public')
 class Trip(db.Document, Base):
     """
     Trip model
     """
     meta = {'collection': 'trips'}
     trip_id = db.SequenceField(primary_key=True)
-    truck = db.StringField(required=True, validation=validate_truck_options)
+    truck = db.StringField(required=False, validation=validate_truck_options)
     material = db.StringField(required=True, validation=validate_material_options)
     amount = db.IntField(required=True, min_value=0)
     origin = db.StringField(required=True, validation=validate_location_options)
-    destination = db.StringField(required=True, validation=validate_location_options)
+    destination = db.StringField(required=False, validation=validate_location_options)
+    client = db.StringField(required=False)
     sender_user = db.StringField(required=True, validation=validate_user_options)
     sender_comment = db.StringField(required=False, max_length=100)
     sent_datetime = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
@@ -66,11 +68,13 @@ class Trip(db.Document, Base):
     finalized_datetime = db.DateTimeField()
     status = db.StringField(required=False, choices=STATUS_LIST)
     is_return = db.BooleanField(defaul=False)
+    type = db.StringField(required=True, choices=TRIP_TYPES_LIST)
 
     def json(self):
         trip_dict = dict()
         for i in self:
-            if (i == 'sender_comment' or i == 'finalizer_comment') and (self[i] is None):
+            if (i in ['sender_comment', 'finalizer_comment', 'client', 'destination', 'truck', 'finalizer_user']) and \
+                    (self[i] is None):  # (i == 'sender_comment' or i == 'finalizer_comment')
                 trip_dict[i] = ''
             else:
                 trip_dict[i] = self[i]
@@ -103,18 +107,21 @@ class Trip(db.Document, Base):
         self.save_to_db(validation=False)  # This is a temporary solution, instead code logic to execute validate_x_options
 
     @classmethod
-    def create(cls, truck_id, material_name, origin_name, destination_name, sender_username, sender_comment=None,
-               amount=None, is_return=None):
+    def create(cls, truck_id, material_name, origin_name, sender_username, type,
+               status='in_progress', destination_name=None, client_name=None, sender_comment=None, amount=None,
+               is_return=None):
         params = {
-            'truck': truck_id.upper(),
+            'truck': truck_id.upper() if truck_id else None,
             'material': material_name.upper(),
             'origin': origin_name.upper(),
-            'destination': destination_name.upper(),
+            'destination': destination_name.upper() if destination_name else None,
+            'client': client_name.upper() if client_name else None,
             'sender_user': sender_username,
             'sender_comment': sender_comment,
             'amount': amount if amount else Truck.find_by_idcode(truck_id).capacity,
-            'status': 'in_progress',
-            'is_return': is_return
+            'status': status,
+            'is_return': is_return,
+            'type': type
         }
         return cls(**params).save()
 

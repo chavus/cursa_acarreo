@@ -12,6 +12,7 @@ import io, base64
 class Ticket:
 
     TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_ticket_template.jpg'
+    PUBLIC_TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_public_ticket_template.jpg'
     TICKET_FONT = project_dir + '/cursa_acarreo/static/fonts/CalibriRegular.ttf'
     X_VALUE = 190  # X Coordinate to enter trip field text
     Y_VALUE_INIT = 295  # Initial Y coordinate for first trip value
@@ -20,6 +21,7 @@ class Ticket:
                      'truck': (X_VALUE, Y_VALUE_INIT + FIELD_INC),
                      'origin': (X_VALUE, Y_VALUE_INIT + 2*FIELD_INC),
                      'destination': (X_VALUE, Y_VALUE_INIT + 3*FIELD_INC),
+                     'client': (X_VALUE, Y_VALUE_INIT + 3 * FIELD_INC),
                      'material': (X_VALUE, Y_VALUE_INIT + 4*FIELD_INC),
                      'amount': (X_VALUE, Y_VALUE_INIT + 5*FIELD_INC),
                      'sent_datetime': (X_VALUE, Y_VALUE_INIT + 6*FIELD_INC)}
@@ -28,6 +30,7 @@ class Ticket:
     def __init__(self, trip_dict):
         self.ticket_image = None
         self.ticket_fields_values = dict()
+        self.ticket_fields_values['type'] = trip_dict['type']
         for i in self.TICKET_FIELDS:
             if trip_dict[i].__class__.__name__ == 'datetime':  # Convert datetime to formated string
                 self.ticket_fields_values[i] = formatdate_mx(trip_dict[i])
@@ -78,18 +81,26 @@ class Ticket:
         Create ticket adding trip info and qrcode
         :return: PIL Image object
         '''
-
-        im = Image.open(self.TICKET_TEMPLATE)
+        if self.ticket_fields_values['type'] == 'internal' or not self.ticket_fields_values['type']:
+            im = Image.open(self.TICKET_TEMPLATE)
+        elif self.ticket_fields_values['type'] == 'public':
+            im = Image.open(self.PUBLIC_TICKET_TEMPLATE)
 
         # Enter trip values
         fnt = ImageFont.truetype(self.TICKET_FONT, 45)  # Params = Font, Size
         d = ImageDraw.Draw(im)
         for f in self.TICKET_FIELDS:
+            if ((self.ticket_fields_values['type'] == 'internal' or not self.ticket_fields_values['type']) and
+                f == 'client') or \
+                    (self.ticket_fields_values['type'] == 'public' and
+                     (f in ['truck', 'destination'])):
+                continue
             d.text(self.TICKET_FIELDS[f], self.format_value(self.ticket_fields_values[f]),
                    font=fnt, fill='black')
 
         # Generate and enter qr code
-        im.paste(self.__create_trip_qr(), self.QR_XY)
+        if self.ticket_fields_values['type'] == 'internal' or not self.ticket_fields_values['type']:
+            im.paste(self.__create_trip_qr(), self.QR_XY)
         self.ticket_image = im
         return self.ticket_image
 

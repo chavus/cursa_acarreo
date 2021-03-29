@@ -88,6 +88,7 @@
 			<thead>
 			<tr class="text-center align-middle">
 				<th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
+				<th class="align-middle" data-field="type" data-sortable="true" data-filter-control="select">Tipo</th>
 				<th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
 				<th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
 				<th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select"
@@ -97,6 +98,7 @@
 				<th class="align-middle" data-field="amount" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
 				<th class="align-middle" data-field="origin" data-sortable="true" data-filter-control="select">Origen</th>
 				<th class="align-middle" data-field="destination" data-sortable="true" data-filter-control="select">Destino</th>
+				<th class="align-middle" data-field="client" data-sortable="true" data-filter-control="select">Cliente</th>
 				<th class="align-middle" data-field="sender_user" data-sortable="true" data-filter-control="select">Envió</th>
 				<th class="align-middle" data-field="sent_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
 				<th class="align-middle" data-field="sender_comment" data-filter-control="input">Comentario Envío</th>
@@ -109,6 +111,11 @@
 			{% for trip in finalized_trips %}
 			<tr class="text-center">
 				<td class="align-middle">{{trip['trip_id']}}</td>
+				{% if trip['type'] == "internal" or not trip['type'] %}
+					<td class="align-middle">Interno</td>
+				{% elif trip['type'] == "public" %}
+					<td class="align-middle">Público</td>
+				{% endif %}
 				{% if trip['status'] == "complete" %}
 					<td class="align-middle complete-style">Completo</td>
 				{% elif trip['status'] == "canceled" %}
@@ -119,6 +126,7 @@
 				<td class="align-middle">{{trip['amount']}}</td>
 				<td class="align-middle">{{trip['origin']}}</td>
 				<td class="align-middle">{{trip['destination']}}</td>
+				<td class="align-middle">{{trip['client']}}</td>
 				<td class="align-middle">{{trip['sender_user']}}</td>
 				<td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
 				<td class="align-middle"><div class="trunc">{{trip['sender_comment']}}</div></td>

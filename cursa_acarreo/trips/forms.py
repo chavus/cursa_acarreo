@@ -78,6 +78,10 @@ def material_choices():
     return [(i, i) for i in g.Material.get_list_by('name')]
 
 
+def customers_choice():
+    return [(i, i) for i in g.Customer.get_list_by('name')]
+
+
 class CreateTripForm(FlaskForm):
     truck = SelectField('Camión', widget=CustomSelect(), validators=[selection_required], validate_choice=False)
     origin = SelectField('Origen',
@@ -89,6 +93,8 @@ class CreateTripForm(FlaskForm):
     destination = SelectField('Destino',
                               widget=CustomSelect(),
                               validators=[selection_required], validate_choice=False)
+    customer = SelectField('Cliente',
+                           widget=CustomSelect(), validate_choice=False)
     sender_comment = TextAreaField('Agregar comentario:', validators=[validators.Length(max=t.Trip.sender_comment.max_length, message="Máximo 100 caracteres!")])
 
     submit = SubmitField('Crear Viaje')
