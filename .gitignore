@@ -1,5 +1,5 @@
 .idea/workspace.xml
-cursa_acarreo/__pycache__/__init__.cpython-37.pyc
-/.vscode/
+cursa_acarreo/__pycache__/
+.vscode/
 /venv/
-/.env
+.env
