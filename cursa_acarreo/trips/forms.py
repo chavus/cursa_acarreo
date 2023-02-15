@@ -5,7 +5,7 @@ import cursa_acarreo.models.trip as t
 
 from markupsafe import Markup, escape
 from wtforms.widgets.core import html_params
-from wtforms.compat import text_type
+# from wtforms.compat import text_type
 
 
 class CustomSelect(object):
@@ -41,7 +41,7 @@ class CustomSelect(object):
     def render_option(cls, value, label, selected, **kwargs):
         if value is True:
             # Handle the special case of a 'True' value.
-            value = text_type(value)
+            value = str(value)
 
         options = dict(kwargs, value=value)
         if selected:
