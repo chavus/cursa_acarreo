@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import (SelectField, SelectMultipleField, ValidationError, PasswordField, StringField, TextAreaField,
-                     BooleanField)
-from wtforms.fields.html5 import DecimalField, IntegerField
+                     BooleanField, DecimalField, IntegerField)
+# from wtforms.fields.html5 import DecimalField, IntegerField
 from wtforms.validators import Email, DataRequired, Optional
 import cursa_acarreo.models.general as g
 import cursa_acarreo.models.trip as t
@@ -10,7 +10,7 @@ import cursa_acarreo.models.user as u
 
 from markupsafe import Markup, escape
 from wtforms.widgets.core import html_params
-from wtforms.compat import text_type
+# from wtforms.compat import text_type
 
 class CustomSelect(object):
     """
@@ -45,7 +45,7 @@ class CustomSelect(object):
     def render_option(cls, value, label, selected, **kwargs):
         if value is True:
             # Handle the special case of a 'True' value.
-            value = text_type(value)
+            value = str(value)
 
         options = dict(kwargs, value=value)
         if selected:
@@ -221,7 +221,7 @@ class TruckForm(FlaskForm):
     color = StringField('Color')
     serial_number = StringField('Número de Serie', validators=[DataRequired('Favor de ingresar Número de Serie de camión')])
     plate = StringField('Placa')
-    capacity = IntegerField('Capacidad', validators=[DataRequired('Favor de ingresar Capacidad de camión')])
+    capacity = IntegerField('Capacidad', validators=[DataRequired('Favor de ingresar Capacidad de camión en numeros enteros.')])
     driver_full_name = SelectField('Chofer',
                                 validate_choice=False)  # Must mark as validate_choice=False to skip validation
     owner_name = SelectField('Propietario',
