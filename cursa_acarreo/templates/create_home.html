@@ -202,7 +202,7 @@
 					<td id="destinationcustomer_row" style="padding-left: .3rem;"></td>
 				</tr>
 			</table>
-		      {% if current_user.role in ['admin', 'supervisor']%}
+		      {% if current_user.role in ['admin', 'supervisor', 'creator']%}
 		      <div class="form-group mt-2 mb-0">
 				{{ form.sender_comment.label(class="font-weight-bold", style="font-size:1rem")}}
 		        {{ form.sender_comment(maxlength=form.sender_comment.validators[0].max|string,

@@ -97,6 +97,7 @@
       </div>
 
       <ul class="c-sidebar-nav" style="background-color: #313c53;">
+         {% if current_user.role in ['admin']%}
         <li class="c-sidebar-nav-item c-sidebar-nav-dropdown c-show">
           <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle_disabled" href="#" style="font-weight: bold;pointer-events: none;">
             <svg class="c-sidebar-nav-icon">
@@ -107,13 +108,17 @@
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.trips_admin')}}"><span class="c-sidebar-nav-icon"></span> Viajes</a></li>
           </ul>
         </li>
+        {% endif %}
         <li class="c-sidebar-nav-item c-sidebar-nav-dropdown c-show" style="margin-top: 0px;">
           <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle_disabled" href="#"       style="font-weight: bold;pointer-events: none;">
             <svg class="c-sidebar-nav-icon">
               <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
             </svg> CONFIGURACIÓN</a>
           <ul class="c-sidebar-nav-dropdown-items">
+            {% if current_user.role in ['admin']%}
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.admin_users')}}"><span class="c-sidebar-nav-icon"></span> Usuarios</a></li>
+            {% endif %}
+
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.suppliers_admin')}}"><span class="c-sidebar-nav-icon"></span> Proveedores</a></li>
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.customers_admin')}}"><span class="c-sidebar-nav-icon"></span> Clientes</a></li>
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ url_for('admin.materials_admin')}}"><span class="c-sidebar-nav-icon"></span> Materiales</a></li>
@@ -159,10 +164,12 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
               <div class="dropdown-header bg-light py-2" style="color: #3c4b64;"><strong>{{ current_user.name }}</strong></div>
+              {% if current_user.role in ['admin']%}
               <a class="dropdown-item" href="/admin/admin-users/edit/{{current_user.username}}">
                 <svg class="c-icon mr-2">
                   <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
                 </svg> Perfil</a>
+              {% endif %}
               <a class="dropdown-item" href="{{url_for('trips.create_home')}}">
                 <svg class="c-icon mr-2">
                   <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-truck"></use>

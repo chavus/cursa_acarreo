@@ -56,6 +56,8 @@
 			<a class="nav-item nav-link active">Usuario: {{ current_user.username }}</a>
 			{% if current_user.role == 'admin' %}
 				<a class="nav-item nav-link active" href="{{url_for('admin.general_admin')}}">Admin Panel</a>
+			{% elif  current_user.role == 'creator'%}
+				<a class="nav-item nav-link active" href="{{url_for('admin.suppliers_admin')}}">Registrar Nuevo</a>
 			{% endif %}
 			<a class="nav-item nav-link active" href="{{url_for('users.logout')}}">Salir</a>
 

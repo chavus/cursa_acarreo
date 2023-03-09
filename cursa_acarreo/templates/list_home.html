@@ -40,6 +40,7 @@
 	        <tr class="text-center">
 	          <th class="align-middle">#</th>
 	          <th class="align-middle">Camion</th>
+			  <th class="align-middle">Chofer</th>
 		      <th class="align-middle">Origen</th>
 	          <th class="align-middle">Material</th>
 	          <th class="align-middle">mts<sup>3</sup></th>
@@ -47,7 +48,6 @@
 	          <th class="align-middle">Enviado por</th>
 	          <th class="align-middle">Fecha/Hora Envio</th>
 		      <th class="align-middle">Comentario Envío</th>
-
 	        </tr>
 	      </thead>
 	      <tbody>
@@ -56,6 +56,7 @@
 			<tr class="text-center">
 				<td class="align-middle">{{trip['trip_id']}}</td>
 				<td class="align-middle">{{trip['truck']}}</td>
+				<td class="align-middle">{{trip['driver']}}</td>
 				<td class="align-middle">{{trip['origin']}}</td>
 				<td class="align-middle">{{trip['material']}}</td>
 				<td class="align-middle">{{trip['amount']}}</td>
@@ -91,6 +92,7 @@
 				<th class="align-middle" data-field="type" data-sortable="true" data-filter-control="select">Tipo</th>
 				<th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
 				<th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
+				<th class="align-middle" data-field="driver" data-sortable="true" data-filter-control="select">Chofer</th>
 				<th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select"
 					data-filter-data=url:{{url_for('trips._get_materials_on_trip')}}
 
@@ -98,6 +100,7 @@
 				<th class="align-middle" data-field="amount" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
 				<th class="align-middle" data-field="origin" data-sortable="true" data-filter-control="select">Origen</th>
 				<th class="align-middle" data-field="destination" data-sortable="true" data-filter-control="select">Destino</th>
+				<th class="align-middle" data-field="distance" data-sortable="true" data-filter-control="select">Kms</th>
 				<th class="align-middle" data-field="client" data-sortable="true" data-filter-control="select">Cliente</th>
 				<th class="align-middle" data-field="sender_user" data-sortable="true" data-filter-control="select">Envió</th>
 				<th class="align-middle" data-field="sent_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
@@ -122,10 +125,12 @@
 					<td class="align-middle canceled-style">Cancelado</td>
 				{% endif %}
 				<td class="align-middle">{{trip['truck']}}</td>
+				<td class="align-middle">{{trip['driver']}}</td>
 				<td class="align-middle">{{trip['material']}}</td>
 				<td class="align-middle">{{trip['amount']}}</td>
 				<td class="align-middle">{{trip['origin']}}</td>
 				<td class="align-middle">{{trip['destination']}}</td>
+				<td class="align-middle">{{trip['distance']}}</td>
 				<td class="align-middle">{{trip['client']}}</td>
 				<td class="align-middle">{{trip['sender_user']}}</td>
 				<td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
