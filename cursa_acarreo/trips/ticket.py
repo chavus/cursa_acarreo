@@ -119,7 +119,7 @@ class Ticket:
     def encode_b64(self):
         '''
         Encode ticket to base64 string
-        :return: Tring with base64 encoded image
+        :return: String with base64 encoded image
         '''
         if self.ticket_image:
             imgByteArr = io.BytesIO()

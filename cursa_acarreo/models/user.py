@@ -9,7 +9,7 @@ def load_user(id):
     return User.find_by_id(id)
 
 
-ROLES = ('operator', 'supervisor', 'admin')
+ROLES = ('operator', 'creator', 'supervisor', 'admin')
 class User(db.Document, UserMixin):
     """
     User Model

@@ -114,12 +114,13 @@ def receive():
     try:
         trip_id = request.json['trip_id']
         status = request.json['status']
+        distance = request.json['distance']
         finalizer_comment = request.json['finalizer_comment']
         if finalizer_comment is None:
             finalizer_comment = ""
         trip = Trip.find_by_tripid(trip_id)
         if trip.status == 'in_progress':
-            trip.finalize(current_user.username, status, finalizer_comment)
+            trip.finalize(current_user.username, status, distance, finalizer_comment)
             if status == 'complete':
                 return jsonify(message=f'Viaje #{trip_id} con camión {trip.truck} ha sido RECIBIDO!'), 200
             elif status == 'canceled':

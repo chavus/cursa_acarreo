@@ -2,7 +2,7 @@
 Version
 v1.1 - June 2020 - Release
 v1.2 - 09/13/2020 - Printing ticket and scanning tickets
-1.3 - ongoing...
+v1.3 - 02/14/2023 - Updated libraries to latest
 """
 
 from cursa_acarreo import app

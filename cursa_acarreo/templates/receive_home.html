@@ -127,6 +127,15 @@
 </div>
 
 <!-- CONFIRMATION Modal -->
+<style>
+	.mandatory:before{
+			content:'*';
+			color: #d41616;
+			}
+	}
+
+</style>
+
 <div class="modal fade" id="receive-confirmation-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
      role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -159,20 +168,31 @@
 				<th class="font-weight-bold" style="padding-right:0 ;">Destino:</th>
 				<td id="receive-modal-destination" style="padding-left: .3rem;"></td>
 			</tr>
+			<tr id="receive-modal-distance-row">
+				<th id="receive-modal-distance-label" class="font-weight-bold mandatory" style="padding-right:0 ;">Kms:</th>
+				<td style="padding-left: .3rem;">
+					<input id="receive-modal-distance"
+						   class="form-control col-4"
+						   type="number" min="0" max="9999" pattern="[0-9]*" inputmode="numeric"
+						   placeholder="0-9999">
+					<div class="invalid-feedback text-left">Ingresa valor del 0 al 9999</div>
+				</td>
+			</tr>
 		</table>
-	      {% if current_user.role in ['admin', 'supervisor']%}
+	      {% if current_user.role in ['admin', 'supervisor', 'creator']%}
 	      <div class="form-group mt-2 mb-0">
 		      <label class="font-weight-bold" for="receive-modal-comment" style="font-size:1rem">Agregar comentario:</label>
 		      <textarea id="receive-modal-comment" maxlength="100" name="receive-modal-comment" placeholder="Máximo 100 caracteres" style="font-size:1rem; width: 306px; height: 72px; "></textarea>
 	      </div>
 		  {% endif %}
-		  
+
 	    <button class="btn btn-primary btn-lg btn-block py-3" id="receive-modal-complete-btn" value=""></button>
 
 		</div>
     </div>
   </div>
 </div>
+
 </div>
 
 <div></div>
@@ -208,6 +228,11 @@
 		  var id = $(this).attr('id')
 		  var id = $(this).attr('id').replace("accordion","");
 		  $("#icon"+id).attr('class','fa fa-plus-square')
+		});
+
+	// <!--Remove invalid class when selector is clicked-->
+		$('#receive-modal-distance').click(function(){
+			$(this).removeClass('is-invalid');
 		});
 
 	});

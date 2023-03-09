@@ -100,6 +100,9 @@ class Driver(db.Document, Base):
             self[fv] = field_value[fv]
         return self.save_to_db()
 
+    def get_full_name(self):
+        return self.name + ' ' + self.last_name
+
     @classmethod
     def add(cls, **kwargs):
         return cls(**kwargs).save()
