@@ -6,15 +6,15 @@ An application to track and manage construction materials shipping.
 
 ## Application functionality
 
-The application is divided in 2 main parts: the administration panel and the operators application.
+The application is divided in 2 main parts: the administration panel and the operators' application.
 
 - Adminsitration panel: Only accessed by users with admin role. Here admins can visualize all the shippings that are in progress and finalized. Also, admins can create new users, material banks, projects, drivers and trucks.
 
-![Admin Panel](https://github.com/chavus/cursa_acarreo/blob/master/readme_imgs/2020-10-14_18-47-12.png)
+![Admin Panel](/readme_imgs/2020-10-14_18-47-12.png)
 
 - Operators application: Can be accessed by operators and admins. Here users can create new shipping of material. And complete a shipping when it is done.
 
-![App](https://github.com/chavus/cursa_acarreo/blob/master/readme_imgs/2020-10-14_19-08-59.png)
+![App](/readme_imgs/2020-10-14_19-08-59.png)
 
 ## Project stack
 

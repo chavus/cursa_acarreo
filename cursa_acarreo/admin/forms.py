@@ -63,7 +63,7 @@ class UserForm(FlaskForm):
     last_name = StringField('Apellido(s)')
     email = StringField('E-mail', validators=[Optional(), Email('Ingrese formato de Email válido')])
     role = SelectField('Rol', widget=CustomSelect(),
-                       choices=[('admin', 'Admin'), ('supervisor', 'Supervisor'), ('operator', 'Checador')],
+                       choices=[('operator', 'Checador'), ('creator', 'Altas'), ('supervisor', 'Supervisor'), ('admin', 'Admin')],
                        validators=[DataRequired('Favor de seleccionar un Rol')])
     password = PasswordField('Contraseña')
     password_confirm = PasswordField('Confirmar Contraseña')

@@ -98,10 +98,12 @@
                     <a href="{{url_for('admin.project_add_edit', param=project['id'])}}" class="btn btn-pill btn-info" style="font-size: .8rem;margin-left: 1px;margin-right: 5px;">
                         <span class="fa fa-pencil"></span>
                     </a>
+                {% if current_user.role in ['admin']%}
                   <button onclick="remove('{{project['id']}}', '{{project['name']}}')" class="btn btn-pill btn-danger" type="button"
                     style="font-size: .8rem;margin-left: 5px;margin-right: 1px;">
                         <span class="fa fa-trash-o"></span>
                     </button>
+                {% endif %}
                 </div>
             </td>
           </tr>

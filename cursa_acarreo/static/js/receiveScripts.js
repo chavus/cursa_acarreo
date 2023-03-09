@@ -115,7 +115,8 @@ const ReceiveCtrl = () => {
     
             receiveElements.receiveModalCompleteBtn.
                 addEventListener('click', ()=> 
-                    resolve({resp: 'ok', comment: document.querySelector('#receive-modal-comment') ? document.querySelector('#receive-modal-comment').value: ''
+                    resolve({resp: 'ok', comment: document.querySelector('#receive-modal-comment') ? document.querySelector('#receive-modal-comment').value : ''
+                                       , distance: document.querySelector('#receive-modal-distance') ? document.querySelector('#receive-modal-distance').value : ''
                 }))
             receiveElements.receiveModalCloseBtn.
                 addEventListener('click', ()=>
@@ -123,12 +124,13 @@ const ReceiveCtrl = () => {
                 })
     }
 
-    async function finalizeTrip(tripId, status, comment='') {
+    async function finalizeTrip(tripId, status, distance, comment='') {
         try{
             const ret = await axios.post(RECEIVE_URL, {
                 trip_id: tripId,
                 status: status,
-                finalizer_comment: comment
+                finalizer_comment: comment,
+                distance: distance
             });
             swal(ret.data.message,'', 'success').then(()=>{
                 // cancelScanTrip();
@@ -162,7 +164,7 @@ const ReceiveCtrl = () => {
                         receiveElements.receiveModalCloseBtn.setAttribute('disabled','disabled')
                         displayLoader(receiveElements.receiveModalCompleteBtn,
                             ' ', 'lg')
-                        await finalizeTrip(tripId, status, ret.comment)
+                        await finalizeTrip(tripId, status, ret.distance, ret.comment)
                         clearLoader()
                         $(`#${elementsId.receiveModalId}`).modal('hide')
 

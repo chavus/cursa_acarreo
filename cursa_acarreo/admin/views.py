@@ -3,20 +3,15 @@ from cursa_acarreo.admin import forms
 from cursa_acarreo.models.user import User
 from cursa_acarreo.models import general as g
 from cursa_acarreo.models.trip import Trip
-from cursa_acarreo.security import mustbe_admin
+from cursa_acarreo.security import mustbe_admin, mustbe_admin_or_creator
 from flask_login import login_user, current_user, login_required, logout_user
 
 admin_blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 
 
-# @admin_blueprint.route('/base')
-# def admin_panel():
-#     return render_template('admin_panel/admin_base.html')
-
-
 @admin_blueprint.before_request
 @login_required
-@mustbe_admin
+@mustbe_admin_or_creator
 def validate_login_admin():  # before_request executed to validate if user is logged in and admin
     if request.endpoint and current_user.role != 'admin':
         print('User is not an admin')
@@ -28,11 +23,14 @@ def validate_login_admin():  # before_request executed to validate if user is lo
 PANEL
 '''
 
+
 @admin_blueprint.route('/general-admin')
+@mustbe_admin
 def general_admin():
     return render_template('admin_panel/general_admin.html')
 
 @admin_blueprint.route('/trips-admin')
+@mustbe_admin
 def trips_admin():
     trips = Trip.get_all()
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
@@ -52,6 +50,7 @@ USERS
 
 
 @admin_blueprint.route('/admin-users')
+@mustbe_admin
 def admin_users():
     users = User.get_all()
     return render_template('admin_panel/users_admin.html', users=users)
@@ -59,11 +58,12 @@ def admin_users():
 
 @admin_blueprint.route('/admin-users/new', methods=['GET', 'POST'])
 @admin_blueprint.route('/admin-users/edit/<username>', methods=['GET', 'POST'])
+@mustbe_admin
 def user_add_edit(username=None):
     if username:
         try:
             user = User.find_by_username(username)
-            form = forms.UserForm(**user.json(), user=user) # Create a form passing value of users for duplicate validations
+            form = forms.UserForm(**user.json(), user=user)  # Create a form passing value of users for duplicate # validations
         except Exception as e:
             return render_template('admin_panel/error_pages/404.html', error=e, back_page='admin.admin_users')
     else:
@@ -101,6 +101,7 @@ def user_add_edit(username=None):
 
 
 @admin_blueprint.route('/admin-users/delete/<username>', methods=['GET', 'POST'])
+@mustbe_admin
 def user_delete(username):
     try:
         user = User.find_by_username(username)
@@ -158,6 +159,7 @@ def supplier_add_edit(param=None):
 
 
 @admin_blueprint.route('/suppliers-admin/delete/<id>', methods=['GET', 'POST'])
+@mustbe_admin
 def supplier_delete(id):
     try:
         print(id)
@@ -217,6 +219,7 @@ def customer_add_edit(param=None):
 
 
 @admin_blueprint.route('/customers-admin/delete/<id>', methods=['GET', 'POST'])
+@mustbe_admin
 def customer_delete(id):
     try:
         print(id)
@@ -278,6 +281,7 @@ def material_add_edit(param=None):
 
 
 @admin_blueprint.route('/materials-admin/delete/<id>', methods=['GET', 'POST'])
+@mustbe_admin
 def material_delete(id):
     try:
         print(id)
@@ -346,6 +350,7 @@ def bank_add_edit(param=None):
 
 
 @admin_blueprint.route('/banks-admin/delete/<id>', methods=['GET', 'POST'])
+@mustbe_admin
 def bank_delete(id):
     try:
         bank = g.MaterialBank.find_by_id(id)
@@ -410,6 +415,7 @@ def project_add_edit(param=None):
 
 
 @admin_blueprint.route('/projects-admin/delete/<id>', methods=['GET', 'POST'])
+@mustbe_admin
 def project_delete(id):
     try:
         project = g.Project.find_by_id(id)
@@ -470,6 +476,7 @@ def driver_add_edit(param=None):
 
 
 @admin_blueprint.route('/drivers-admin/delete/<id>', methods=['GET', 'POST'])
+@mustbe_admin
 def driver_delete(id):
     try:
         driver = g.Driver.find_by_id(id)
@@ -542,6 +549,7 @@ def truck_add_edit(param=None):
 
 
 @admin_blueprint.route('/trucks-admin/delete/<id>', methods=['GET', 'POST'])
+@mustbe_admin
 def truck_delete(id):
     try:
         truck = g.Truck.find_by_id(id)

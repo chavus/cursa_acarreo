@@ -1,5 +1,5 @@
 from cursa_acarreo import db
-from cursa_acarreo.models.general import Truck, Project, Material, MaterialBank
+from cursa_acarreo.models.general import Truck, Project, Material, MaterialBank, Driver
 from cursa_acarreo.models.user import User
 import datetime
 
@@ -25,6 +25,10 @@ def validate_truck_options(value):
     if not Truck.find_by_idcode(value, raise_if_none=False):
         raise db.ValidationError('Camión {} no encontrado en lista de camiones.'.format(value))
 
+
+# def validate_driver_options(value):
+#     if not Driver.find_by_full_name(value, raise_if_none=False):
+#         raise db.ValidationError('Chofer {} no encontrado en lista de choferes registrados.'.format(value))
 
 def validate_material_options(value):
     if not Material.find_by_name(value, raise_if_none=False):
@@ -55,10 +59,12 @@ class Trip(db.Document, Base):
     meta = {'collection': 'trips'}
     trip_id = db.SequenceField(primary_key=True)
     truck = db.StringField(required=False, validation=validate_truck_options)
+    driver = db.StringField(required=False)
     material = db.StringField(required=True, validation=validate_material_options)
-    amount = db.IntField(required=True, min_value=0)
+    amount = db.IntField(required=True, min_value=0) # In mts3
     origin = db.StringField(required=True, validation=validate_location_options)
     destination = db.StringField(required=False, validation=validate_location_options)
+    distance = db.IntField(required=False, min_value=0)  # In kms
     client = db.StringField(required=False)
     sender_user = db.StringField(required=True, validation=validate_user_options)
     sender_comment = db.StringField(required=False, max_length=100)
@@ -73,7 +79,7 @@ class Trip(db.Document, Base):
     def json(self):
         trip_dict = dict()
         for i in self:
-            if (i in ['sender_comment', 'finalizer_comment', 'client', 'destination', 'truck', 'finalizer_user']) and \
+            if (i in ['sender_comment', 'finalizer_comment', 'client', 'destination', 'truck', 'driver', 'finalizer_user', 'distance']) and \
                     (self[i] is None):  # (i == 'sender_comment' or i == 'finalizer_comment')
                 trip_dict[i] = ''
             else:
@@ -92,7 +98,7 @@ class Trip(db.Document, Base):
             self.reload()
             raise e
 
-    def finalize(self, username, status, finalizer_comment=None):
+    def finalize(self, username, status, distance, finalizer_comment=None):
         """
         Move trip to complete or canceled.
         :param username: username of user doing the operation
@@ -102,6 +108,7 @@ class Trip(db.Document, Base):
         """
         self.status = status
         self.finalizer_user = username
+        self.distance = distance
         self.finalizer_comment = finalizer_comment
         self.finalized_datetime = datetime.datetime.utcnow()
         self.save_to_db(validation=False)  # This is a temporary solution, instead code logic to execute validate_x_options
@@ -112,6 +119,7 @@ class Trip(db.Document, Base):
                is_return=None):
         params = {
             'truck': truck_id.upper() if truck_id else None,
+            'driver': Truck.find_by_idcode(truck_id).driver.get_full_name() if Truck.find_by_idcode(truck_id).driver else None,
             'material': material_name.upper(),
             'origin': origin_name.upper(),
             'destination': destination_name.upper() if destination_name else None,
