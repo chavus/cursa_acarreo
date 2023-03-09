@@ -6,7 +6,7 @@
 <!-- <button id='testBtn'>Test</button> -->
 
 <form class="needs-validation" novalidate id="create_form">
-	{{form.hidden_tag()}}
+	{{ form.hidden_tag() }}
 	{{ form.csrf_token() }}
 
 	<div class="jumbotron mb-2 py-3 pb-5">
@@ -15,7 +15,7 @@
 		</div>
 
 		<!-- is-public switch -->
-		<div class="form-check row" style="margin-right: 8px;text-align: right;bottom: 10px;>
+		<div class="form-check row" style="margin-right: 8px;text-align: right;bottom: 10px;">
 			<label for="is-public" class="form-check-label">Venta Público</label>
 			<input id="is-public" class="form-check-input" type="checkbox" data-toggle="toggle"
 					data-on="Si" data-off="No" data-style="ios">
@@ -504,7 +504,6 @@
 					$('#destinationcustomer_row').text($('#destination').val());
 				}
 				
-	            
 
 				$('#confirmationModal').modal('show');
 			}

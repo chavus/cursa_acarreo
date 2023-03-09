@@ -25,7 +25,10 @@ const ReceiveCtrl = () => {
         receiveModalComment: document.querySelector('#receive-modal-comment'),
         receiveModalCompleteBtn: document.querySelector('#receive-modal-complete-btn'),
         receiveModalCancelIcon: document.querySelector('#cancel-icon-p'),
-        receiveModalCloseBtn: document.querySelector('#receive-modal-close')
+        receiveModalCloseBtn: document.querySelector('#receive-modal-close'),
+        receiveModalDistanceLbl: document.querySelector("#receive-modal-distance-label"),
+        receiveModalDistanceRow: document.querySelector("#receive-modal-distance-row"),
+        receiveModalDistance: document.querySelector("#receive-modal-distance")
     };
 
     function _containsBackLabel(label){ 
@@ -95,6 +98,8 @@ const ReceiveCtrl = () => {
                     "style","background-color: #dc3545; border-color: #dc3545; color: white");
                 receiveElements.receiveModalCompleteBtn.textContent = 'Cancelar Viaje';
                 receiveElements.receiveModalCancelIcon.removeAttribute('hidden');
+                receiveElements.receiveModalDistanceRow.setAttribute('hidden', 'hidden')
+
             }else{ // Complete
                 receiveElements.receiveModalHeader.textContent = 
                     `Recibir viaje: #${tripInfo._id}`
@@ -102,6 +107,7 @@ const ReceiveCtrl = () => {
                         "style","background-color: #007bff; border-color: #007bff; color: white");
                 receiveElements.receiveModalCompleteBtn.textContent = 'Recibir Viaje'
                 receiveElements.receiveModalCancelIcon.setAttribute('hidden', 'hidden')
+                receiveElements.receiveModalDistanceRow.removeAttribute('hidden', 'hidden')
             }
             receiveElements.receiveModalOrigin.textContent = 
                 tripInfo.origin;
@@ -114,15 +120,21 @@ const ReceiveCtrl = () => {
             $(`#${elementsId.receiveModalId}`).modal('show') // jQuery due to Bootstrap
     
             receiveElements.receiveModalCompleteBtn.
-                addEventListener('click', ()=> 
-                    resolve({resp: 'ok', comment: document.querySelector('#receive-modal-comment') ? document.querySelector('#receive-modal-comment').value : ''
-                                       , distance: document.querySelector('#receive-modal-distance') ? document.querySelector('#receive-modal-distance').value : ''
-                }))
-            receiveElements.receiveModalCloseBtn.
+                addEventListener('click', ()=>{
+                     distance = document.querySelector('#receive-modal-distance')
+                     if ( (status === 'complete' && /^\d+$/.test(distance.value) && distance.value >=0 && distance.value <=9999)
+                           || status === 'canceled'){
+                        resolve({resp: 'ok', comment: document.querySelector('#receive-modal-comment') ? document.querySelector('#receive-modal-comment').value : ''
+                                           , distance: document.querySelector('#receive-modal-distance') ? document.querySelector('#receive-modal-distance').value : ''})
+                     }else{
+                        distance.classList.add("is-invalid")
+                     }
+                })
+
+                receiveElements.receiveModalCloseBtn.
                 addEventListener('click', ()=>
                     resolve({resp: 'cancel'}))
-                })
-    }
+    })}
 
     async function finalizeTrip(tripId, status, distance, comment='') {
         try{
@@ -155,6 +167,7 @@ const ReceiveCtrl = () => {
 
     async function confirmReception(tripId, status='complete', scanning=true){
         // status = ['complete', 'canceled']
+
         try{
             let tripInfo = (await axios.get(TRIP_INFO_URL, {params: {trip_id: tripId}})).data;
             if (tripInfo.status === 'in_progress'){
