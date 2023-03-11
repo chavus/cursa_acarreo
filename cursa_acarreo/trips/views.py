@@ -99,7 +99,6 @@ def receive_dashboard():
 @login_required
 def get_trip_info():
     try:
-        # print(request.args.get('trip_id'))
         trip_id = request.args.get('trip_id')
         trip = Trip.find_by_tripid(trip_id)
         return trip.to_json(), 200

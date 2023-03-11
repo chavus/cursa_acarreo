@@ -1,6 +1,6 @@
 from cursa_acarreo import db
 import datetime
-
+from cursa_acarreo.utils.utils import *
 
 """
 Base Class
@@ -426,13 +426,14 @@ class Material(db.Document, Base):
             raise e
 
     def update(self, **field_value):
+        field_value = nonify_dict(field_value)
         for fv in field_value:
             self[fv] = field_value[fv]
         return self.save_to_db()
 
     @classmethod
     def add(cls, **field_value):
-        return cls(**field_value).save()
+        return cls(**nonify_dict(field_value)).save()
 
     @classmethod
     def find_by_id(cls, _id):

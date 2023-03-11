@@ -108,8 +108,8 @@ class Trip(db.Document, Base):
         """
         self.status = status
         self.finalizer_user = username
-        self.distance = distance
-        self.finalizer_comment = finalizer_comment
+        self.distance = distance if distance else None
+        self.finalizer_comment = finalizer_comment if finalizer_comment else None
         self.finalized_datetime = datetime.datetime.utcnow()
         self.save_to_db(validation=False)  # This is a temporary solution, instead code logic to execute validate_x_options
 
@@ -125,7 +125,7 @@ class Trip(db.Document, Base):
             'destination': destination_name.upper() if destination_name else None,
             'client': client_name.upper() if client_name else None,
             'sender_user': sender_username,
-            'sender_comment': sender_comment,
+            'sender_comment': sender_comment if sender_comment else None,
             'amount': amount if amount else Truck.find_by_idcode(truck_id).capacity,
             'status': status,
             'is_return': is_return,
