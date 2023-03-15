@@ -40,6 +40,19 @@ def trips_admin():
                            finalized_trips=finalized_trips)
 
 
+@admin_blueprint.route('/trips-admin/delete/<id>', methods=['POST', 'GET'])
+@mustbe_admin
+def trip_delete(id):
+    try:
+        print("trying with id ", id)
+        trip = Trip.find_by_tripid(id)
+        trip.delete()
+        flash(f'Viaje: {id} fue eliminado.', ['success', 'popup'])
+    except Exception as e:
+        flash(f"Error: { e }", ['error', 'popup'])
+    return redirect(url_for('admin.trips_admin'))
+
+
 '''
 CONFIGURACION
 '''
@@ -284,13 +297,11 @@ def material_add_edit(param=None):
 @mustbe_admin
 def material_delete(id):
     try:
-        print(id)
         material = g.Material.find_by_id(id)
         name = material.name
         material.delete()
         flash(f'Material: {name} fue eliminado.', ['success', 'popup'])
     except Exception as e:
-        print(e)
         flash(f"Error: { e }", ['error', 'popup'])
     return redirect(url_for('admin.materials_admin'))
 
