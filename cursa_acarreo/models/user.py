@@ -34,6 +34,7 @@ class User(db.Document, UserMixin):
     date_added = db.DateTimeField(required=True, default=datetime.datetime.utcnow())
 
     def json(self):
+        # TODO: implement exclude() instead of skipping items
         skip_items = ['id', 'hashed_pwd']
         d_json = dict()
         for i in self:

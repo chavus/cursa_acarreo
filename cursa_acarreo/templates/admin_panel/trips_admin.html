@@ -42,15 +42,101 @@ a:hover {
   
   <ul class="nav nav-pills my-3 nav-justified" id="pills-tab" role="tablist" style="font-size: 1rem;">
     <li class="nav-item" role="presentation">
-      <a class="nav-link active" id="pills-inprogress-tab" data-toggle="pill" href="#inprogress-pill" role="tab" aria-controls="pills-inprogress" aria-selected="true" >En Proceso</a>
+      <a class="nav-link active" id="pills-finalized-tab" data-toggle="pill" href="#finalized-pill" role="tab" aria-controls="pills-finalized" aria-selected="true">Finalizados</a>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" id="pills-finalized-tab" data-toggle="pill" href="#finalized-pill" role="tab" aria-controls="pills-finalized" aria-selected="false">Finalizados</a>
+      <a class="nav-link" id="pills-inprogress-tab" data-toggle="pill" href="#inprogress-pill" role="tab" aria-controls="pills-inprogress" aria-selected="false" >En Proceso</a>
     </li>
   </ul>
   
   <div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show active" id="inprogress-pill" role="tabpanel" aria-labelledby="pills-inprogress-tab">
+
+    <!--Finalized table-->
+    <div class="tab-pane fade show active" id="finalized-pill" role="tabpanel" aria-labelledby="pills-finalized-tab">
+
+      <table class="table-responsive table table-striped table-sm"  id="finalized_table"
+          data-toggle="table"
+          data-sortable="true"
+          data-buttons-align="right"
+          data-search="true" data-search-align="right" data-show-search-clear-button="true"
+          data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
+          data-show-export="true"
+          data-filter-control="true"
+          data-pagination="true"  data-page-size=25 data-page-list="[25, 50, 100, 200, All]" data-pagination-v-align="top"
+          style="font-size:.8rem">
+        <thead>
+        <tr class="text-center align-middle">
+          <th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
+          <th class="align-middle" data-field="type" data-sortable="true" data-filter-control="select">Tipo</th>
+          <th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
+          <th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
+          <th class="align-middle" data-field="driver" data-sortable="true" data-filter-control="select">Chofer</th>
+          <th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select"
+            data-filter-data=url:{{url_for('trips._get_materials_on_trip')}}
+
+              id="material_column">Material</th>
+          <th class="align-middle" data-field="amount" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
+          <th class="align-middle" data-field="origin" data-sortable="true" data-filter-control="select">Origen</th>
+          <th class="align-middle" data-field="destination" data-sortable="true" data-filter-control="select">Destino</th>
+          <th class="align-middle" data-field="distance" data-sortable="true" data-filter-control="select">Kms</th>
+          <th class="align-middle" data-field="client" data-sortable="true" data-filter-control="select">Cliente</th>
+          <th class="align-middle" data-field="sender_user" data-sortable="true" data-filter-control="select">Envió</th>
+          <th class="align-middle" data-field="sent_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
+          <th class="align-middle" data-field="sender_comment" data-filter-control="input">Comentario Envío</th>
+          <th class="align-middle" data-field="finalizer_user" data-sortable="true" data-filter-control="select">Finalizó</th>
+          <th class="align-middle" data-field="finalized_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
+          <th class="align-middle" data-field="finalizer_comment" data-filter-control="input">Comentario Recibo</th>
+          {% if current_user.role in ['admin']%}
+            <th class="align-middle">Borrar</th>
+          {% endif %}
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for trip in finalized_trips %}
+        <tr class="text-center">
+          <td class="align-middle">{{trip['trip_id']}}</td>
+        {% if trip['type'] == "internal" or not trip['type'] %}
+					<td class="align-middle">Interno</td>
+				{% elif trip['type'] == "public" %}
+					<td class="align-middle">Público</td>
+				{% endif %}
+          {% if trip['status'] == "complete" %}
+            <td class="align-middle complete-style">Completo</td>
+          {% elif trip['status'] == "canceled" %}
+            <td class="align-middle canceled-style">Cancelado</td>
+          {% endif %}
+          <td class="align-middle">{{trip['truck']}}</td>
+          <td class="align-middle">{{trip['driver']}}</td>
+          <td class="align-middle">{{trip['material']}}</td>
+          <td class="align-middle">{{trip['amount']}}</td>
+          <td class="align-middle">{{trip['origin']}}</td>
+          <td class="align-middle">{{trip['destination']}}</td>
+          <td class="align-middle">{{trip['distance']}}</td>
+          <td class="align-middle">{{trip['client']}}</td>
+          <td class="align-middle">{{trip['sender_user']}}</td>
+          <td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
+          <td class="align-middle"><div class="trunc">{{trip['sender_comment']}}</div></td>
+          <td class="align-middle">{{trip['finalizer_user']}}</td>
+          <td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
+          <td class="align-middle"><div class="trunc">{{trip['finalizer_comment']}}</div></td>
+          {% if current_user.role in ['admin']%}
+          <td>
+              <button onclick="remove('{{trip['trip_id']}}')" class="btn btn-pill btn-danger" type="button"
+              style="font-size: .8rem;margin-left: 5px;margin-right: 1px;">
+                  <span class="fa fa-trash-o"></span>
+              </button>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+    <!--  In Progress table  -->
+    <div class="tab-pane fade" id="inprogress-pill" role="tabpanel" aria-labelledby="pills-inprogress-tab">
       <table class="table table-striped table-responsive table-condensed table-sm"
              style="font-size:.8rem">
           <thead>
@@ -88,77 +174,7 @@ a:hover {
           </tbody>
         </table>
     </div>
-  
-    <!--Finalized table-->
-    <div class="tab-pane fade" id="finalized-pill" role="tabpanel" aria-labelledby="pills-finalized-tab">
-  
-      <table class="table-responsive table table-striped table-sm"  id="finalized_table"
-          data-toggle="table"
-          data-sortable="true"
-          data-buttons-align="right"
-          data-search="true" data-search-align="right" data-show-search-clear-button="true"
-          data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
-          data-show-export="true"
-          data-filter-control="true"
-          data-pagination="true"  data-page-size=25 data-page-list="[25, 50, 100, 200, All]" data-pagination-v-align="top"
-          style="font-size:.8rem">
-        <thead>
-        <tr class="text-center align-middle">
-          <th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
-          <th class="align-middle" data-field="type" data-sortable="true" data-filter-control="select">Tipo</th>
-          <th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
-          <th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
-          <th class="align-middle" data-field="driver" data-sortable="true" data-filter-control="select">Chofer</th>
-          <th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select"
-            data-filter-data=url:{{url_for('trips._get_materials_on_trip')}}
-  
-              id="material_column">Material</th>
-          <th class="align-middle" data-field="amount" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
-          <th class="align-middle" data-field="origin" data-sortable="true" data-filter-control="select">Origen</th>
-          <th class="align-middle" data-field="destination" data-sortable="true" data-filter-control="select">Destino</th>
-          <th class="align-middle" data-field="distance" data-sortable="true" data-filter-control="select">Kms</th>
-          <th class="align-middle" data-field="client" data-sortable="true" data-filter-control="select">Cliente</th>
-          <th class="align-middle" data-field="sender_user" data-sortable="true" data-filter-control="select">Envió</th>
-          <th class="align-middle" data-field="sent_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
-          <th class="align-middle" data-field="sender_comment" data-filter-control="input">Comentario Envío</th>
-          <th class="align-middle" data-field="finalizer_user" data-sortable="true" data-filter-control="select">Finalizó</th>
-          <th class="align-middle" data-field="finalized_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
-          <th class="align-middle" data-field="finalizer_comment" data-filter-control="input">Comentario Recibo</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for trip in finalized_trips %}
-        <tr class="text-center">
-          <td class="align-middle">{{trip['trip_id']}}</td>
-        {% if trip['type'] == "internal" or not trip['type'] %}
-					<td class="align-middle">Interno</td>
-				{% elif trip['type'] == "public" %}
-					<td class="align-middle">Público</td>
-				{% endif %}
-          {% if trip['status'] == "complete" %}
-            <td class="align-middle complete-style">Completo</td>
-          {% elif trip['status'] == "canceled" %}
-            <td class="align-middle canceled-style">Cancelado</td>
-          {% endif %}
-          <td class="align-middle">{{trip['truck']}}</td>
-          <td class="align-middle">{{trip['driver']}}</td>
-          <td class="align-middle">{{trip['material']}}</td>
-          <td class="align-middle">{{trip['amount']}}</td>
-          <td class="align-middle">{{trip['origin']}}</td>  
-          <td class="align-middle">{{trip['destination']}}</td>
-          <td class="align-middle">{{trip['distance']}}</td>
-          <td class="align-middle">{{trip['client']}}</td>
-          <td class="align-middle">{{trip['sender_user']}}</td>
-          <td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
-          <td class="align-middle"><div class="trunc">{{trip['sender_comment']}}</div></td>
-          <td class="align-middle">{{trip['finalizer_user']}}</td>
-          <td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
-          <td class="align-middle"><div class="trunc">{{trip['finalizer_comment']}}</div></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
+
   </div>
   
   <script>
@@ -170,6 +186,17 @@ a:hover {
       })
   
     })
+
+  // Confirm "Delete"
+  function remove(id) {
+    swal('', `¿Seguro que desea borrar Viaje: ${id}?`, 'warning', {dangerMode:true,
+      buttons: ["Cancelar", "Borrar"]}).then((res)=>{
+        if (res) {
+          window.location.href = "{{url_for('admin.trips_admin')}}"+`/delete/${id}`
+        }
+      })
+  }
+
   </script>
 
 {% endblock %}

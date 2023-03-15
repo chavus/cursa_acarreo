@@ -2,7 +2,7 @@ from cursa_acarreo import db
 from cursa_acarreo.models.general import Truck, Project, Material, MaterialBank, Driver
 from cursa_acarreo.models.user import User
 import datetime
-
+from mongoengine import queryset_manager
 """
 Base Class
 """
@@ -61,7 +61,7 @@ class Trip(db.Document, Base):
     truck = db.StringField(required=False, validation=validate_truck_options)
     driver = db.StringField(required=False)
     material = db.StringField(required=True, validation=validate_material_options)
-    amount = db.IntField(required=True, min_value=0) # In mts3
+    amount = db.IntField(required=True, min_value=0)  # In mts3
     origin = db.StringField(required=True, validation=validate_location_options)
     destination = db.StringField(required=False, validation=validate_location_options)
     distance = db.IntField(required=False, min_value=0)  # In kms
@@ -75,6 +75,7 @@ class Trip(db.Document, Base):
     status = db.StringField(required=False, choices=STATUS_LIST)
     is_return = db.BooleanField(defaul=False)
     type = db.StringField(required=True, choices=TRIP_TYPES_LIST)
+    is_deleted = db.BooleanField(default=False)
 
     def json(self):
         trip_dict = dict()
@@ -113,6 +114,10 @@ class Trip(db.Document, Base):
         self.finalized_datetime = datetime.datetime.utcnow()
         self.save_to_db(validation=False)  # This is a temporary solution, instead code logic to execute validate_x_options
 
+    def delete(self):
+        self.is_deleted = True
+        self.save_to_db(validation=False)
+
     @classmethod
     def create(cls, truck_id, material_name, origin_name, sender_username, type,
                status='in_progress', destination_name=None, client_name=None, sender_comment=None, amount=None,
@@ -133,20 +138,22 @@ class Trip(db.Document, Base):
         }
         return cls(**params).save()
 
+    @queryset_manager
+    def objects_no_deleted(cls, queryset):
+        return queryset.filter(is_deleted__ne=True)
+
     @classmethod
     def find_by_tripid(cls, trip_id, raise_if_none=True):
-        trip = cls.objects(trip_id__iexact=trip_id).first()
+        trip = cls.objects_no_deleted(trip_id__iexact=trip_id).first()
         if not trip and raise_if_none:
             raise NameError('Viaje "#{}" no existe'.format(trip_id))
         return trip
 
     @classmethod
     def get_all(cls):
-        return [trip.json() for trip in cls.objects]
+        return [trip.json() for trip in cls.objects_no_deleted()]
+
 
     @classmethod
     def get_trucks_in_trip(cls):
-        return list(dict.fromkeys([t.truck for t in cls.objects(status='in_progress')]))
-
-
-
+        return list(dict.fromkeys([t.truck for t in cls.objects_no_deleted(status='in_progress')]))
