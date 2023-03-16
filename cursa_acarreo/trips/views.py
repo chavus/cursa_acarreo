@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, request, jsonify
+from flask import Blueprint, render_template, flash, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 import cursa_acarreo.trips.forms as f
 from cursa_acarreo.trips.ticket import Ticket
@@ -99,7 +99,6 @@ def receive_dashboard():
 @login_required
 def get_trip_info():
     try:
-        # print(request.args.get('trip_id'))
         trip_id = request.args.get('trip_id')
         trip = Trip.find_by_tripid(trip_id)
         return trip.to_json(), 200
