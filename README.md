@@ -25,7 +25,7 @@ The application is divided in 2 main parts: the administration panel and the ope
 
 ## Platform/Support
 
-- Web: Chrome(fully tested), Safari and Firefox(not fully tested)
+- Web: Chrome(fully tested). Safari and Firefox(not fully tested)
 - Mobile: Fully responsive
 
 ## Demo access 
