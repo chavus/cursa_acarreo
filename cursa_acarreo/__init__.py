@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask, redirect, url_for
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
@@ -6,6 +8,8 @@ import pytz
 import os
 import git
 from dotenv import load_dotenv
+
+sys.stdout.reconfigure(encoding='utf-8')  # Had to configure for 'utf-8' due to issue on Heroku
 
 login_manager = LoginManager()
 app = Flask(__name__)
