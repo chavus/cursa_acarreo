@@ -83,8 +83,8 @@ app.register_blueprint(admin_blueprint)
 app.register_blueprint(error_pages)
 
 # Test
-print("Encoding:")
-print(sys.getdefaultencoding())
+print("Encoding on stdout:")
+print(sys.stdout.encoding)
 print("Print string:")
 print("García Niño")
 print('García Niño')
