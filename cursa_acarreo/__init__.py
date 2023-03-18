@@ -79,3 +79,8 @@ app.register_blueprint(users_blueprint)
 app.register_blueprint(trips_blueprint)
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(error_pages)
+
+# Test
+d = {'id_code': 'T4', 'brand': '', 'color': '', 'serial_number': '123', 'plate': '', 'capacity': 1, 'driver_full_name': ('García García', 'García Niño'), 'owner_name': '', 'is_active': True}
+print("Printing dict:")
+print(d)
