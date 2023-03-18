@@ -533,7 +533,6 @@ def truck_add_edit(param=None):
         if filled_form['driver_full_name']:
             driver = g.Driver.find_by_id(filled_form['driver_full_name'])
             filled_form['driver_full_name'] = (driver.name, driver.last_name)
-            print(filled_form)
         if param == 'new':
             try:
                 g.Truck.add(**filled_form)
