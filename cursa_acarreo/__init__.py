@@ -9,6 +9,8 @@ import os
 import git
 from dotenv import load_dotenv
 
+sys.stdout.reconfigure(encoding='utf-8')  # Had to configure for 'utf-8' due to issue on Heroku
+
 login_manager = LoginManager()
 app = Flask(__name__)
 
@@ -81,14 +83,3 @@ app.register_blueprint(users_blueprint)
 app.register_blueprint(trips_blueprint)
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(error_pages)
-
-# Test
-sys.stdout.reconfigure(encoding='utf-8')
-print("Encoding on stdout:")
-print(sys.stdout.encoding)
-print("Print string:")
-print("García Niño")
-print('García Niño')
-d = {'id_code': 'T4', 'brand': '', 'color': '', 'serial_number': '123', 'plate': '', 'capacity': 1, 'driver_full_name': ('García García', 'García Niño'), 'owner_name': '', 'is_active': True}
-print("Printing dict:")
-print(d)
