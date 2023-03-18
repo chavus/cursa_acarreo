@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask, redirect, url_for
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
@@ -81,6 +83,11 @@ app.register_blueprint(admin_blueprint)
 app.register_blueprint(error_pages)
 
 # Test
+print("Encoding:")
+print(sys.getdefaultencoding())
+print("Print string:")
+print("García Niño")
+print('García Niño')
 d = {'id_code': 'T4', 'brand': '', 'color': '', 'serial_number': '123', 'plate': '', 'capacity': 1, 'driver_full_name': ('García García', 'García Niño'), 'owner_name': '', 'is_active': True}
 print("Printing dict:")
 print(d)
