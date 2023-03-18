@@ -83,6 +83,7 @@ app.register_blueprint(admin_blueprint)
 app.register_blueprint(error_pages)
 
 # Test
+sys.stdout.reconfigure(encoding='utf-8')
 print("Encoding on stdout:")
 print(sys.stdout.encoding)
 print("Print string:")

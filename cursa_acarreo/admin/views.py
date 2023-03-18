@@ -1,3 +1,5 @@
+import sys
+
 from flask import Blueprint, render_template, flash, request, url_for, redirect
 from cursa_acarreo.admin import forms
 from cursa_acarreo.models.user import User
@@ -532,6 +534,17 @@ def truck_add_edit(param=None):
             driver = g.Driver.find_by_id(filled_form['driver_full_name'])
             filled_form['driver_full_name'] = (driver.name, driver.last_name)
         # print(filled_form)
+
+        print("Encoding on stdout:")
+        print(sys.stdout.encoding)
+        print("Print string:")
+        print("García Niño")
+        print('García Niño')
+        d = {'id_code': 'T4', 'brand': '', 'color': '', 'serial_number': '123', 'plate': '', 'capacity': 1,
+             'driver_full_name': ('García García', 'García Niño'), 'owner_name': '', 'is_active': True}
+        print("Printing dict:")
+        print(d)
+
         if param == 'new':
             try:
                 g.Truck.add(**filled_form)
