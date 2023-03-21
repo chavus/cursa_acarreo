@@ -40,6 +40,7 @@ a:hover {
 }
   </style>
   
+
   <ul class="nav nav-pills my-3 nav-justified" id="pills-tab" role="tablist" style="font-size: 1rem;">
     <li class="nav-item" role="presentation">
       <a class="nav-link active" id="pills-finalized-tab" data-toggle="pill" href="#finalized-pill" role="tab" aria-controls="pills-finalized" aria-selected="true">Finalizados</a>
@@ -121,8 +122,8 @@ a:hover {
           <td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
           <td class="align-middle"><div class="trunc">{{trip['finalizer_comment']}}</div></td>
           {% if current_user.role in ['admin']%}
-          <td>
-              <button onclick="remove('{{trip['trip_id']}}')" class="btn btn-pill btn-danger" type="button"
+          <td class="delete-cell">
+              <button class="btn btn-pill btn-danger delete-button" type="button"  data-trip-id={{trip['trip_id']}}
               style="font-size: .8rem;margin-left: 5px;margin-right: 1px;">
                   <span class="fa fa-trash-o"></span>
               </button>
@@ -178,24 +179,40 @@ a:hover {
   </div>
   
   <script>
-    $(function() {
-    $('#finalized_table').bootstrapTable('refreshOptions', {
-        exportDataType: 'all',
-      exportTypes: ['csv', 'txt', 'excel'],
-      iconSize: 'sm'
-      })
-  
-    })
 
-  // Confirm "Delete"
-  function remove(id) {
-    swal('', `¿Seguro que desea borrar Viaje: ${id}?`, 'warning', {dangerMode:true,
-      buttons: ["Cancelar", "Borrar"]}).then((res)=>{
-        if (res) {
-          window.location.href = "{{url_for('admin.trips_admin')}}"+`/delete/${id}`
-        }
-      })
-  }
+    $(function() {
+      $('#finalized_table').bootstrapTable('refreshOptions', {
+          exportDataType: 'all',
+        exportTypes: ['csv', 'txt', 'excel'],
+        iconSize: 'sm'
+        });
+
+        // Confirm "Delete"
+        $('tbody').on('click', '.delete-button', function(){
+          let id = $(this).data('trip-id')
+          swal('', `¿Seguro que desea borrar Viaje: ${id}?`, 'warning', {dangerMode:true,
+              buttons: ["Cancelar", "Borrar"]}).then((res)=>{
+              if (res) {
+                // try{
+                  $.ajax({url:"{{url_for('trips.delete')}}",
+                          type:"POST",
+                          dataType: "json",
+                          contentType: "application/json",
+                          data:JSON.stringify({trip_id:id}),
+                          success: 
+                                ()=>{
+                                  swal(`Viaje #${id} eliminado!`,'','success').then(()=>location.reload())
+                                },
+                          error: function(error){
+                                  swal(`ERROR al borrar viaje.\nDetalle: ${error.responseText}`, '', 'error')
+                                }
+                          })
+
+              }
+            })
+        })
+     })
+      
 
   </script>
 
