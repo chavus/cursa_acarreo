@@ -573,7 +573,7 @@
 			};
 			// console.log(trip_info);
 			try{
-				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", 											trip_info)
+				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", trip_info)
 				const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripRes.trip_id})
 				printImage(ticketRes.ticket_b64);
 				setTimeout(() => {

@@ -133,6 +133,24 @@ def receive():
         return jsonify(error=f'Server Error: {e.args[0]}'), 500
 
 
+@trips_blueprint.route('/delete_trip', methods=['POST'])
+# @login_required
+# @mustbe_admin
+def trip_delete():
+    try:
+        trip_id = request.json['trip_id']
+        print("Trip id")
+        print(trip_id)
+        trip = Trip.find_by_tripid(trip_id)
+        # trip.delete()
+        return jsonify(f'Viaje: #{trip_id} fue eliminado.')
+
+    except Exception as e:
+        print(e)
+        return jsonify(f'Error: { e.args[0] }'), 500
+
+
+
 @trips_blueprint.route('/list')
 @mustbe_admin
 @login_required
