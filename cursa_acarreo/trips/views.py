@@ -40,7 +40,6 @@ def create_trip():
         'status': 'in_progress' if request.form.get('trip_type') == "internal" else "complete"
         }
     try:
-        # print(trip_dict)
         trip = Trip.create(**trip_dict)
         return jsonify({'trip_id': trip.trip_id}), 200
     except Exception as e:
