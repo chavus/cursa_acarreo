@@ -3,6 +3,7 @@ from cursa_acarreo.models.general import Truck, Project, Material, MaterialBank,
 from cursa_acarreo.models.user import User
 import datetime
 from mongoengine import queryset_manager
+
 """
 Base Class
 """
@@ -49,9 +50,10 @@ def validate_user_options(value):
 Model classes
 """
 
-
 STATUS_LIST = ('in_progress', 'complete', 'canceled')
 TRIP_TYPES_LIST = ('internal', 'public')
+
+
 class Trip(db.Document, Base):
     """
     Trip model
@@ -80,8 +82,9 @@ class Trip(db.Document, Base):
     def json(self):
         trip_dict = dict()
         for i in self:
-            if (i in ['sender_comment', 'finalizer_comment', 'client', 'destination', 'truck', 'driver', 'finalizer_user', 'distance']) and \
-                    (self[i] is None):  # (i == 'sender_comment' or i == 'finalizer_comment')
+            if (i in ['sender_comment', 'finalizer_comment', 'client', 'destination', 'truck', 'driver',
+                      'finalizer_user', 'distance']) \
+                    and (self[i] is None):  # (i == 'sender_comment' or i == 'finalizer_comment')
                 trip_dict[i] = ''
             else:
                 trip_dict[i] = self[i]
@@ -124,7 +127,8 @@ class Trip(db.Document, Base):
                is_return=None):
         params = {
             'truck': truck_id.upper() if truck_id else None,
-            'driver': Truck.find_by_idcode(truck_id).driver.get_full_name() if Truck.find_by_idcode(truck_id).driver else None,
+            'driver': Truck.find_by_idcode(truck_id).driver.get_full_name()
+                        if Truck.find_by_idcode(truck_id, False) and Truck.find_by_idcode(truck_id).driver else None,
             'material': material_name.upper(),
             'origin': origin_name.upper(),
             'destination': destination_name.upper() if destination_name else None,
@@ -136,6 +140,16 @@ class Trip(db.Document, Base):
             'is_return': is_return,
             'type': type
         }
+
+        # Logic requires approval from Cursa. Case when Destination is a MaterialBank or bank to bank
+        # if type == 'internal' and destination_name:
+        #     customer = Project.find_by_name(destination_name).customer
+        #     params['client'] = customer.name if customer else None
+        # elif type == 'public' and client_name:
+        #     params['client'] = client_name
+        # else:
+        #     params['client'] = None
+
         return cls(**params).save()
 
     @queryset_manager
@@ -152,7 +166,6 @@ class Trip(db.Document, Base):
     @classmethod
     def get_all(cls):
         return [trip.json() for trip in cls.objects_no_deleted()]
-
 
     @classmethod
     def get_trucks_in_trip(cls):

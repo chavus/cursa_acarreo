@@ -282,7 +282,6 @@ def material_add_edit(param=None):
         else:
             try:
                 material.update(**filled_form)
-                print((filled_form['name']))
                 flash(f"Material: {filled_form['name']} fue actualizado", ['success', 'popup'])
                 return redirect(url_for('admin.materials_admin'))
             except Exception as e:
@@ -324,7 +323,6 @@ def bank_add_edit(param=None):
     else:  # Edit user
         try:
             bank = g.MaterialBank.find_by_id(param)
-            print(bank.json())
             form = forms.BankForm(**bank.json(), bank=bank)  # Create a form passing value of users for duplicate validations
             form.owner_name.choices = [('', 'Seleccionar...')] + [(i, i) for i in g.Supplier.get_list_by('name')]
             form.material_name_list.choices = [(i, i) for i in g.Material.get_list_by('name')]
@@ -336,7 +334,6 @@ def bank_add_edit(param=None):
         for f in form:
             filled_form[f.name] = f.data
         del filled_form['csrf_token']
-        print(filled_form)
         if param == 'new':
             try:
                 g.MaterialBank.add(**filled_form)
@@ -348,7 +345,6 @@ def bank_add_edit(param=None):
         else:
             try:
                 bank.update(**filled_form)
-                print((filled_form['name']))
                 flash(f"Banco: {filled_form['name']} fue actualizado", ['success', 'popup'])
                 return redirect(url_for('admin.banks_admin'))
             except Exception as e:
@@ -402,7 +398,6 @@ def project_add_edit(param=None):
         for f in form:
             filled_form[f.name] = f.data
         del filled_form['csrf_token']
-        print(filled_form)
         if param == 'new':
             try:
                 g.Project.add(**filled_form)
@@ -519,7 +514,6 @@ def truck_add_edit(param=None):
     else:  # Edit user
         try:
             truck = g.Truck.find_by_id(param)
-            print(truck.json(driver_id=True))
             form = forms.TruckForm(**truck.json(driver_id=True), truck=truck)  # Create a form passing value of object for duplicate validations
             form.owner_name.choices = [('', 'Seleccionar...')] + [(i, i) for i in g.Supplier.get_list_by('name')]
             form.driver_full_name.choices = [('', 'Seleccionar...')] + [(i['id'], i['name'] + ' ' + i['last_name'])
@@ -535,7 +529,6 @@ def truck_add_edit(param=None):
         if filled_form['driver_full_name']:
             driver = g.Driver.find_by_id(filled_form['driver_full_name'])
             filled_form['driver_full_name'] = (driver.name, driver.last_name)
-        print(filled_form)
         if param == 'new':
             try:
                 g.Truck.add(**filled_form)

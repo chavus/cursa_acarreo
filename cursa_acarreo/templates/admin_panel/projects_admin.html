@@ -86,9 +86,13 @@
               {% else %}
                 <h5><span class="badge badge-dark">Inactivo</span></h5>
               {% endif %}
-            <td><button type="button" class="btn btn-pill btn-info" style="font-weight: bold;" data-container="body" data-toggle="popover" data-placement="top" data-content="{{ ', '.join(project['material_name_list']) }}">
+            <td>
+               {% if project['material_name_list']%}
+              <button type="button" class="btn btn-pill btn-info" style="font-weight: bold;" data-container="body" data-toggle="popover" data-placement="top" data-content="{{ ', '.join(project['material_name_list']) }}">
               <span class="fa fa-eye"></span>
-            </button></td>
+              </button>
+              {% endif %}
+          </td>
 
             <td>{{ project['customer_name'] }}</td>
             <td>{{ project['location'] }}</td>
