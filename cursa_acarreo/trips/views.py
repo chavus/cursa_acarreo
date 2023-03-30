@@ -146,12 +146,53 @@ def delete():
 
 
 
+@trips_blueprint.route('/list-bckup')
+@mustbe_admin
+@login_required
+def list_bckup():
+    trips = Trip.get_all()
+    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
+                             key=lambda i: i['trip_id'], reverse=True)
+    return render_template('list_home.html', in_progress_trips=in_progress_trips, finalized_trips=finalized_trips)
+
 @trips_blueprint.route('/list')
 @mustbe_admin
 @login_required
 def list():
     trips = Trip.get_all()
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    return render_template('list_home_cs_pagination.html', in_progress_trips=in_progress_trips)
+
+@trips_blueprint.route('/in-progress-trips-ss')
+@mustbe_admin
+@login_required
+def in_progress_trips_ss():
+    # offset: where it starts from 0
+    # limit: how many
+    # 1. filters
+    # 2. exports
+    # 3. search
+    # 4. spinner
+    # 5. delete button
+
+    print(request.args)
+    offset = int(request.args.get('offset'))
+    limit = int(request.args.get('limit'))
+    print(offset, limit)
+    trips = Trip.get_all()
     finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
                              key=lambda i: i['trip_id'], reverse=True)
-    return render_template('list_home.html', in_progress_trips=in_progress_trips, finalized_trips=finalized_trips)
+    sliced_trips_list = finalized_trips[offset:offset+limit]
+    paginated_dict_payload ={ 'total': len(finalized_trips),
+                             'rows': sliced_trips_list}
+    return jsonify(paginated_dict_payload)
+
+@trips_blueprint.route('/in-progress-trips-cs')
+@mustbe_admin
+@login_required
+def in_progress_trips_cs():
+    finalized_trips = Trip.get_complete_and_cancelled()
+    response = jsonify(finalized_trips)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response

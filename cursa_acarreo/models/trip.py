@@ -97,7 +97,7 @@ class Trip(db.Document, Base):
         :return:
         """
         try:
-            self.save(validate=validation)
+            return self.save(validate=validation)
         except Exception as e:
             self.reload()
             raise e
@@ -166,6 +166,10 @@ class Trip(db.Document, Base):
     @classmethod
     def get_all(cls):
         return [trip.json() for trip in cls.objects_no_deleted()]
+
+    @classmethod
+    def get_complete_and_cancelled(cls):
+        return [trip.json() for trip in cls.objects_no_deleted(status__in=['complete', 'canceled']).order_by('-_id')]
 
     @classmethod
     def get_trucks_in_trip(cls):

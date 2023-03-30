@@ -63,11 +63,15 @@ a:hover {
           data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
           data-show-export="true"
           data-filter-control="true"
+          data-ajax="tripsRequest"
+          data-side-pagination="server"
           data-pagination="true"  data-page-size=25 data-page-list="[25, 50, 100, 200, All]" data-pagination-v-align="top"
-          style="font-size:.8rem">
+          style="font-size:.8rem"
+          data-loading-template="loadingTemplate"
+          >
         <thead>
         <tr class="text-center align-middle">
-          <th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
+          <th class="align-middle" data-field="trip_id" data-sortable="true" data-filter-control="input">#</th>
           <th class="align-middle" data-field="type" data-sortable="true" data-filter-control="select">Tipo</th>
           <th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
           <th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
@@ -93,45 +97,6 @@ a:hover {
 
         </tr>
         </thead>
-        <tbody>
-        {% for trip in finalized_trips %}
-        <tr class="text-center">
-          <td class="align-middle">{{trip['trip_id']}}</td>
-        {% if trip['type'] == "internal" or not trip['type'] %}
-					<td class="align-middle">Interno</td>
-				{% elif trip['type'] == "public" %}
-					<td class="align-middle">Público</td>
-				{% endif %}
-          {% if trip['status'] == "complete" %}
-            <td class="align-middle complete-style">Completo</td>
-          {% elif trip['status'] == "canceled" %}
-            <td class="align-middle canceled-style">Cancelado</td>
-          {% endif %}
-          <td class="align-middle">{{trip['truck']}}</td>
-          <td class="align-middle">{{trip['driver']}}</td>
-          <td class="align-middle">{{trip['material']}}</td>
-          <td class="align-middle">{{trip['amount']}}</td>
-          <td class="align-middle">{{trip['origin']}}</td>
-          <td class="align-middle">{{trip['destination']}}</td>
-          <td class="align-middle">{{trip['distance']}}</td>
-          <td class="align-middle">{{trip['client']}}</td>
-          <td class="align-middle">{{trip['sender_user']}}</td>
-          <td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
-          <td class="align-middle"><div class="trunc">{{trip['sender_comment']}}</div></td>
-          <td class="align-middle">{{trip['finalizer_user']}}</td>
-          <td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
-          <td class="align-middle"><div class="trunc">{{trip['finalizer_comment']}}</div></td>
-          {% if current_user.role in ['admin']%}
-          <td class="delete-cell">
-              <button class="btn btn-pill btn-danger delete-button" type="button"  data-trip-id={{trip['trip_id']}}
-              style="font-size: .8rem;margin-left: 5px;margin-right: 1px;">
-                  <span class="fa fa-trash-o"></span>
-              </button>
-          </td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-        </tbody>
       </table>
     </div>
 
@@ -180,7 +145,26 @@ a:hover {
   
   <script>
 
+    function tripsRequest(params){
+      var url = "{{url_for('trips.in_progress_trips_ss')}}"
+      $.get(url + '?' + $.param(params.data)).then(function (res) {
+      params.success(res)
+    })
+    }
+
+    // function loadingTemplate(message) {
+    //   return '<i class="fa fa-spinner fa-spin fa-fw fa-2x"></i>'
+    // }
+
+  //   function rebuild() {
+  //   $('#finalized_table').bootstrapTable('destroy')
+  //     .bootstrapTable()
+  //     .bootstrapTable('showLoading')
+  // }
+
     $(function() {
+      // reload()
+
       $('#finalized_table').bootstrapTable('refreshOptions', {
         exportDataType: 'all',
         exportTypes: ['csv', 'txt', 'excel'],

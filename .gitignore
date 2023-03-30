@@ -4,3 +4,4 @@ cursa_acarreo/*/__pycache__/
 .vscode/
 /.venv/
 .env
+/add_trips.py

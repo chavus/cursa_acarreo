@@ -29,9 +29,9 @@ PANEL
 def general_admin():
     return render_template('admin_panel/general_admin.html')
 
-@admin_blueprint.route('/trips-admin')
+@admin_blueprint.route('/trips-admin-bckup')
 @mustbe_admin
-def trips_admin():
+def trips_admin_bckup():
     trips = Trip.get_all()
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
     finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
@@ -39,6 +39,22 @@ def trips_admin():
     return render_template('admin_panel/trips_admin.html', in_progress_trips=in_progress_trips,
                            finalized_trips=finalized_trips)
 
+
+
+# For development
+@admin_blueprint.route('/list-ss')
+@mustbe_admin
+def list_ss():
+    trips = Trip.get_all()
+    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    return render_template('admin_panel/trips_admin_ss_pagination.html', in_progress_trips=in_progress_trips)
+
+@admin_blueprint.route('/trips-admin')
+@mustbe_admin
+def trips_admin():
+    trips = Trip.get_all()
+    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    return render_template('admin_panel/trips_admin_cs_pagination.html', in_progress_trips=in_progress_trips)
 
 @admin_blueprint.route('/trips-admin/delete/<id>', methods=['POST', 'GET'])
 @mustbe_admin
