@@ -2,6 +2,7 @@
 {% extends '/admin_panel/admin_base.html' %}
 
 {% block content %}
+
 <style>
 
   .trunc{
@@ -38,8 +39,18 @@ a {
 a:hover {
     color: rgb(53, 84, 116);
 }
+
+.ph-item,
+  .ph-picture {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
   </style>
   
+
 
   <ul class="nav nav-pills my-3 nav-justified" id="pills-tab" role="tablist" style="font-size: 1rem;">
     <li class="nav-item" role="presentation">
@@ -63,75 +74,40 @@ a:hover {
           data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
           data-show-export="true"
           data-filter-control="true"
+          data-ajax="tripsRequest"
+          data-side-pagination="client"
           data-pagination="true"  data-page-size=25 data-page-list="[25, 50, 100, 200, All]" data-pagination-v-align="top"
-          style="font-size:.8rem">
+          style="font-size:.8rem"
+
+          >
         <thead>
         <tr class="text-center align-middle">
-          <th class="align-middle" data-field="id" data-sortable="true" data-filter-control="input">#</th>
-          <th class="align-middle" data-field="type" data-sortable="true" data-filter-control="select">Tipo</th>
-          <th class="align-middle" data-field="status" data-sortable="true" data-filter-control="select">Estado</th>
-          <th class="align-middle" data-field="truck" data-sortable="true" data-filter-control="select">Camion</th>
-          <th class="align-middle" data-field="driver" data-sortable="true" data-filter-control="select">Chofer</th>
-          <th class="align-middle" data-field="material" data-sortable="true" data-filter-control="select"
+          <th class="align-middle" data-field="trip_id" data-halign="center" data-align="center" data-sortable="true" data-filter-control="input">#</th>
+          <th class="align-middle" data-field="type"  data-halign="center" data-align="center" data-formatter="typeFormatter" data-sortable="true" data-filter-control="select">Tipo</th>
+          <th class="align-middle" data-field="status" data-halign="center" data-align="center" data-formatter="statusFormatter" data-cell-style="statusStyle" data-sortable="true" data-filter-control="select">Estado</th>
+          <th class="align-middle" data-field="truck" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Camion</th>
+          <th class="align-middle" data-field="driver" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Chofer</th>
+          <th class="align-middle" data-field="material" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select"
             data-filter-data=url:{{url_for('trips._get_materials_on_trip')}}
 
               id="material_column">Material</th>
-          <th class="align-middle" data-field="amount" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
-          <th class="align-middle" data-field="origin" data-sortable="true" data-filter-control="select">Origen</th>
-          <th class="align-middle" data-field="destination" data-sortable="true" data-filter-control="select">Destino</th>
-          <th class="align-middle" data-field="distance" data-sortable="true" data-filter-control="select">Kms</th>
-          <th class="align-middle" data-field="client" data-sortable="true" data-filter-control="select">Cliente</th>
-          <th class="align-middle" data-field="sender_user" data-sortable="true" data-filter-control="select">Envió</th>
-          <th class="align-middle" data-field="sent_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
-          <th class="align-middle" data-field="sender_comment" data-filter-control="input">Comentario Envío</th>
-          <th class="align-middle" data-field="finalizer_user" data-sortable="true" data-filter-control="select">Finalizó</th>
-          <th class="align-middle" data-field="finalized_datetime" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
-          <th class="align-middle" data-field="finalizer_comment" data-filter-control="input">Comentario Recibo</th>
+          <th class="align-middle" data-field="amount" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
+          <th class="align-middle" data-field="origin" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Origen</th>
+          <th class="align-middle" data-field="destination" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Destino</th>
+          <th class="align-middle" data-field="distance" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Kms</th>
+          <th class="align-middle" data-field="client" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Cliente</th>
+          <th class="align-middle" data-field="sender_user" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Envió</th>
+          <th class="align-middle" data-field="sent_datetime" data-halign="center" data-align="center" data-formatter="dateFormatter" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
+          <th class="align-middle" data-field="sender_comment" data-halign="center" data-align="center" data-filter-control="input">Comentario Envío</th>
+          <th class="align-middle" data-field="finalizer_user" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Finalizó</th>
+          <th class="align-middle" data-field="finalized_datetime" data-halign="center" data-align="center" data-formatter="dateFormatter" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
+          <th class="align-middle" data-field="finalizer_comment" data-halign="center" data-align="center" data-filter-control="input">Comentario Recibo</th>
           {% if current_user.role in ['admin']%}
-            <th class="align-middle">Borrar</th>
+            <th class="align-middle" data-field="trip_id" data-halign="center" data-align="center" data-formatter="deleteFormatter">Borrar</th>
           {% endif %}
 
         </tr>
         </thead>
-        <tbody>
-        {% for trip in finalized_trips %}
-        <tr class="text-center">
-          <td class="align-middle">{{trip['trip_id']}}</td>
-        {% if trip['type'] == "internal" or not trip['type'] %}
-					<td class="align-middle">Interno</td>
-				{% elif trip['type'] == "public" %}
-					<td class="align-middle">Público</td>
-				{% endif %}
-          {% if trip['status'] == "complete" %}
-            <td class="align-middle complete-style">Completo</td>
-          {% elif trip['status'] == "canceled" %}
-            <td class="align-middle canceled-style">Cancelado</td>
-          {% endif %}
-          <td class="align-middle">{{trip['truck']}}</td>
-          <td class="align-middle">{{trip['driver']}}</td>
-          <td class="align-middle">{{trip['material']}}</td>
-          <td class="align-middle">{{trip['amount']}}</td>
-          <td class="align-middle">{{trip['origin']}}</td>
-          <td class="align-middle">{{trip['destination']}}</td>
-          <td class="align-middle">{{trip['distance']}}</td>
-          <td class="align-middle">{{trip['client']}}</td>
-          <td class="align-middle">{{trip['sender_user']}}</td>
-          <td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
-          <td class="align-middle"><div class="trunc">{{trip['sender_comment']}}</div></td>
-          <td class="align-middle">{{trip['finalizer_user']}}</td>
-          <td class="align-middle">{{trip['finalized_datetime'] | formatdate_mx}}</td>
-          <td class="align-middle"><div class="trunc">{{trip['finalizer_comment']}}</div></td>
-          {% if current_user.role in ['admin']%}
-          <td class="delete-cell">
-              <button class="btn btn-pill btn-danger delete-button" type="button"  data-trip-id={{trip['trip_id']}}
-              style="font-size: .8rem;margin-left: 5px;margin-right: 1px;">
-                  <span class="fa fa-trash-o"></span>
-              </button>
-          </td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-        </tbody>
       </table>
     </div>
 
@@ -180,12 +156,73 @@ a:hover {
   
   <script>
 
+    function tripsRequest(params){
+      var url = "{{url_for('trips.in_progress_trips_cs')}}"
+      $.get(url + '?' + $.param(params.data)).then(function (res) {
+      params.success(res)
+    })
+    }
+
+    // FORMATTERS
+    function deleteFormatter(value) {
+      return [
+        `<button class="btn btn-pill btn-danger delete-button" type="button"  data-trip-id=${value} style="font-size: .8rem;margin-left: 5px;margin-right: 1px;">`,
+        '<span class="fa fa-trash-o"></span>',
+        '</button>'
+      ].join('')
+  }
+
+    function typeFormatter(value) {
+      if (value === 'internal' | !value){
+        return 'Interno'
+      }else if (value === 'public'){
+        return 'Público'
+      } else {
+        return value
+      }
+
+    }
+
+    function statusFormatter(value) {
+      if (value === 'complete'){
+        return 'Completo'
+      }else if (value === 'canceled'){
+        return 'Cancelado'
+      } else {
+        return value
+      }
+  }
+
+  function statusStyle(value){
+      if (value==='complete'){
+        return {classes: 'complete-style'}
+      }else if (value ==='canceled'){
+        return {classes: 'canceled-style'}
+      }
+    }
+
+  function dateFormatter(value){
+    if (value){
+      date = new Date(new Date(value).toLocaleString('en-US', {timeZone:"America/Mexico_City"}))
+      return moment(date).locale('es-MX').format("DD-MMM-YYYY H:mm")  
+    }
+    return ''
+  }
+
+
     $(function() {
+
       $('#finalized_table').bootstrapTable('refreshOptions', {
         exportDataType: 'all',
         exportTypes: ['csv', 'txt', 'excel'],
         iconSize: 'sm'
-        });
+        }
+        );
+
+        $('.animation-wrap').hide()
+        $('.loading-text').text('Cargando viajes').attr('font-size: 1.5rem;')
+        $('.loading-wrap').append('<i class="fa fa-spinner fa-spin fa-fw fa-2x"></i>')
+
 
         // Confirm "Delete"
         $('tbody').on('click', '.delete-button', function(){
