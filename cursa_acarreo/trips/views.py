@@ -117,6 +117,9 @@ def receive():
         if finalizer_comment is None:
             finalizer_comment = ""
         trip = Trip.find_by_tripid(trip_id)
+        if current_user.role not in ["supervisor", "admin"] and trip.sender_user == current_user.username:
+            return jsonify(error=f'Viaje no puede ser creado y recibido por mismo usuario: {current_user.username}!'), 403
+
         if trip.status == 'in_progress':
             trip.finalize(current_user.username, status, distance, finalizer_comment)
             if status == 'complete':
