@@ -1,5 +1,8 @@
+import datetime
+
 from flask import Blueprint, render_template, flash, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
+from ..utils import utils
 import cursa_acarreo.trips.forms as f
 from cursa_acarreo.trips.ticket import Ticket
 from cursa_acarreo.models.trip import Trip
@@ -7,8 +10,8 @@ from cursa_acarreo.models.general import MaterialBank, Project
 from cursa_acarreo.security import mustbe_admin
 import json
 
-
 trips_blueprint = Blueprint('trips', __name__)
+
 
 @trips_blueprint.route('/create_home')
 @login_required
@@ -38,7 +41,7 @@ def create_trip():
         'sender_username': current_user.username,
         'sender_comment': request.form.get('sender_comment'),
         'status': 'in_progress' if request.form.get('trip_type') == "internal" else "complete"
-        }
+    }
     try:
         trip = Trip.create(**trip_dict)
         return jsonify({'trip_id': trip.trip_id}), 200
@@ -118,7 +121,8 @@ def receive():
             finalizer_comment = ""
         trip = Trip.find_by_tripid(trip_id)
         if current_user.role not in ["supervisor", "admin"] and trip.sender_user == current_user.username:
-            return jsonify(error=f'Viaje no puede ser creado y recibido por mismo usuario: {current_user.username}!'), 403
+            return jsonify(
+                error=f'Viaje no puede ser creado y recibido por mismo usuario: {current_user.username}!'), 403
 
         if trip.status == 'in_progress':
             trip.finalize(current_user.username, status, distance, finalizer_comment)
@@ -145,8 +149,7 @@ def delete():
         trip.delete()
         return jsonify(f'Viaje: #{trip_id} fue eliminado.')
     except Exception as e:
-        return jsonify(f'Error: { e }'), 500
-
+        return jsonify(f'Error: {e}'), 500
 
 
 @trips_blueprint.route('/list-bckup')
@@ -159,6 +162,7 @@ def list_bckup():
                              key=lambda i: i['trip_id'], reverse=True)
     return render_template('list_home.html', in_progress_trips=in_progress_trips, finalized_trips=finalized_trips)
 
+
 @trips_blueprint.route('/list')
 @mustbe_admin
 @login_required
@@ -166,6 +170,7 @@ def list():
     trips = Trip.get_all()
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
     return render_template('list_home_cs_pagination.html', in_progress_trips=in_progress_trips)
+
 
 @trips_blueprint.route('/in-progress-trips-ss')
 @mustbe_admin
@@ -186,16 +191,37 @@ def in_progress_trips_ss():
     trips = Trip.get_all()
     finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
                              key=lambda i: i['trip_id'], reverse=True)
-    sliced_trips_list = finalized_trips[offset:offset+limit]
-    paginated_dict_payload ={ 'total': len(finalized_trips),
-                             'rows': sliced_trips_list}
+    sliced_trips_list = finalized_trips[offset:offset + limit]
+    paginated_dict_payload = {'total': len(finalized_trips),
+                              'rows': sliced_trips_list}
     return jsonify(paginated_dict_payload)
 
-@trips_blueprint.route('/in-progress-trips-cs')
+
+@trips_blueprint.route('/completed-trips-cs')
 @mustbe_admin
 @login_required
-def in_progress_trips_cs():
-    finalized_trips = Trip.get_complete_and_cancelled()
+def completed_trips_cs():
+    finalized_trips = Trip.get_formatted_trips(status=['complete', 'canceled'], purpose='table')
+    print(len(finalized_trips))
     response = jsonify(finalized_trips)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+@trips_blueprint.route('/trips-list-iframe')
+@mustbe_admin
+def trips_list_iframe():
+    trips = Trip.get_all()
+    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    return render_template('admin_panel/trips_list_iframe.html', in_progress_trips=in_progress_trips)
+    # return render_template('admin_panel/trips_list_iframe_copy.html')
+
+
+@trips_blueprint.route('/trips-csv')
+@mustbe_admin
+def trips_csv():
+    trips_list = Trip.get_formatted_trips(purpose='csv')
+    fields = ['#', 'Tipo', 'Estado', 'Camión', 'Chofer', 'Material', 'mts3', 'Origen', 'Destino', 'Kms', 'Cliente',
+              'Envió', 'Fecha/Hora Envío', 'Comentario Envío', 'Finalizó', 'Fecha/Hora Finalizado', 'Comentario Recibo']
+    export_name_date_append = utils.formatdate_mx(datetime.datetime.utcnow())
+    return utils.send_csv(trips_list,
+                          f'acarreos_{export_name_date_append}.csv', fields)
