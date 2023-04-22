@@ -4,6 +4,8 @@ from cursa_acarreo.models.user import User
 import datetime
 from mongoengine import queryset_manager
 
+from ..utils import utils
+
 """
 Base Class
 """
@@ -52,6 +54,9 @@ Model classes
 
 STATUS_LIST = ('in_progress', 'complete', 'canceled')
 TRIP_TYPES_LIST = ('internal', 'public')
+
+STATUS_TRANSLATION = {'in_progress': 'En Proceso', 'complete': 'Completo', 'canceled': 'Cancelado'}
+TYPE_TRANSLATION = {'internal': 'Interno', 'public': 'Público'}
 
 
 class Trip(db.Document, Base):
@@ -115,7 +120,8 @@ class Trip(db.Document, Base):
         self.distance = distance if distance else None
         self.finalizer_comment = finalizer_comment if finalizer_comment else None
         self.finalized_datetime = datetime.datetime.utcnow()
-        self.save_to_db(validation=False)  # This is a temporary solution, instead code logic to execute validate_x_options
+        self.save_to_db(
+            validation=False)  # This is a temporary solution, instead code logic to execute validate_x_options
 
     def delete(self):
         self.is_deleted = True
@@ -128,7 +134,7 @@ class Trip(db.Document, Base):
         params = {
             'truck': truck_id.upper() if truck_id else None,
             'driver': Truck.find_by_idcode(truck_id).driver.get_full_name()
-                        if Truck.find_by_idcode(truck_id, False) and Truck.find_by_idcode(truck_id).driver else None,
+            if Truck.find_by_idcode(truck_id, False) and Truck.find_by_idcode(truck_id).driver else None,
             'material': material_name.upper(),
             'origin': origin_name.upper(),
             'destination': destination_name.upper() if destination_name else None,
@@ -170,6 +176,55 @@ class Trip(db.Document, Base):
     @classmethod
     def get_complete_and_cancelled(cls):
         return [trip.json() for trip in cls.objects_no_deleted(status__in=['complete', 'canceled']).order_by('-_id')]
+
+    @classmethod
+    def get_formatted_trips(cls, status=['complete', 'canceled'], purpose='table'):
+        #     [{trip_id:'', ...},{}]
+        trips = cls.objects_no_deleted(status__in=status).order_by('-_id')
+        formatted_list = []
+        for trip in trips:
+            if purpose == 'table':
+                formatted_list.append({
+                    'trip_id': trip.trip_id,
+                    'type': TYPE_TRANSLATION[trip.type] if trip.type else 'Interno',
+                    'status': STATUS_TRANSLATION[trip.status],
+                    'truck': trip.truck if trip.truck else '',
+                    'driver': trip.driver if trip.driver else '',
+                    'material': trip.material,
+                    'amount': trip.amount,
+                    'origin': trip.origin,
+                    'destination': trip.destination if trip.destination else '',
+                    'distance': trip.distance if trip.distance else '',
+                    'client': trip.client if trip.client else '',
+                    'sender_user': trip.sender_user,
+                    'sent_datetime': utils.formatdate_mx(trip.sent_datetime),
+                    'sender_comment': trip.sender_comment if trip.sender_comment else '',
+                    'finalizer_user': trip.finalizer_user if trip.finalizer_user else '',
+                    'finalized_datetime': utils.formatdate_mx(trip.finalized_datetime),
+                    'finalizer_comment': trip.finalizer_comment if trip.finalizer_comment else ''
+                })
+            elif purpose == 'csv':
+                formatted_list.append({
+                    '#': trip.trip_id,
+                    'Tipo': TYPE_TRANSLATION[trip.type] if trip.type else 'Interno',
+                    'Estado': STATUS_TRANSLATION[trip.status],
+                    'Camión': trip.truck if trip.truck else '',
+                    'Chofer': trip.driver if trip.driver else '',
+                    'Material': trip.material,
+                    'mts3': trip.amount,
+                    'Origen': trip.origin,
+                    'Destino': trip.destination if trip.destination else '',
+                    'Kms': trip.distance if trip.distance else '',
+                    'Cliente': trip.client if trip.client else '',
+                    'Envió': trip.sender_user,
+                    'Fecha/Hora Envío': utils.formatdate_mx(trip.sent_datetime),
+                    'Comentario Envío': trip.sender_comment if trip.sender_comment else '',
+                    'Finalizó': trip.finalizer_user if trip.finalizer_user else '',
+                    'Fecha/Hora Finalizado': utils.formatdate_mx(trip.finalized_datetime),
+                    'Comentario Recibo': trip.finalizer_comment if trip.finalizer_comment else ''
+                })
+        return formatted_list
+
 
     @classmethod
     def get_trucks_in_trip(cls):

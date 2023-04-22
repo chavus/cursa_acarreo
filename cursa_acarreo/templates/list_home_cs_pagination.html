@@ -83,7 +83,6 @@
 			data-buttons-align="right"
 			data-search="true" data-search-align="right" data-show-search-clear-button="true"
 			data-show-columns="true" data-show-columns-search="false" data-show-columns-toggle-all="true"
-			data-show-export="true"
 			data-filter-control="true"
 			data-ajax="tripsRequest"
 			data-side-pagination="client"
@@ -94,8 +93,8 @@
 		  <thead>
 		  <tr class="text-center align-middle">
 			<th class="align-middle" data-field="trip_id" data-halign="center" data-align="center" data-sortable="true" data-filter-control="input">#</th>
-			<th class="align-middle" data-field="type"  data-halign="center" data-align="center" data-formatter="typeFormatter" data-sortable="true" data-filter-control="select">Tipo</th>
-			<th class="align-middle" data-field="status" data-halign="center" data-align="center" data-formatter="statusFormatter" data-cell-style="statusStyle" data-sortable="true" data-filter-control="select">Estado</th>
+			<th class="align-middle" data-field="type"  data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Tipo</th>
+			<th class="align-middle" data-field="status" data-halign="center" data-align="center" data-cell-style="statusStyle" data-sortable="true" data-filter-control="select">Estado</th>
 			<th class="align-middle" data-field="truck" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Camion</th>
 			<th class="align-middle" data-field="driver" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Chofer</th>
 			<th class="align-middle" data-field="material" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select"
@@ -108,10 +107,10 @@
 			<th class="align-middle" data-field="distance" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Kms</th>
 			<th class="align-middle" data-field="client" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Cliente</th>
 			<th class="align-middle" data-field="sender_user" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Envió</th>
-			<th class="align-middle" data-field="sent_datetime" data-halign="center" data-align="center" data-formatter="dateFormatter" data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
+			<th class="align-middle" data-field="sent_datetime" data-halign="center" data-align="center"  data-sortable="true" data-filter-control="input">Fecha/Hora Envío</th>
 			<th class="align-middle" data-field="sender_comment" data-halign="center" data-align="center" data-filter-control="input">Comentario Envío</th>
 			<th class="align-middle" data-field="finalizer_user" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Finalizó</th>
-			<th class="align-middle" data-field="finalized_datetime" data-halign="center" data-align="center" data-formatter="dateFormatter" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
+			<th class="align-middle" data-field="finalized_datetime" data-halign="center" data-align="center" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
 			<th class="align-middle" data-field="finalizer_comment" data-halign="center" data-align="center" data-filter-control="input">Comentario Recibo</th>
 
 		  </tr>
@@ -123,7 +122,7 @@
 <script>
 
 	function tripsRequest(params){
-      var url = "{{url_for('trips.in_progress_trips_cs')}}"
+		var url = "{{url_for('trips.completed_trips_cs')}}"
       $.get(url + '?' + $.param(params.data)).then(function (res) {
       params.success(res)
     })
@@ -138,49 +137,27 @@
       ].join('')
   }
 
-    function typeFormatter(value) {
-      if (value === 'internal' | !value){
-        return 'Interno'
-      }else if (value === 'public'){
-        return 'Público'
-      } else {
-        return value
-      }
-
-    }
-
-    function statusFormatter(value) {
-      if (value === 'complete'){
-        return 'Completo'
-      }else if (value === 'canceled'){
-        return 'Cancelado'
-      } else {
-        return value
-      }
-  }
-
   function statusStyle(value){
-      if (value==='complete'){
+      if (value==='Completo'){
         return {classes: 'complete-style'}
-      }else if (value ==='canceled'){
+      }else if (value ==='Cancelado'){
         return {classes: 'canceled-style'}
       }
     }
 
-  function dateFormatter(value){
-    if (value){
-      date = new Date(new Date(value).toLocaleString('en-US', {timeZone:"America/Mexico_City"}))
-      return moment(date).locale('es-MX').format("DD-MMM-YYYY H:mm")  
-    }
-    return ''
-  }
 
   $(function() {
-	$('#finalized_table').bootstrapTable('refreshOptions', {
-	    exportDataType: 'all',
-		exportTypes: ['csv', 'txt', 'excel'],
-		iconSize: 'sm'
-		})
+	$('#finalized_table').bootstrapTable('refreshOptions', {iconSize: 'sm'});
+
+	let export_button = ` 
+	<div class="export btn-group">
+		<a class="btn btn-secondary btn-sm" href="{{url_for('trips.trips_csv')}}" aria-label="Export" type="button" title="Exportar viajes" aria-expanded="false">
+		<i class="fa fa-download" aria-hidden="true"></i>
+		</a>
+	</div>`
+
+	$('.fixed-table-toolbar .columns .btn-group').append(export_button)  
+
 
 	$('.animation-wrap').hide()
 	$('.loading-text').text('Cargando viajes').attr('font-size: 1.5rem;')
