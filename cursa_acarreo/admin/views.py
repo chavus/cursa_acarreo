@@ -56,12 +56,12 @@ def trips_admin():
     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
     return render_template('admin_panel/trips_admin_cs_pagination.html', in_progress_trips=in_progress_trips)
 
-@admin_blueprint.route('/trips-admin-iframe')
+# @admin_blueprint.route('/trips-admin-iframe')
 # @mustbe_admin
-def trips_admin_iframe():
-    trips = Trip.get_all()
-    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
-    return render_template('admin_panel/trips_iframe.html', in_progress_trips=in_progress_trips)
+# def trips_admin_iframe():
+#     trips = Trip.get_all()
+#     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+#     return render_template('admin_panel/trips_iframe.html', in_progress_trips=in_progress_trips)
 
 @admin_blueprint.route('/trips-admin/delete/<id>', methods=['POST', 'GET'])
 @mustbe_admin

@@ -207,12 +207,12 @@ def completed_trips_cs():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@trips_blueprint.route('/trips-list-iframe')
-@mustbe_admin
-def trips_list_iframe():
-    trips = Trip.get_all()
-    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
-    return render_template('admin_panel/trips_list_iframe.html', in_progress_trips=in_progress_trips)
+# @trips_blueprint.route('/trips-list-iframe')
+# @mustbe_admin
+# def trips_list_iframe():
+#     trips = Trip.get_all()
+#     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+#     return render_template('admin_panel/trips_list_iframe.html', in_progress_trips=in_progress_trips)
     # return render_template('admin_panel/trips_list_iframe_copy.html')
 
 
