@@ -9,8 +9,6 @@ import os
 import git
 from dotenv import load_dotenv
 
-print("Inside __init__ in cursa_acarreo app")
-
 sys.stdout.reconfigure(encoding='utf-8')  # Had to configure for 'utf-8' due to issue on Heroku
 
 login_manager = LoginManager()

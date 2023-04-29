@@ -80,13 +80,14 @@ def _get_materials():
     return jsonify(material_choices)
 
 
-@trips_blueprint.route('/_get_materials_on_trip')
+
+@trips_blueprint.route('/_get_distinct_values')
 @login_required
-def _get_materials_on_trip():
-    trips = Trip.get_all()
-    materials_in_progress_l = set([i['material'] for i in trips])
-    dict_of_materials = {m: m for m in materials_in_progress_l}
-    return json.dumps(dict_of_materials)
+def get_distinct_values():
+    field = request.args.get('field')
+    values = Trip.get_distinct_values(field)
+    dict_of_values = {v: v for v in values}
+    return json.dumps(dict_of_values)
 
 
 @trips_blueprint.route('/receive_dashboard')
@@ -152,49 +153,37 @@ def delete():
         return jsonify(f'Error: {e}'), 500
 
 
-@trips_blueprint.route('/list-bckup')
-@mustbe_admin
-@login_required
-def list_bckup():
-    trips = Trip.get_all()
-    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
-    finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
-                             key=lambda i: i['trip_id'], reverse=True)
-    return render_template('list_home.html', in_progress_trips=in_progress_trips, finalized_trips=finalized_trips)
-
-
 @trips_blueprint.route('/list')
 @mustbe_admin
 @login_required
 def list():
-    trips = Trip.get_all()
-    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    in_progress_trips = Trip.get_formatted_trips(status=['in_progress'])
     return render_template('list_home_cs_pagination.html', in_progress_trips=in_progress_trips)
 
-
-@trips_blueprint.route('/in-progress-trips-ss')
-@mustbe_admin
-@login_required
-def in_progress_trips_ss():
-    # offset: where it starts from 0
-    # limit: how many
-    # 1. filters
-    # 2. exports
-    # 3. search
-    # 4. spinner
-    # 5. delete button
-
-    print(request.args)
-    offset = int(request.args.get('offset'))
-    limit = int(request.args.get('limit'))
-    print(offset, limit)
-    trips = Trip.get_all()
-    finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
-                             key=lambda i: i['trip_id'], reverse=True)
-    sliced_trips_list = finalized_trips[offset:offset + limit]
-    paginated_dict_payload = {'total': len(finalized_trips),
-                              'rows': sliced_trips_list}
-    return jsonify(paginated_dict_payload)
+# FOR DEVELOPMENT:
+# @trips_blueprint.route('/in-progress-trips-ss')
+# @mustbe_admin
+# @login_required
+# def in_progress_trips_ss():
+#     # offset: where it starts from 0
+#     # limit: how many
+#     # 1. filters
+#     # 2. exports
+#     # 3. search
+#     # 4. spinner
+#     # 5. delete button
+#
+#     print(request.args)
+#     offset = int(request.args.get('offset'))
+#     limit = int(request.args.get('limit'))
+#     print(offset, limit)
+#     trips = Trip.get_all()
+#     finalized_trips = sorted([i for i in trips if i['status'] in ['complete', 'canceled']],
+#                              key=lambda i: i['trip_id'], reverse=True)
+#     sliced_trips_list = finalized_trips[offset:offset + limit]
+#     paginated_dict_payload = {'total': len(finalized_trips),
+#                               'rows': sliced_trips_list}
+#     return jsonify(paginated_dict_payload)
 
 
 @trips_blueprint.route('/completed-trips-cs')
@@ -202,18 +191,9 @@ def in_progress_trips_ss():
 @login_required
 def completed_trips_cs():
     finalized_trips = Trip.get_formatted_trips(status=['complete', 'canceled'], purpose='table')
-    print(len(finalized_trips))
     response = jsonify(finalized_trips)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
-
-# @trips_blueprint.route('/trips-list-iframe')
-# @mustbe_admin
-# def trips_list_iframe():
-#     trips = Trip.get_all()
-#     in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
-#     return render_template('admin_panel/trips_list_iframe.html', in_progress_trips=in_progress_trips)
-    # return render_template('admin_panel/trips_list_iframe_copy.html')
 
 
 @trips_blueprint.route('/trips-csv')

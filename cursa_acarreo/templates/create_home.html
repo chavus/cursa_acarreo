@@ -426,7 +426,7 @@
 		function disableOriginInDestination() {
 			var selectedOrigin = $('#origin :selected').val();
 			$('#destination option[value!="default"][value!="section_label"]').removeAttr('disabled');
-			$('#destination [value="' + selectedOrigin + '"]').prop('disabled','true');
+			$(`#destination [value="${selectedOrigin.replace(/(['"])/g, "\\$1")}"]`).prop('disabled','true');
 			$('#destination').removeAttr('disabled');
 		}
 
@@ -555,7 +555,6 @@
 			})
 		 }
 
-		//  $('#testBtn').click(()=>{printImage(image)})
 
 		 $('#createTrip').click(async () =>  {
 			displayLoader($('#createTrip')[0], 'Creando viaje...', 'lg');
