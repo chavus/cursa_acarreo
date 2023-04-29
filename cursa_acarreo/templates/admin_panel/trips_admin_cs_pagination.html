@@ -84,12 +84,16 @@ a:hover {
           <th class="align-middle" data-field="truck" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Camión</th>
           <th class="align-middle" data-field="driver" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Chofer</th>
           <th class="align-middle" data-field="material" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select"
-          data-filter-data=url:{{url_for('trips._get_materials_on_trip')}}
-
-              id="material_column">Material</th>
+            data-filter-data=url:{{url_for('trips.get_distinct_values')+"?field=material"}}	
+            >Material</th>
+    
           <th class="align-middle" data-field="amount" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
-          <th class="align-middle" data-field="origin" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Origen</th>
-          <th class="align-middle" data-field="destination" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Destino</th>
+          <th class="align-middle" data-field="origin" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select"
+            data-filter-data=url:{{url_for('trips.get_distinct_values')+"?field=origin"}}	
+            >Origen</th>
+          <th class="align-middle" data-field="destination" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select"
+            data-filter-data=url:{{url_for('trips.get_distinct_values')+"?field=destination"}}	
+            >Destino</th>
           <th class="align-middle" data-field="distance" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Kms</th>
           <th class="align-middle" data-field="client" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Cliente</th>
           <th class="align-middle" data-field="sender_user" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Envió</th>
@@ -98,8 +102,9 @@ a:hover {
           <th class="align-middle" data-field="finalizer_user" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Finalizó</th>
           <th class="align-middle" data-field="finalized_datetime" data-halign="center" data-align="center" data-sortable="true" data-filter-control="input">Fecha/Hora Finalizado</th>
           <th class="align-middle" data-field="finalizer_comment" data-halign="center" data-align="center" data-filter-control="input">Comentario Recibo</th>
+    
           {% if current_user.role in ['admin']%}
-            <th class="align-middle" data-field="trip_id" data-halign="center" data-align="center" data-formatter="deleteFormatter">Borrar</th>
+            <th class="align-middle" data-field="trip_id" data-halign="center" data-align="center" data-sortable="true" data-formatter="deleteFormatter">Borrar</th>
           {% endif %}
 
         </tr>
@@ -116,6 +121,7 @@ a:hover {
             <tr class="text-center">
               <th class="align-middle">#</th>
               <th class="align-middle">Camion</th>
+              <th class="align-middle">Chofer</th>
               <th class="align-middle">Origen</th>
               <th class="align-middle">Material</th>
               <th class="align-middle">mts<sup>3</sup></th>
@@ -132,12 +138,13 @@ a:hover {
         <tr class="text-center">
           <td class="align-middle">{{trip['trip_id']}}</td>
           <td class="align-middle">{{trip['truck']}}</td>
+          <td class="align-middle">{{trip['driver']}}</td>
           <td class="align-middle">{{trip['origin']}}</td>
           <td class="align-middle">{{trip['material']}}</td>
           <td class="align-middle">{{trip['amount']}}</td>
           <td class="align-middle">{{trip['destination']}}</td>
           <td class="align-middle">{{trip['sender_user']}}</td>
-          <td class="align-middle">{{trip['sent_datetime'] | formatdate_mx}}</td>
+          <td class="align-middle">{{trip['sent_datetime']}}</td>
           <td class="align-middle"><div class="trunc">{{trip['sender_comment']}}</div></td>
   
         </tr>

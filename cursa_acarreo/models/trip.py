@@ -225,6 +225,9 @@ class Trip(db.Document, Base):
                 })
         return formatted_list
 
+    @classmethod
+    def get_distinct_values(cls, field):
+        return cls.objects_no_deleted().distinct(field)
 
     @classmethod
     def get_trucks_in_trip(cls):
