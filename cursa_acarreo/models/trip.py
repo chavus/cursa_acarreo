@@ -160,7 +160,8 @@ class Trip(db.Document, Base):
 
     @queryset_manager
     def objects_no_deleted(cls, queryset):
-        return queryset.filter(is_deleted__ne=True)
+        return queryset.filter(trip_id__gte=21000, is_deleted__ne=True) # Temporary patch
+        # return queryset.filter(is_deleted__ne=True)
 
     @classmethod
     def find_by_tripid(cls, trip_id, raise_if_none=True):
