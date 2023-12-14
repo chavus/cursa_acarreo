@@ -381,7 +381,8 @@ class Truck(db.Document, Base):
 
     @classmethod
     def get_active(cls):
-        return [t.id_code for t in cls.objects if t.is_active]
+        # return [t.id_code for t in cls.objects if t.is_active]
+        return [t.id_code for t in cls.objects(is_active=True)]
 
     @classmethod
     def get_all(cls):

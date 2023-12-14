@@ -57,8 +57,12 @@ def selection_required(form, field):
     if field.data is None:
         raise ValidationError('Favor de seleccionar una opción')
 
+
 def _available_trucks():
-    return [truck_ for truck_ in g.Truck.get_active() if truck_ not in t.Trip.get_trucks_in_trip()]
+    active_trucks = g.Truck.get_active()
+    trucks_in_trip = t.Trip.get_trucks_in_trip()
+    return list(filter(lambda truck: truck not in trucks_in_trip, active_trucks))
+    # return [truck_ for truck_ in g.Truck.get_active() if truck_ not in t.Trip.get_trucks_in_trip()]
 
 
 # Returns active and available trucks
