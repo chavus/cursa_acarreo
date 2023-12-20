@@ -93,8 +93,9 @@ def get_distinct_values():
 @trips_blueprint.route('/receive_dashboard')
 @login_required
 def receive_dashboard():
-    trips = Trip.get_all()
-    in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    # trips = Trip.get_all()
+    # in_progress_trips = [i for i in trips if i['status'] == 'in_progress']
+    in_progress_trips = Trip.get_by_status(['in_progress'])
     return render_template('receive_home.html', in_progress_trips=in_progress_trips)
 
 
