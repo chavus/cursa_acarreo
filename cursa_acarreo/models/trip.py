@@ -58,6 +58,9 @@ TRIP_TYPES_LIST = ('internal', 'public')
 STATUS_TRANSLATION = {'in_progress': 'En Proceso', 'complete': 'Completo', 'canceled': 'Cancelado'}
 TYPE_TRANSLATION = {'internal': 'Interno', 'public': 'Público'}
 
+# TODO:
+# Add validation for either amount or weight_in_kg considering 'is_trip_by_weight'
+
 
 class Trip(db.Document, Base):
     """
@@ -68,7 +71,9 @@ class Trip(db.Document, Base):
     truck = db.StringField(required=False, validation=validate_truck_options)
     driver = db.StringField(required=False)
     material = db.StringField(required=True, validation=validate_material_options)
-    amount = db.IntField(required=True, min_value=0)  # In mts3
+    amount = db.IntField(required=False, min_value=0)  # In mts3
+    is_trip_by_weight = db.BooleanField(default=False)
+    weight_in_kg = db.IntField(required=False, min_value=0, max_value=100000)
     origin = db.StringField(required=True, validation=validate_location_options)
     destination = db.StringField(required=False, validation=validate_location_options)
     distance = db.IntField(required=False, min_value=0)  # In kms
@@ -80,7 +85,7 @@ class Trip(db.Document, Base):
     finalizer_comment = db.StringField(required=False, max_length=100)
     finalized_datetime = db.DateTimeField()
     status = db.StringField(required=False, choices=STATUS_LIST)
-    is_return = db.BooleanField(defaul=False)
+    is_return = db.BooleanField(default=False)
     type = db.StringField(required=True, choices=TRIP_TYPES_LIST)
     is_deleted = db.BooleanField(default=False)
 
@@ -130,18 +135,23 @@ class Trip(db.Document, Base):
     @classmethod
     def create(cls, truck_id, material_name, origin_name, sender_username, type,
                status='in_progress', destination_name=None, client_name=None, sender_comment=None, amount=None,
-               is_return=None):
+               is_trip_by_weight=False, weight_in_kg=None, is_return=None):
+
+        truck = Truck.find_by_idcode(truck_id, raise_if_none=False)
+
         params = {
             'truck': truck_id.upper() if truck_id else None,
-            'driver': Truck.find_by_idcode(truck_id).driver.get_full_name()
-            if Truck.find_by_idcode(truck_id, False) and Truck.find_by_idcode(truck_id).driver else None,
+            'driver': truck.driver.get_full_name()
+            if Truck.find_by_idcode(truck_id, False) and truck.driver else None,
             'material': material_name.upper(),
             'origin': origin_name.upper(),
             'destination': destination_name.upper() if destination_name else None,
             'client': client_name.upper() if client_name else None,
             'sender_user': sender_username,
             'sender_comment': sender_comment if sender_comment else None,
-            'amount': amount if amount else Truck.find_by_idcode(truck_id).capacity,
+            'amount': amount if amount else truck.capacity,
+            'is_trip_by_weight': is_trip_by_weight,
+            'weight_in_kg': weight_in_kg if weight_in_kg else None,
             'status': status,
             'is_return': is_return,
             'type': type
@@ -196,7 +206,8 @@ class Trip(db.Document, Base):
                     'truck': trip.truck if trip.truck else '',
                     'driver': trip.driver if trip.driver else '',
                     'material': trip.material,
-                    'amount': trip.amount,
+                    'amount': trip.amount if not trip.is_trip_by_weight else '',
+                    'weight_in_tons': trip.weight_in_kg/1000 if trip.weight_in_kg and trip.is_trip_by_weight else '',
                     'origin': trip.origin,
                     'destination': trip.destination if trip.destination else '',
                     'distance': trip.distance if trip.distance else '',
@@ -216,7 +227,8 @@ class Trip(db.Document, Base):
                     'Camión': trip.truck if trip.truck else '',
                     'Chofer': trip.driver if trip.driver else '',
                     'Material': trip.material,
-                    'mts3': trip.amount,
+                    'mts3': trip.amount if not trip.is_trip_by_weight else '',
+                    'Peso(t)': trip.weight_in_kg / 1000 if trip.weight_in_kg and trip.is_trip_by_weight else '',
                     'Origen': trip.origin,
                     'Destino': trip.destination if trip.destination else '',
                     'Kms': trip.distance if trip.distance else '',

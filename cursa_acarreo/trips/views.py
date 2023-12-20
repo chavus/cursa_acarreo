@@ -34,6 +34,8 @@ def create_trip():
         'type': request.form.get('trip_type'),
         'truck_id': request.form.get('truck_id'),
         'amount': int(request.form.get('amount')) if request.form.get('amount') else None,
+        'is_trip_by_weight': request.form.get('is_trip_by_weight'),
+        'weight_in_kg': request.form.get('weight_in_kg') if request.form.get('weight_in_kg') else None,
         'material_name': request.form.get('material_name'),
         'origin_name': request.form.get('origin_name'),
         'destination_name': request.form.get('destination_name'),
@@ -43,6 +45,7 @@ def create_trip():
         'status': 'in_progress' if request.form.get('trip_type') == "internal" else "complete"
     }
     try:
+        print('trip_dict: ', trip_dict)
         trip = Trip.create(**trip_dict)
         return jsonify({'trip_id': trip.trip_id}), 200
     except Exception as e:
@@ -201,7 +204,7 @@ def completed_trips_cs():
 @mustbe_admin
 def trips_csv():
     trips_list = Trip.get_formatted_trips(purpose='csv')
-    fields = ['#', 'Tipo', 'Estado', 'Camión', 'Chofer', 'Material', 'mts3', 'Origen', 'Destino', 'Kms', 'Cliente',
+    fields = ['#', 'Tipo', 'Estado', 'Camión', 'Chofer', 'Material', 'mts3', 'Peso(t)', 'Origen', 'Destino', 'Kms', 'Cliente',
               'Envió', 'Fecha/Hora Envío', 'Comentario Envío', 'Finalizó', 'Fecha/Hora Finalizado', 'Comentario Recibo']
     export_name_date_append = utils.formatdate_mx(datetime.datetime.utcnow())
     return utils.send_csv(trips_list,

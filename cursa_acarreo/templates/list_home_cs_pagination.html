@@ -44,6 +44,7 @@
 		      <th class="align-middle">Origen</th>
 	          <th class="align-middle">Material</th>
 	          <th class="align-middle">mts<sup>3</sup></th>
+			  <th class="align-middle">Peso(t)</th>
 	          <th class="align-middle">Destino</th>
 	          <th class="align-middle">Enviado por</th>
 	          <th class="align-middle">Fecha/Hora Envio</th>
@@ -60,6 +61,7 @@
 				<td class="align-middle">{{trip['origin']}}</td>
 				<td class="align-middle">{{trip['material']}}</td>
 				<td class="align-middle">{{trip['amount']}}</td>
+				<td class="align-middle">{{trip['weight_in_tons']}}</td>
 				<td class="align-middle">{{trip['destination']}}</td>
 				<td class="align-middle">{{trip['sender_user']}}</td>
 				<td class="align-middle">{{trip['sent_datetime']}}</td>
@@ -102,6 +104,7 @@
 				>Material</th>
 
 			<th class="align-middle" data-field="amount" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">mts<sup>3</sup></th>
+			<th class="align-middle" data-field="weight_in_tons" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select">Peso(t)</th>
 			<th class="align-middle" data-field="origin" data-halign="center" data-align="center" data-sortable="true" data-filter-control="select"
 				data-filter-data=url:{{url_for('trips.get_distinct_values')+"?field=origin"}}	
 				>Origen</th>
