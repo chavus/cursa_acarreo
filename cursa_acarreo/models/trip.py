@@ -61,6 +61,7 @@ TYPE_TRANSLATION = {'internal': 'Interno', 'public': 'Público'}
 # TODO:
 # Add validation for either amount or weight_in_kg considering 'is_trip_by_weight'
 
+MAX_WEIGHT_IN_KG = 70000 #
 
 class Trip(db.Document, Base):
     """
@@ -73,7 +74,7 @@ class Trip(db.Document, Base):
     material = db.StringField(required=True, validation=validate_material_options)
     amount = db.IntField(required=False, min_value=0)  # In mts3
     is_trip_by_weight = db.BooleanField(default=False)
-    weight_in_kg = db.IntField(required=False, min_value=0, max_value=100000)
+    weight_in_kg = db.IntField(required=False, min_value=0, max_value=MAX_WEIGHT_IN_KG)
     origin = db.StringField(required=True, validation=validate_location_options)
     destination = db.StringField(required=False, validation=validate_location_options)
     distance = db.IntField(required=False, min_value=0)  # In kms
@@ -149,7 +150,7 @@ class Trip(db.Document, Base):
             'client': client_name.upper() if client_name else None,
             'sender_user': sender_username,
             'sender_comment': sender_comment if sender_comment else None,
-            'amount': amount if amount else truck.capacity,
+            'amount': amount if amount else (truck.capacity if not is_trip_by_weight else None),
             'is_trip_by_weight': is_trip_by_weight,
             'weight_in_kg': weight_in_kg if weight_in_kg else None,
             'status': status,
@@ -206,7 +207,7 @@ class Trip(db.Document, Base):
                     'truck': trip.truck if trip.truck else '',
                     'driver': trip.driver if trip.driver else '',
                     'material': trip.material,
-                    'amount': trip.amount if not trip.is_trip_by_weight else '',
+                    'amount': trip.amount if trip.amount else '',
                     'weight_in_tons': trip.weight_in_kg/1000 if trip.weight_in_kg and trip.is_trip_by_weight else '',
                     'origin': trip.origin,
                     'destination': trip.destination if trip.destination else '',
@@ -227,7 +228,7 @@ class Trip(db.Document, Base):
                     'Camión': trip.truck if trip.truck else '',
                     'Chofer': trip.driver if trip.driver else '',
                     'Material': trip.material,
-                    'mts3': trip.amount if not trip.is_trip_by_weight else '',
+                    'mts3': trip.amount if trip.amount else '',
                     'Peso(t)': trip.weight_in_kg / 1000 if trip.weight_in_kg and trip.is_trip_by_weight else '',
                     'Origen': trip.origin,
                     'Destino': trip.destination if trip.destination else '',

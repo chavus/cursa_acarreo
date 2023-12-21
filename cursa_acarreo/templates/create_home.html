@@ -172,8 +172,8 @@
 						<input id="weight_in_tons"
 									class="form-control form-control-lg"
 									style="width: 14rem;"
-									type="number" min="0" max="100" pattern="[0-9]*" inputmode="numeric"
-									placeholder="0-100" step=".0001">
+									type="number" min="0" max="70" inputmode="decimal"
+									placeholder="0 a 70.000" >
 						<div class="invalid-feedback text-left" id="weight_error"></div>
 					</div>
 				</div>
@@ -287,12 +287,6 @@
 
 <script src="{{ url_for('static', filename='js/tripScripts.js') }}"></script> 
 <script>
-
-// TODO:
-// Validate max 3 decimals
-// Validate max value
-// Add to ticket
-// In process view
 
 // <!--Load preselected values on select when page is loaded-->
 	if(localStorage.getItem('keep_selection_value') == 'true' ){
@@ -529,11 +523,25 @@ $('#is_trip_by_weight').change(function() {
 				$('#amount_error').text('Favor de seleccionar una opción')
 				validated = false;
 	        }
-			if ( !$('#weight_in_tons').val() && $('#is_trip_by_weight').prop('checked')){
-	            $('#weight_in_tons').addClass('is-invalid')
-				$('#weight_in_tons').addClass('is-invalid_custom')
-				$('#weight_error').text('Favor de ingresar peso')
+			weight_in_tons = $('#weight_in_tons')
+			if ( !weight_in_tons.val() && $('#is_trip_by_weight').prop('checked')){
+	            weight_in_tons.addClass('is-invalid')
+				weight_in_tons.addClass('is-invalid_custom')
+				$('#weight_error').text('Favor de ingresar peso en toneladas')
 				validated = false;
+	        }
+			if ( weight_in_tons.val() && $('#is_trip_by_weight').prop('checked')){
+				if (weight_in_tons.val() > 70 || weight_in_tons.val() < 0){
+					weight_in_tons.addClass('is-invalid')
+					weight_in_tons.addClass('is-invalid_custom')
+					$('#weight_error').text('Valor de peso debe de ser de 0 a 70')
+					validated = false;
+				} else if (!Number.isInteger(weight_in_tons.val()*1000)){
+					weight_in_tons.addClass('is-invalid')
+					weight_in_tons.addClass('is-invalid_custom')
+					$('#weight_error').text('Ingresar máximo 3 decimales. Por ejemplo: 23.123')
+					validated = false;
+				}
 	        }
 	        return validated
 		}
@@ -638,19 +646,22 @@ $('#is_trip_by_weight').change(function() {
 			};
 			console.log(trip_info);
 			try{
-				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", trip_info)
-				const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripRes.trip_id})
-				printImage(ticketRes.ticket_b64);
-				setTimeout(() => {
-					$('#confirmationModal').modal('hide');
-					confirmationModal(tripRes.trip_id, ticketRes.ticket_b64)
-				}, 1000);
-				
+				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", trip_info)				
+				try {
+					const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripRes.trip_id})
+					printImage(ticketRes.ticket_b64);
+					setTimeout(() => {
+						$('#confirmationModal').modal('hide');
+						confirmationModal(tripRes.trip_id, ticketRes.ticket_b64)
+					}, 1000);
+				} catch (error) {
+					swal(`Viaje ${tripRes.trip_id} creado!, pero hubo un error al crear el ticket`, '', 'warning').then(()=>location.reload())
+				}
+
 			}catch(error){
 				swal(`ERROR: No se pudo crear viaje.\nDetalle: ${error.responseText}`, '', 'error').then(()=>location.reload())
-				
-				// alert(`ERROR: No se pudo crear viaje.\nDetalle: ${error.responseText}`)
 			};
+
 			});
 	});
 

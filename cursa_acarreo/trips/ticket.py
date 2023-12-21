@@ -12,6 +12,7 @@ import io, base64
 class Ticket:
 
     TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_ticket_template.jpg'
+    BY_WEIGHT_TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_by_weight_ticket_template.jpg'
     PUBLIC_TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_public_ticket_template.jpg'
     TICKET_FONT = project_dir + '/cursa_acarreo/static/fonts/CalibriRegular.ttf'
     X_VALUE = 190  # X Coordinate to enter trip field text
@@ -24,6 +25,7 @@ class Ticket:
                      'client': (X_VALUE, Y_VALUE_INIT + 3 * FIELD_INC),
                      'material': (X_VALUE, Y_VALUE_INIT + 4*FIELD_INC),
                      'amount': (X_VALUE, Y_VALUE_INIT + 5*FIELD_INC),
+                     'weight_in_kg': (X_VALUE, Y_VALUE_INIT + 5 * FIELD_INC),
                      'sent_datetime': (X_VALUE, Y_VALUE_INIT + 6*FIELD_INC)}
     QR_XY = (175, 1080)  # Coordinates to paste QRcode
 
@@ -31,6 +33,7 @@ class Ticket:
         self.ticket_image = None
         self.ticket_fields_values = dict()
         self.ticket_fields_values['type'] = trip_dict['type']
+        self.ticket_fields_values['is_trip_by_weight'] = trip_dict['is_trip_by_weight']
         for i in self.TICKET_FIELDS:
             if trip_dict[i].__class__.__name__ == 'datetime':  # Convert datetime to formated string
                 self.ticket_fields_values[i] = formatdate_mx(trip_dict[i])
@@ -82,7 +85,10 @@ class Ticket:
         :return: PIL Image object
         '''
         if self.ticket_fields_values['type'] == 'internal' or not self.ticket_fields_values['type']:
-            im = Image.open(self.TICKET_TEMPLATE)
+            if self.ticket_fields_values['is_trip_by_weight']:
+                im = Image.open(self.BY_WEIGHT_TICKET_TEMPLATE)
+            else:
+                im = Image.open(self.TICKET_TEMPLATE)
         elif self.ticket_fields_values['type'] == 'public':
             im = Image.open(self.PUBLIC_TICKET_TEMPLATE)
 
@@ -94,6 +100,14 @@ class Ticket:
                 f == 'client') or \
                     (self.ticket_fields_values['type'] == 'public' and
                      (f in ['truck', 'destination'])):
+                continue
+            if self.ticket_fields_values['is_trip_by_weight'] and f == 'amount':
+                continue
+            if not self.ticket_fields_values['is_trip_by_weight'] and f == 'weight_in_kg':
+                continue
+            if f == 'weight_in_kg':
+                d.text(self.TICKET_FIELDS[f], self.format_value(self.ticket_fields_values[f]/1000),
+                       font=fnt, fill='black')
                 continue
             d.text(self.TICKET_FIELDS[f], self.format_value(self.ticket_fields_values[f]),
                    font=fnt, fill='black')

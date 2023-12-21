@@ -34,7 +34,7 @@ def create_trip():
         'type': request.form.get('trip_type'),
         'truck_id': request.form.get('truck_id'),
         'amount': int(request.form.get('amount')) if request.form.get('amount') else None,
-        'is_trip_by_weight': request.form.get('is_trip_by_weight'),
+        'is_trip_by_weight': request.form.get('is_trip_by_weight') == 'true',
         'weight_in_kg': request.form.get('weight_in_kg') if request.form.get('weight_in_kg') else None,
         'material_name': request.form.get('material_name'),
         'origin_name': request.form.get('origin_name'),
@@ -64,6 +64,7 @@ def get_trip_ticket():
         ticket_b64 = ticket.encode_b64()
         return jsonify(ticket_b64=ticket_b64.decode()), 200
     except Exception as e:
+        print(e)
         return jsonify(error=str(e)), 400
 
 
