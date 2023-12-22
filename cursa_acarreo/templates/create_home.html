@@ -325,7 +325,6 @@
 		$('#amount-selection').prop('hidden',true)
 	}
 
-
 // Show Destination or Client input drop down depending on is-public 
 	$('#is-public').change(function() {
 		destinationRow = document.getElementById('destination-row')
@@ -334,7 +333,12 @@
 			destinationRow.setAttribute('hidden',true)
 			customerRow.removeAttribute('hidden')
 			$('#truck-selection').prop('hidden',true)
-			$('#amount-selection').prop('hidden',false)
+			if(!$('#is_trip_by_weight').prop('checked')){
+				$('#amount-selection').prop('hidden',false)
+				$('#truckamount_in_confirmation').prop('hidden',false)
+			}else{
+				$('#truckamount_in_confirmation').prop('hidden',true)
+			}
 			$('#customer').val('default')
 			$('#destination').val('default')
 			$('#truck').val('default')
@@ -343,6 +347,7 @@
 			customerRow.setAttribute('hidden',true)
 			destinationRow.removeAttribute('hidden')
 			$('#truck-selection').prop('hidden',false)
+			$('#truckamount_in_confirmation').prop('hidden',false)
 			$('#amount-selection').prop('hidden',true)
 			$('#destination').val('default')
 			$('#customer').val('default')
@@ -358,9 +363,20 @@ $('#is_trip_by_weight').change(function() {
 	weightSection = document.getElementById('weight_section')
 	if($('#is_trip_by_weight').prop('checked')){
 		weightSection.removeAttribute('hidden')
+		if($('#is-public').prop('checked')) {
+			$('#amount-selection').prop('hidden',true)
+			$('#truckamount_in_confirmation').prop('hidden',true)
+		}else{
+			$('#truckamount_in_confirmation').prop('hidden',false)
+		}		
 	}else{
 		$('#weight_in_tons').val('')
 		weightSection.setAttribute('hidden',true)
+		if ($('#is-public').prop('checked')) {
+			$('#amount-selection').prop('hidden',false)
+			$('#truckamount_in_confirmation').prop('hidden',false)
+		}
+		$('#truckamount_in_confirmation').prop('hidden',false)
 	}
 })
 
@@ -517,7 +533,7 @@ $('#is_trip_by_weight').change(function() {
 				$('#truck_error').text('Favor de seleccionar una opción')
 				validated = false;
 	        }
-			if ( $('#amount').val() == null && $('#is-public').prop('checked')){
+			if ( $('#amount').val() == null && $('#is-public').prop('checked') && !$('#is_trip_by_weight').prop('checked')){
 	            $('#amount').addClass('is-invalid')
 				$('#amount').addClass('is-invalid_custom')
 				$('#amount_error').text('Favor de seleccionar una opción')
@@ -635,7 +651,7 @@ $('#is_trip_by_weight').change(function() {
 			trip_info = {
 				trip_type: $('#is-public').prop('checked') ? "public": "internal",
 				truck_id: $('#truck').val(),
-				amount: $('#amount').val(),
+				amount: !$('#is_trip_by_weight').prop('checked') ? $('#amount').val() : null,
 				is_trip_by_weight: $('#is_trip_by_weight').prop('checked'),
 				weight_in_kg: $('#weight_in_tons').val() ? $('#weight_in_tons').val()*1000 : null,
 				material_name: $('#material').val(),
@@ -644,7 +660,7 @@ $('#is_trip_by_weight').change(function() {
 				customer_name: $('#customer').val(),
 				sender_comment: $('#sender_comment').val()
 			};
-			console.log(trip_info);
+			// console.log(trip_info);
 			try{
 				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", trip_info)				
 				try {

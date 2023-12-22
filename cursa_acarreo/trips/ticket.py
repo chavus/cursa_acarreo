@@ -14,6 +14,7 @@ class Ticket:
     TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_ticket_template.jpg'
     BY_WEIGHT_TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_by_weight_ticket_template.jpg'
     PUBLIC_TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_public_ticket_template.jpg'
+    PUBLIC_BY_WEIGHT_TICKET_TEMPLATE = project_dir + '/cursa_acarreo/static/print_templates/cursa_public_by_weight_ticket_template.jpg'
     TICKET_FONT = project_dir + '/cursa_acarreo/static/fonts/CalibriRegular.ttf'
     X_VALUE = 190  # X Coordinate to enter trip field text
     Y_VALUE_INIT = 295  # Initial Y coordinate for first trip value
@@ -90,7 +91,10 @@ class Ticket:
             else:
                 im = Image.open(self.TICKET_TEMPLATE)
         elif self.ticket_fields_values['type'] == 'public':
-            im = Image.open(self.PUBLIC_TICKET_TEMPLATE)
+            if self.ticket_fields_values['is_trip_by_weight']:
+                im = Image.open(self.PUBLIC_BY_WEIGHT_TICKET_TEMPLATE)
+            else:
+                im = Image.open(self.PUBLIC_TICKET_TEMPLATE)
 
         # Enter trip values
         fnt = ImageFont.truetype(self.TICKET_FONT, 45)  # Params = Font, Size
@@ -106,10 +110,13 @@ class Ticket:
             if not self.ticket_fields_values['is_trip_by_weight'] and f == 'weight_in_kg':
                 continue
             if f == 'weight_in_kg':
-                d.text(self.TICKET_FIELDS[f], self.format_value(self.ticket_fields_values[f]/1000),
+                d.text(self.TICKET_FIELDS[f],
+                       self.format_value(self.ticket_fields_values[f]/1000 if self.ticket_fields_values[f] is not None
+                                                                              else ''),
                        font=fnt, fill='black')
                 continue
-            d.text(self.TICKET_FIELDS[f], self.format_value(self.ticket_fields_values[f]),
+            d.text(self.TICKET_FIELDS[f],
+                   self.format_value(self.ticket_fields_values[f] if self.ticket_fields_values[f] is not None else ''),
                    font=fnt, fill='black')
 
         # Generate and enter qr code

@@ -61,7 +61,8 @@ TYPE_TRANSLATION = {'internal': 'Interno', 'public': 'Público'}
 # TODO:
 # Add validation for either amount or weight_in_kg considering 'is_trip_by_weight'
 
-MAX_WEIGHT_IN_KG = 70000 #
+MAX_WEIGHT_IN_KG = 70000  #
+
 
 class Trip(db.Document, Base):
     """
@@ -150,9 +151,10 @@ class Trip(db.Document, Base):
             'client': client_name.upper() if client_name else None,
             'sender_user': sender_username,
             'sender_comment': sender_comment if sender_comment else None,
-            'amount': amount if amount else (truck.capacity if not is_trip_by_weight else None),
+            'amount': amount if amount is not None and amount != '' and not is_trip_by_weight else
+                        (truck.capacity if not is_trip_by_weight else None),
             'is_trip_by_weight': is_trip_by_weight,
-            'weight_in_kg': weight_in_kg if weight_in_kg else None,
+            'weight_in_kg': weight_in_kg if weight_in_kg is not None and weight_in_kg != '' else None,
             'status': status,
             'is_return': is_return,
             'type': type
@@ -207,11 +209,11 @@ class Trip(db.Document, Base):
                     'truck': trip.truck if trip.truck else '',
                     'driver': trip.driver if trip.driver else '',
                     'material': trip.material,
-                    'amount': trip.amount if trip.amount else '',
-                    'weight_in_tons': trip.weight_in_kg/1000 if trip.weight_in_kg and trip.is_trip_by_weight else '',
+                    'amount': trip.amount if trip.amount is not None else '',
+                    'weight_in_tons': trip.weight_in_kg / 1000 if trip.weight_in_kg is not None and trip.is_trip_by_weight else '',
                     'origin': trip.origin,
                     'destination': trip.destination if trip.destination else '',
-                    'distance': trip.distance if trip.distance else '',
+                    'distance': trip.distance if trip.distance is not None else '',
                     'client': trip.client if trip.client else '',
                     'sender_user': trip.sender_user,
                     'sent_datetime': utils.formatdate_mx(trip.sent_datetime),
@@ -228,11 +230,11 @@ class Trip(db.Document, Base):
                     'Camión': trip.truck if trip.truck else '',
                     'Chofer': trip.driver if trip.driver else '',
                     'Material': trip.material,
-                    'mts3': trip.amount if trip.amount else '',
-                    'Peso(t)': trip.weight_in_kg / 1000 if trip.weight_in_kg and trip.is_trip_by_weight else '',
+                    'mts3': trip.amount if trip.amount is not None else '',
+                    'Peso(t)': trip.weight_in_kg / 1000 if trip.weight_in_kg is not None and trip.is_trip_by_weight else '',
                     'Origen': trip.origin,
                     'Destino': trip.destination if trip.destination else '',
-                    'Kms': trip.distance if trip.distance else '',
+                    'Kms': trip.distance if trip.distance is not None else '',
                     'Cliente': trip.client if trip.client else '',
                     'Envió': trip.sender_user,
                     'Fecha/Hora Envío': utils.formatdate_mx(trip.sent_datetime),
