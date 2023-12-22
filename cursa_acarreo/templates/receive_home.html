@@ -71,8 +71,13 @@
 										<td>{{trip['material']}}</td>
 									</tr>
 									<tr>
-										<th class="font-weight-bold">Cantidad:</th>
-										<td>{{trip['amount']}} mts3</td>
+										{% if trip['is_trip_by_weight'] %}
+											<th class="font-weight-bold">Peso:</th>
+											<td>{{trip['weight_in_kg'] / 1000 if trip['weight_in_kg'] is not none else ""}} t</td>
+										{% else %}
+											<th class="font-weight-bold">Volumen:</th>
+											<td>{{trip['amount'] if trip['amount'] is not none else ""}} mts3</td>
+										{% endif %}
 									</tr>
 									<tr>
 										<th class="font-weight-bold">Enviado por:</th>
@@ -132,7 +137,7 @@
 			content:'*';
 			color: #d41616;
 			}
-	}
+	
 
 </style>
 

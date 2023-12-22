@@ -111,13 +111,21 @@
 
 	</div>
 	<div class="jumbotron py-2">
-		<div class="row">
-			<div id="truck-selection" class="col-lg">
-				<div class="row flex-nowrap form-group justify-content-center align-items-center selector">
-					<div class="col-auto p-2">
+		<div class="row justify-content-sm-center">
+
+			<div  class="col-lg-4 ">
+
+				<div class="form-check row mb-2" style="margin-right: 8px;text-align: right;">
+					<label for="is_trip_by_weight" class="form-check-label">Viaje por peso</label>
+					<input id="is_trip_by_weight" class="form-check-input" type="checkbox" data-toggle="toggle"
+							data-on="Si" data-off="No" data-style="ios">
+				</div>
+
+				<div id="truck-selection" class="row flex-nowrap form-group justify-content-center align-items-center selector">
+					<div class="col-3">
 						{{ form.truck.label(class="col-form-label-lg float-right")}}
 					</div>
-					<div class="col-auto p-2">
+					<div class="">
 						{% if form.truck.choices == [] %}
 							<script>
 								var noTrucksAvailable = true
@@ -138,14 +146,12 @@
 
 					</div>
 				</div>
-			</div>
-			<div id="amount-selection" class="col-lg">
-				<div class="row flex-nowrap form-group justify-content-center align-items-center selector">
-					<div class="col-auto p-2">
+
+				<div id="amount-selection" class="row flex-nowrap form-group justify-content-center align-items-center selector">
+					<div class="col-3">
 						<label class="col-form-label-lg float-right" for="amount">Cantidad</label>
 					</div>
-					<div class="col-auto p-2">
-						
+					<div class="">
 							<select class="form-control-lg" id="amount" name="amount" style="width: 14rem;">
 								<option disabled="" selected="" value="default">Seleccionar...</option>
 								<option value=7>7 mts3</option>
@@ -156,14 +162,39 @@
 							<div class="invalid-feedback text-left" id="amount_error"></div>
 					</div>
 				</div>
+
+				<div id="weight_section" hidden class="row flex-nowrap form-group justify-content-center align-items-center selector">
+					<div class="col-3">
+						<label class="col-form-label-lg float-right" for="weight_in_tons" style="
+						text-wrap: nowrap;">Peso (t)</label>
+					</div>
+					<div class="">
+						<input id="weight_in_tons"
+									class="form-control form-control-lg"
+									style="width: 14rem;"
+									type="number" min="0" max="70" inputmode="decimal"
+									placeholder="0 a 70.000" >
+						<div class="invalid-feedback text-left" id="weight_error"></div>
+					</div>
+				</div>
+
+				<button type="button" class="btn btn-primary btn-lg btn-block mt-4" id="confirmation_button"
+						value="Confirmar modal" {% if form.truck.choices  == [] %}disabled{% endif %}>
+						Confirmar Viaje
+				</button>
+
 			</div>
-		<div class="form-group col-lg align-self-center">
-			<button type="button" class="btn btn-primary btn-lg btn-block" id="confirmation_button"
-			        value="Confirmar modal" {% if form.truck.choices  == [] %}disabled{% endif %}>
-			  Confirmar Viaje
-			</button>
+					
 		</div>
-	</div>
+
+		<!-- <div class="row justify-content-center">
+			<div class="form-group col-lg-4 align-self-center">
+				<button type="button" class="btn btn-primary btn-lg btn-block" id="confirmation_button"
+						value="Confirmar modal" {% if form.truck.choices  == [] %}disabled{% endif %}>
+				Confirmar Viaje
+				</button>
+			</div>
+		</div> -->
 
 
 	</div>
@@ -185,9 +216,13 @@
 					<th class="font-weight-bold" style="padding-right:0 ;">Tipo:</th>
 					<td id="trip_type_row" style="padding-left: .3rem;"></td>
 				</tr>
-				<tr>
+				<tr id="truckamount_in_confirmation">
 					<th id="truckamount_row_label" class="font-weight-bold" style="padding-right:0 ;"></th>
 					<td id="truckamount_row" style="padding-left: .3rem;"></td>
+				</tr>
+				<tr id="weight_in_confirmation_row" hidden>
+					<th class="font-weight-bold" style="padding-right:0 ;">Peso: </th>
+					<td id="weight_in_confirmation" style="padding-left: .3rem;"></td>
 				</tr>
 				<tr>
 					<th class="font-weight-bold" style="padding-right:0 ;">Origen: </th>
@@ -290,7 +325,6 @@
 		$('#amount-selection').prop('hidden',true)
 	}
 
-
 // Show Destination or Client input drop down depending on is-public 
 	$('#is-public').change(function() {
 		destinationRow = document.getElementById('destination-row')
@@ -299,7 +333,12 @@
 			destinationRow.setAttribute('hidden',true)
 			customerRow.removeAttribute('hidden')
 			$('#truck-selection').prop('hidden',true)
-			$('#amount-selection').prop('hidden',false)
+			if(!$('#is_trip_by_weight').prop('checked')){
+				$('#amount-selection').prop('hidden',false)
+				$('#truckamount_in_confirmation').prop('hidden',false)
+			}else{
+				$('#truckamount_in_confirmation').prop('hidden',true)
+			}
 			$('#customer').val('default')
 			$('#destination').val('default')
 			$('#truck').val('default')
@@ -308,6 +347,7 @@
 			customerRow.setAttribute('hidden',true)
 			destinationRow.removeAttribute('hidden')
 			$('#truck-selection').prop('hidden',false)
+			$('#truckamount_in_confirmation').prop('hidden',false)
 			$('#amount-selection').prop('hidden',true)
 			$('#destination').val('default')
 			$('#customer').val('default')
@@ -316,8 +356,29 @@
 				$('#confirmation_button').prop('disabled', true)
 			}
 		}
-
 	});
+
+// 
+$('#is_trip_by_weight').change(function() {
+	weightSection = document.getElementById('weight_section')
+	if($('#is_trip_by_weight').prop('checked')){
+		weightSection.removeAttribute('hidden')
+		if($('#is-public').prop('checked')) {
+			$('#amount-selection').prop('hidden',true)
+			$('#truckamount_in_confirmation').prop('hidden',true)
+		}else{
+			$('#truckamount_in_confirmation').prop('hidden',false)
+		}		
+	}else{
+		$('#weight_in_tons').val('')
+		weightSection.setAttribute('hidden',true)
+		if ($('#is-public').prop('checked')) {
+			$('#amount-selection').prop('hidden',false)
+			$('#truckamount_in_confirmation').prop('hidden',false)
+		}
+		$('#truckamount_in_confirmation').prop('hidden',false)
+	}
+})
 
 // <!--Save values of select fields to local storage and disable fields when toogle button is turned on-->
 
@@ -472,11 +533,31 @@
 				$('#truck_error').text('Favor de seleccionar una opción')
 				validated = false;
 	        }
-			if ( $('#amount').val() == null && $('#is-public').prop('checked')){
+			if ( $('#amount').val() == null && $('#is-public').prop('checked') && !$('#is_trip_by_weight').prop('checked')){
 	            $('#amount').addClass('is-invalid')
 				$('#amount').addClass('is-invalid_custom')
 				$('#amount_error').text('Favor de seleccionar una opción')
 				validated = false;
+	        }
+			weight_in_tons = $('#weight_in_tons')
+			if ( !weight_in_tons.val() && $('#is_trip_by_weight').prop('checked')){
+	            weight_in_tons.addClass('is-invalid')
+				weight_in_tons.addClass('is-invalid_custom')
+				$('#weight_error').text('Favor de ingresar peso en toneladas')
+				validated = false;
+	        }
+			if ( weight_in_tons.val() && $('#is_trip_by_weight').prop('checked')){
+				if (weight_in_tons.val() > 70 || weight_in_tons.val() < 0){
+					weight_in_tons.addClass('is-invalid')
+					weight_in_tons.addClass('is-invalid_custom')
+					$('#weight_error').text('Valor de peso debe de ser de 0 a 70')
+					validated = false;
+				} else if (!Number.isInteger(weight_in_tons.val()*1000)){
+					weight_in_tons.addClass('is-invalid')
+					weight_in_tons.addClass('is-invalid_custom')
+					$('#weight_error').text('Ingresar máximo 3 decimales. Por ejemplo: 23.123')
+					validated = false;
+				}
 	        }
 	        return validated
 		}
@@ -489,7 +570,7 @@
 				if ($('#is-public').prop('checked')){
 					$('#trip_type_row').text("Venta Público")
 
-					$('#truckamount_row_label').text("Cantidad:");
+					$('#truckamount_row_label').text("Volumen:");
 					$('#truckamount_row').text($('#amount').val() + " mts3");
 
 					$('#destinationcustomer_row_label').text("Cliente:");
@@ -504,6 +585,13 @@
 					$('#destinationcustomer_row').text($('#destination').val());
 				}
 				
+				weightSection = document.getElementById('weight_in_confirmation_row')
+				if ($('#is_trip_by_weight').prop('checked')){
+					weightSection.removeAttribute('hidden')
+					$('#weight_in_confirmation').text($('#weight_in_tons').val() + " t");
+				} else{
+					weightSection.setAttribute('hidden', true)
+				}
 
 				$('#confirmationModal').modal('show');
 			}
@@ -563,7 +651,9 @@
 			trip_info = {
 				trip_type: $('#is-public').prop('checked') ? "public": "internal",
 				truck_id: $('#truck').val(),
-				amount: $('#amount').val(),
+				amount: !$('#is_trip_by_weight').prop('checked') ? $('#amount').val() : null,
+				is_trip_by_weight: $('#is_trip_by_weight').prop('checked'),
+				weight_in_kg: $('#weight_in_tons').val() ? $('#weight_in_tons').val()*1000 : null,
 				material_name: $('#material').val(),
 				origin_name: $('#origin').val(),
 				destination_name: $('#destination').val(),
@@ -572,19 +662,22 @@
 			};
 			// console.log(trip_info);
 			try{
-				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", trip_info)
-				const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripRes.trip_id})
-				printImage(ticketRes.ticket_b64);
-				setTimeout(() => {
-					$('#confirmationModal').modal('hide');
-					confirmationModal(tripRes.trip_id, ticketRes.ticket_b64)
-				}, 1000);
-				
+				const tripRes = await $.post("{{ url_for('trips.create_trip') }}", trip_info)				
+				try {
+					const ticketRes = await $.get("{{ url_for('trips.get_trip_ticket') }}", {trip_id: tripRes.trip_id})
+					printImage(ticketRes.ticket_b64);
+					setTimeout(() => {
+						$('#confirmationModal').modal('hide');
+						confirmationModal(tripRes.trip_id, ticketRes.ticket_b64)
+					}, 1000);
+				} catch (error) {
+					swal(`Viaje ${tripRes.trip_id} creado!, pero hubo un error al crear el ticket`, '', 'warning').then(()=>location.reload())
+				}
+
 			}catch(error){
 				swal(`ERROR: No se pudo crear viaje.\nDetalle: ${error.responseText}`, '', 'error').then(()=>location.reload())
-				
-				// alert(`ERROR: No se pudo crear viaje.\nDetalle: ${error.responseText}`)
 			};
+
 			});
 	});
 
