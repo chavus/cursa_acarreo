@@ -22,7 +22,8 @@
 	<div id="qr-reader" style="width:320px;"></div>
 	<!-- <div id="qr-reader-results"></div> -->
 	<button class="btn btn-primary" id="receive-scan-btn">
-		<div><i class="fa fa-qrcode fa-4" aria-hidden="true" style="font-size: 3rem;"></i> </div>
+		<div><i class="fa-solid fa-qrcode" aria-hidden="true" style="font-size: 3rem;"></i> </div>
+
 		Recibir viaje
 	</button>
 	<button class="btn btn-secondary btn-lg mt-0" id="cancel-scan-btn" hidden><i class="fa fa-times" aria-hidden="true" style="font-size: 1rem;"></i> Cancelar</button>
@@ -42,13 +43,13 @@
 
 
 		</thead>
-
+<path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm88 200H296c13.3 0 24 10.7 24 24s-10.7 24-24 24H152c-13.3 0-24-10.7-24-24s10.7-24 24-24z"></path>
 		<tbody class="accordion" id="accordiontable">
 			{% for trip in in_progress_trips %}
 				<ul>
 					<tr class="clickable"  style="background-color: #dfe2e5">
 						<td class="align-middle" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}">
-							<i class="fa fa-plus-square" id="icon{{trip['trip_id']}}" aria-hidden="true" style="color:gray"></i></td>
+							<i class="fa-solid fa-square-plus" id="icon{{trip['trip_id']}}" aria-hidden="true" style="color:gray"></i></td>
 						<td class="align-middle text-center" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}">{{trip['trip_id']}}</td>
 						<td class="align-middle text-center" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}" nowrap>{{trip['truck']}}</td>
 						<td class="align-middle text-center" data-toggle="collapse" data-target="#accordion{{trip['trip_id']}}">{{trip['destination']}}</td>
@@ -153,8 +154,7 @@
       </div>
       <div class="modal-body" style="font-size:1rem;padding-top: 10px;padding-bottom: 10px;">
 	        <p id="cancel-icon-p" class="text-center" style="margin-bottom: 0px;">
-				<i class="fa fa-exclamation-circle fa-5" aria-hidden="true" style="font-size:4rem; color:#ffc107"
-				></i>
+				<i class="fa fa-circle-exclamation" aria-hidden="true" style="font-size:4rem; color:#ffc107"></i>
 			</p>
 	      <table class="table table-borderless confirmation-table" style="width: 90%; margin: 0px auto; padding: .3rem;">
 			<tr>
@@ -226,13 +226,15 @@
 
 		$('.collapse').on('show.bs.collapse', function () {
 			var id = $(this).attr('id').replace("accordion","");
-			$("#icon"+id).attr('class','fa fa-minus-square')
+			$("#icon"+id).attr('class','svg-inline--fa fa-square-minus')
+			.html('<path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm88 200H296c13.3 0 24 10.7 24 24s-10.7 24-24 24H152c-13.3 0-24-10.7-24-24s10.7-24 24-24z"></path>')
 		});
 
 		$('.collapse').on('hide.bs.collapse', function () {
 		  var id = $(this).attr('id')
 		  var id = $(this).attr('id').replace("accordion","");
-		  $("#icon"+id).attr('class','fa fa-plus-square')
+		  $("#icon"+id).attr('class','svg-inline--fa fa-square-plus')
+		  .html('<path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM200 344V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H248v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"></path>')
 		});
 
 	// <!--Remove invalid class when selector is clicked-->
